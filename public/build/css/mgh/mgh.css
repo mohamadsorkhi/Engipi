@@ -1,0 +1,119 @@
+:root {
+    /* Font Families */
+    --vz-font-family-primary: 'Poppins', sans-serif;
+    --vz-font-family-secondary: 'Vazirmatn', sans-serif; /* Default Persian Font */
+
+    /* Base Font Sizes & Weights */
+    --vz-font-base: 0.875rem; /* 14px */
+    --vz-font-weight-normal: 400;
+    --vz-font-weight-medium: 500;
+    --vz-font-weight-semibold: 600;
+    --vz-font-weight-bold: 700;
+
+
+    /* Headings */
+    --vz-headings-font-family: var(--vz-font-family-secondary);
+    --vz-headings-font-weight: var(--vz-font-weight-semibold);
+
+    /* Buttons */
+    --vz-btn-font-family: var(--vz-font-family-secondary);
+    --vz-btn-font-weight-custom: var(--vz-font-weight-medium);
+
+    /* Cards */
+    --vz-card-border-width-custom: 0;
+    --vz-card-shadow: 0 1px 2px rgba(56, 65, 74, 0.15);
+
+    /* Navs */
+    --vz-nav-link-font-size: 0.9375rem; /* 15px */
+    --vz-nav-link-font-weight: var(--vz-font-weight-medium);
+
+    /* Breadcrumbs */
+    --vz-breadcrumb-font-size: 0.875rem; /* 14px */
+
+    /* Custom Font Sizes */
+    --vz-font-10: 0.625rem;
+    --vz-font-11: 0.6875rem;
+    --vz-font-12: 0.75rem;
+    --vz-font-13: 0.8125rem;
+    --vz-font-14: 0.875rem;
+    --vz-font-15: 0.9375rem;
+    --vz-font-16: 1rem;
+    --vz-font-17: 1.0625rem;
+    --vz-font-18: 1.125rem;
+    --vz-font-20: 1.25rem;
+    --vz-font-22: 1.375rem;
+    --vz-font-24: 1.5rem;
+    --vz-font-26: 1.625rem;
+    --vz-font-28: 1.75rem;
+    --vz-font-30: 1.875rem;
+    --vz-font-32: 2rem;
+    --vz-font-36: 2.25rem;
+    --vz-font-40: 2.5rem;
+    --vz-font-48: 3rem;
+    --vz-font-56: 3.5rem;
+    --vz-font-64: 4rem;
+}
+
+body {
+    font-family: var(--vz-font-family-secondary) !important;
+}
+
+.dir-ltr {
+    direction: ltr;
+}
+
+/*
+ * Fix for Bootstrap RTL issue on LTR input-groups.
+ */
+[dir="rtl"] .input-group[dir="ltr"] > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu),
+[dir="rtl"] .input-group[dir="ltr"] > .dropdown-toggle:nth-last-child(n+3) {
+    border-top-left-radius: var(--vz-border-radius) !important;
+    border-bottom-left-radius: var(--vz-border-radius) !important;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+[dir="rtl"] .input-group[dir="ltr"] > :not(:first-child) {
+    border-top-right-radius: var(--vz-border-radius) !important;
+    border-bottom-right-radius: var(--vz-border-radius) !important;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.font-en {
+    font-family: var(--vz-font-family-primary) !important;
+    direction: ltr;
+    text-align: left;
+}
+
+.font-en * {
+    text-align: left;
+}
+
+/* Card Header Flex Layout */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-copyright {
+
+}
+
+.choices.is-invalid .choices__inner, .was-validated .choices:invalid .choices__inner {
+    border-color: var(--vz-form-invalid-border-color);
+    padding-left: calc(1.5em + 1rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23f06548'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23f06548' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: left calc(.375em + .25rem) center;
+    background-size: calc(.75em + .5rem) calc(.75em + .5rem)
+}
+
+.choices.is-invalid {
+    margin-bottom: 0;
+}
+
+#layout-wrapper .footer{
+    background-color: transparent !important;
+}
