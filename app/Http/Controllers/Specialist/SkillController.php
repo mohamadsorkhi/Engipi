@@ -12,21 +12,51 @@ class SkillController extends Controller
 {
     /**
      * Display the specialist's skills management page.
-     * Shows domain selection, process selection (1-3), and skill levels.
+     * Shows domain selection, subdomains, process selection and skill levels.
      */
     public function index()
     {
         $user = Auth::user();
-        $profile = $user->profiles()->where('type', 'specialist')->first();
 
-        // Get all domains for selection
-        $domains = SkillDomain::with('processes')->orderBy('name')->get();
+        $profile = $user->profiles()
+            ->where('type', 'specialist')
+            ->first();
 
-        // Get current profile's selected processes with levels
-        $selectedProcesses = $profile ? $profile->processes()->withPivot('level')->get() : collect();
+        /*
+        |--------------------------------------------------------------------------
+        | Load domains with:
+        | - subdomains
+        | - skills of each subdomain
+        | - processes
+        |--------------------------------------------------------------------------
+        */
 
-        // Get selected domains for the profile
-        $selectedDomains = $profile ? $profile->domains : collect();
+        $domains = SkillDomain::with([
+            'subdomains.skills',
+            'processes'
+        ])
+        ->orderBy('name')
+        ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Current selected processes with levels
+        |--------------------------------------------------------------------------
+        */
+
+        $selectedProcesses = $profile
+            ? $profile->processes()->withPivot('level')->get()
+            : collect();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Current selected domains
+        |--------------------------------------------------------------------------
+        */
+
+        $selectedDomains = $profile
+            ? $profile->domains
+            : collect();
 
         return view('user.skills.index', [
             'domains' => $domains,
@@ -37,12 +67,15 @@ class SkillController extends Controller
     }
 
     /**
-     * Store/update the specialist's skill selections.
+     * Store/update specialist skills.
      */
     public function store(StoreSkillsRequest $request)
     {
         $user = Auth::user();
-        $profile = $user->profiles()->where('type', 'specialist')->first();
+
+        $profile = $user->profiles()
+            ->where('type', 'specialist')
+            ->first();
 
         if (!$profile) {
             return response()->json([
@@ -53,18 +86,30 @@ class SkillController extends Controller
 
         $validated = $request->validated();
 
-        // Sync domains
+        /*
+        |--------------------------------------------------------------------------
+        | Sync selected domains
+        |--------------------------------------------------------------------------
+        */
+
         $profile->domains()->sync($validated['domains']);
 
-        // Build the sync array with levels
+        /*
+        |--------------------------------------------------------------------------
+        | Sync selected processes with levels
+        |--------------------------------------------------------------------------
+        */
+
         $syncData = [];
+
         foreach ($validated['processes'] as $processData) {
+
             $syncData[$processData['id']] = [
                 'level' => $processData['level'],
             ];
+
         }
 
-        // Sync processes with levels
         $profile->processes()->sync($syncData);
 
         return response()->json([

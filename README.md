@@ -53,4 +53,4 @@ php artisan key:generate
 php artisan migrate
 npm install
 npm run build
-php artisan serveسسس
+php artisan serveسسسمم

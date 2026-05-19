@@ -18,6 +18,20 @@ class SkillDomain extends Model
         'name',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+
+    public function subdomains()
+    {
+        return $this->hasMany(
+            Subdomain::class,
+            'skill_domain_id'
+        );
+    }
+
     public function processes()
     {
         return $this->hasMany(Process::class);

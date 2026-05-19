@@ -12,12 +12,27 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('skills', function (Blueprint $table) {
+
             $table->uuid('id')->primary();
-            $table->foreignUuid('process_id')->nullable()->constrained('processes')->nullOnDelete();
+
+            $table->foreignUuid('process_id')
+                ->nullable()
+                ->constrained('processes')
+                ->nullOnDelete();
+
+            // فعلاً بدون foreign key
+            $table->uuid('subdomain_id')->nullable();
+
             $table->string('name');
+
             $table->timestamps();
 
-            $table->index(['process_id', 'name']);
+            $table->index([
+                'process_id',
+                'subdomain_id',
+                'name'
+            ]);
+
         });
     }
 

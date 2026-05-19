@@ -53,11 +53,11 @@
                                                     <div class="form-check">
                                                         <input class="form-check-input domain-checkbox" type="checkbox" 
                                                             id="domain_{{ $domain->id }}" value="{{ $domain->id }}"
-                                                            data-processes='@json($domain->processes)'
+                                                            data-subdomains='@json($domain->subdomains)'
                                                             {{ $isSelected ? 'checked' : '' }}>
                                                         <label class="form-check-label fw-medium" for="domain_{{ $domain->id }}">
                                                             {{ $domain->name }}
-                                                            <small class="d-block text-muted">{{ $domain->processes->count() }} پردازش</small>
+                                                           {{ $domain->subdomains->count() }} گرایش
                                                         </label>
                                                     </div>
                                                 </div>
@@ -67,11 +67,26 @@
                                 </div>
                                 <div class="invalid-feedback d-block" id="domain-error"></div>
                             </div>
+<!-- Step 2: Select Subdomains -->
+<div class="mb-4" id="subdomainsSection" style="display: none;">
 
+    <label class="form-label fw-semibold">
+        <span class="badge bg-primary me-2">۲</span>
+        انتخاب گرایش‌ها
+    </label>
+
+    <p class="text-muted small mb-3">
+        گرایش‌های مرتبط را انتخاب کنید.
+    </p>
+
+    <div class="row g-3" id="subdomainsContainer">
+    </div>
+
+</div>
                             <!-- Step 2: Select Processes -->
                             <div class="mb-4" id="processesSection" style="display: none;">
                                 <label class="form-label fw-semibold">
-                                    <span class="badge bg-primary me-2">۲</span>
+                                   <span class="badge bg-primary me-2">۲</span>
                                     انتخاب پردازش‌ها <span class="text-danger">*</span>
                                 </label>
                                 <p class="text-muted small mb-3">حداقل ۱ پردازش انتخاب کنید و سطح مهارت خود را مشخص نمایید.</p>

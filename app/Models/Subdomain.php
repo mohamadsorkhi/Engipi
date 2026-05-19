@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class Skill extends Model
+class Subdomain extends Model
 {
     use HasFactory, HasUuids;
 
@@ -15,17 +15,17 @@ class Skill extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        "id",
-        "name"
+        'name',
+        'skill_domain_id',
     ];
 
-    public function subdomains()
+    public function domain()
     {
-        return $this->belongsToMany(
-            Subdomain::class,
-            'skill_subdomain',
-            'skill_id',
-            'subdomain_id'
-        );
+        return $this->belongsTo(SkillDomain::class, 'skill_domain_id');
+    }
+
+    public function skills()
+    {
+        return $this->hasMany(Skill::class);
     }
 }

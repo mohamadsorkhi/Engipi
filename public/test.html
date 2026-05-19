@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Skill Selector</title>
+</head>
+<body>
+
+<h2>Domains</h2>
+<div id="domains"></div>
+
+<h2>Subdomains</h2>
+<div id="subdomains"></div>
+
+<script>
+fetch('http://127.0.0.1:8000/api/domains')
+    .then(res => res.json())
+    .then(data => {
+        let html = '';
+        data.forEach(item => {
+            html += `<button onclick="loadSubdomains('${item.id}')">${item.name}</button><br>`;
+        });
+        document.getElementById('domains').innerHTML = html;
+    });
+
+function loadSubdomains(domainId) {
+    fetch(`http://127.0.0.1:8000/api/subdomains/${domainId}`)
+        .then(res => res.json())
+        .then(data => {
+            let html = '';
+            data.forEach(item => {
+                html += `<button>${item.name}</button><br>`;
+            });
+            document.getElementById('subdomains').innerHTML = html;
+        });
+}
+</script>
+
+</body>
+</html>
