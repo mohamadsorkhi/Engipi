@@ -204,6 +204,76 @@ document.addEventListener('DOMContentLoaded', function () {
 
         button.innerText =
         skill.name;
+        button.addEventListener('click', () => {
+
+    if(selectedSkills.includes(skill.id))
+        return;
+
+    selectedSkills.push(skill.id);
+
+    saveBtn.disabled = false;
+
+    let card=document.createElement('div');
+
+    card.className =
+    'border rounded p-2 mt-2 w-100';
+
+    card.innerHTML=`
+
+        <div class="fw-bold mb-2">
+            ${skill.name}
+        </div>
+
+        <select class="form-select mb-2">
+
+            <option value="beginner">
+                مبتدی
+            </option>
+
+            <option value="medium">
+                متوسط
+            </option>
+
+            <option value="advanced">
+                حرفه‌ای
+            </option>
+
+        </select>
+
+        <input
+            type="number"
+            class="form-control mb-2"
+            placeholder="سال تجربه"
+        >
+
+        <button
+            class="btn btn-danger btn-sm">
+            حذف
+        </button>
+
+    `;
+
+    card.querySelector('button')
+    .addEventListener('click',()=>{
+
+        selectedSkills=
+        selectedSkills.filter(
+            id=>id!==skill.id
+        );
+
+        card.remove();
+
+        if(selectedSkills.length===0)
+        {
+            saveBtn.disabled=true;
+        }
+
+    });
+
+    selectedSkillsContainer
+    .appendChild(card);
+
+});
 
         skillsContainer.appendChild(button);
     });
