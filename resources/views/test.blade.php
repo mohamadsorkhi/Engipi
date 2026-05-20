@@ -27,40 +27,107 @@
                         حوزه
                     </label>
 
-                  <select id="domain" class="form-select">
-                 <option value="">انتخاب حوزه</option>
+                 <div class="mb-3">
 
-                  @foreach($domains as $item)
-                <option value="{{ $item->id }}">
-                  {{ $item->name }}
-                 </option>
-                 @endforeach
-                 </select>
+<label class="form-label">
+    حوزه (حداکثر ۲)
+</label>
 
-                </div>
+<div id="domainContainer"
+class="d-flex flex-wrap gap-2">
 
+@foreach($domains as $item)
 
+<button
+type="button"
+class="btn btn-outline-primary domain-card"
+data-id="{{ $item->id }}">
 
-                {{-- SUBDOMAIN --}}
-                <div class="mb-3">
+{{ $item->name }}
 
-                    <label class="form-label">
-                        زیرشاخه
-                    </label>
+</button>
 
-                    <select
-                        id="subdomain"
-                        class="form-select"
-                        disabled
-                    >
+@endforeach
 
-                        <option value="">
-                            اول حوزه را انتخاب کنید
-                        </option>
+</div>
 
-                    </select>
+</div>
 
                 </div>
+
+
+
+               {{-- SUBDOMAIN --}}
+<div class="mb-3">
+
+    <label class="form-label">
+        زیرشاخه
+    </label>
+
+    <select
+        id="subdomain"
+        class="form-select"
+        disabled
+    >
+
+        <option value="">
+            اول حوزه را انتخاب کنید
+        </option>
+
+    </select>
+
+</div>
+
+
+{{-- SELECTED SUBDOMAINS --}}
+<div class="mb-4">
+
+    <label class="form-label fw-bold">
+        گرایش های انتخاب شده
+        (حداکثر ۲)
+    </label>
+
+    <div
+        id="selectedSubdomains"
+        class="d-flex flex-wrap gap-2"
+    >
+
+    </div>
+
+</div>
+
+
+
+{{-- SKILLS --}}
+<div class="mb-4">
+
+    <label class="form-label fw-bold">
+        مهارت
+    </label>
+
+    <div
+        id="skillsContainer"
+        class="d-flex flex-wrap gap-2"
+    >
+    </div>
+
+</div>
+
+
+{{-- SELECTED SKILLS --}}
+<div class="mb-4">
+
+    <label class="form-label fw-bold">
+        مهارت های انتخاب شده
+    </label>
+
+    <div
+        id="selected-skills"
+        class="d-flex flex-wrap gap-2"
+    >
+    </div>
+
+</div>
 
 
 
@@ -118,194 +185,431 @@
 
 
 @push('scripts')
-<script>
 
+
+<script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    const domain = document.getElementById('domain');
-    const subdomain = document.getElementById('subdomain');
-    const skillsContainer = document.getElementById('skillsContainer');
-    const selectedSkillsContainer = document.getElementById('selected-skills');
-    const saveBtn = document.getElementById('saveBtn');
+    const subdomain =
+    document.getElementById('subdomain');
 
-    let selectedSkills = [];
+    const skillsContainer =
+    document.getElementById('skillsContainer');
 
-    saveBtn.disabled = true;
+    const selectedSkillsContainer =
+    document.getElementById('selected-skills');
 
-    // DOMAIN => SUBDOMAIN
+    const selectedSubdomainsContainer =
+    document.getElementById('selectedSubdomains');
 
-    domain.addEventListener('change', async function () {
+    const saveBtn =
+    document.getElementById('saveBtn');
 
-        const domainId = this.value;
+    const domainButtons =
+    document.querySelectorAll('.domain-card');
 
-        subdomain.innerHTML =
-        `<option value="">انتخاب زیرشاخه</option>`;
+    let selectedDomains=[];
+    let selectedSkills=[];
+    let selectedSubdomains=[];
 
-        skillsContainer.innerHTML = '';
-        selectedSkillsContainer.innerHTML = '';
-        selectedSkills = [];
+    saveBtn.disabled=true;
 
-        if(!domainId) return;
 
-        const response =
-        await fetch(`/api/subdomains/${domainId}`);
+    // انتخاب حوزه
+    domainButtons.forEach(button=>{
 
-        const data = await response.json();
+        button.addEventListener(
+        'click',
 
-       console.log("API:", data);
-        
-        const subdomains = Array.isArray(data)
-        ? data
-        : data.data;
+        async function(){
 
-        subdomains.forEach(item => {
+            const domainId=
+            button.dataset.id;
 
-            subdomain.innerHTML += `
-            <option value="${item.id}">
-                ${item.name}
-            </option>`;
+
+            // حذف انتخاب
+            if(selectedDomains.includes(domainId)){
+
+                selectedDomains=
+                selectedDomains.filter(
+                id=>id!=domainId
+                );
+
+                button.classList.remove(
+                'btn-primary'
+                );
+
+                button.classList.add(
+                'btn-outline-primary'
+                );
+
+
+                if(selectedDomains.length===0){
+
+                    subdomain.innerHTML=
+                    '<option value="">اول حوزه را انتخاب کنید</option>';
+
+                    subdomain.disabled=true;
+
+                    skillsContainer.innerHTML='';
+
+                    selectedSkillsContainer.innerHTML='';
+
+                    selectedSubdomainsContainer.innerHTML='';
+
+                    selectedSubdomains=[];
+
+                }
+
+                return;
+            }
+
+
+            // محدودیت دو حوزه
+            if(selectedDomains.length>=2){
+
+                alert(
+                'حداکثر ۲ حوزه'
+                );
+
+                return;
+            }
+
+
+            selectedDomains.push(
+            domainId
+            );
+
+
+            button.classList.remove(
+            'btn-outline-primary'
+            );
+
+            button.classList.add(
+            'btn-primary'
+            );
+
+
+            const response=
+            await fetch(
+            `/api/subdomains/${domainId}`
+            );
+
+
+            const data=
+            await response.json();
+
+
+            const subdomains=
+            Array.isArray(data)
+            ? data
+            : data.data;
+
+
+            if(selectedDomains.length===1){
+
+                subdomain.innerHTML=
+                '<option value="">انتخاب زیررشته</option>';
+
+            }
+
+
+            subdomains.forEach(item=>{
+
+                const exists=
+
+                [...subdomain.options]
+
+                .some(
+
+                opt=>
+                opt.value==item.id
+
+                );
+
+
+                if(!exists){
+
+                    const option=
+
+                    new Option(
+                    item.name,
+                    item.id
+                    );
+
+                    subdomain.add(
+                    option
+                    );
+
+                }
+
+            });
+
+
+            subdomain.disabled=false;
+
         });
 
-        subdomain.disabled = false;
-
     });
 
-    // SUBDOMAIN => SKILLS
 
-  subdomain.addEventListener('change', async function () {
 
-    const subdomainID = this.value;
+    // انتخاب گرایش
+    subdomain.addEventListener(
+    'change',
 
-    console.log("SELECTED:", subdomainID);
+    async function(){
 
-    skillsContainer.innerHTML = '';
-    selectedSkillsContainer.innerHTML = '';
-    selectedSkills = [];
+        const subdomainID=
+        this.value;
 
-    if(!subdomainID) return;
 
-    const response =
-    await fetch(`/api/skills/${subdomainID}`);
-
-    const skills =
-    await response.json();
-
-    console.log("SKILLS:", skills);
-
-    skills.forEach(skill => {
-
-        let button =
-        document.createElement('button');
-
-        button.type='button';
-
-        button.className =
-        'btn btn-outline-primary m-1';
-
-        button.innerText =
-        skill.name;
-        button.addEventListener('click', () => {
-
-    if(selectedSkills.includes(skill.id))
+        if(!subdomainID)
         return;
 
-    selectedSkills.push(skill.id);
 
-    saveBtn.disabled = false;
+        // حداکثر دو گرایش
+        if(
+        selectedSubdomains.length>=2
+        ){
 
-    let card=document.createElement('div');
+            alert(
+            'حداکثر ۲ گرایش'
+            );
 
-    card.className =
-    'border rounded p-2 mt-2 w-100';
+            this.value='';
 
-    card.innerHTML=`
-
-        <div class="fw-bold mb-2">
-            ${skill.name}
-        </div>
-
-        <select class="form-select mb-2">
-
-            <option value="beginner">
-                مبتدی
-            </option>
-
-            <option value="medium">
-                متوسط
-            </option>
-
-            <option value="advanced">
-                حرفه‌ای
-            </option>
-
-        </select>
-
-        <input
-            type="number"
-            class="form-control mb-2"
-            placeholder="سال تجربه"
-        >
-
-        <button
-            class="btn btn-danger btn-sm">
-            حذف
-        </button>
-
-    `;
-
-    card.querySelector('button')
-    .addEventListener('click',()=>{
-
-        selectedSkills=
-        selectedSkills.filter(
-            id=>id!==skill.id
-        );
-
-        card.remove();
-
-        if(selectedSkills.length===0)
-        {
-            saveBtn.disabled=true;
+            return;
         }
 
-    });
 
-    selectedSkillsContainer
-    .appendChild(card);
+        // تکراری نشود
+        if(
+        selectedSubdomains.includes(
+        subdomainID
+        )
+        ){
+
+            this.value='';
+
+            return;
+        }
+
+
+
+        selectedSubdomains.push(
+        subdomainID
+        );
+
+
+        const subdomainName=
+
+        this.options[
+        this.selectedIndex
+        ].text;
+
+
+
+        let tag=
+
+        document.createElement(
+        'div'
+        );
+
+
+        tag.className=
+        'badge bg-primary p-2';
+
+
+
+        tag.innerHTML=`
+
+        ${subdomainName}
+
+        <button
+        class="btn-close btn-close-white ms-2 removeSubdomain">
+        </button>
+
+        `;
+
+
+
+        tag.querySelector(
+        '.removeSubdomain'
+        )
+
+        .addEventListener(
+        'click',
+
+        ()=>{
+
+            selectedSubdomains=
+
+            selectedSubdomains.filter(
+
+            id=>
+            id!=subdomainID
+
+            );
+
+
+            tag.remove();
+
+        });
+
+
+
+        selectedSubdomainsContainer
+        .appendChild(tag);
+
+
+
+        // مهارت ها
+        skillsContainer.innerHTML='';
+
+        selectedSkillsContainer.innerHTML='';
+
+        selectedSkills=[];
+
+
+
+        const response=
+
+        await fetch(
+        `/api/skills/${subdomainID}`
+        );
+
+
+        const skills=
+        await response.json();
+
+
+
+        skills.forEach(skill=>{
+
+            let btn=
+
+            document.createElement(
+            'button'
+            );
+
+
+            btn.type='button';
+
+            btn.className=
+            'btn btn-outline-primary m-1';
+
+            btn.innerText=
+            skill.name;
+
+
+
+            btn.addEventListener(
+            'click',
+
+            function(){
+
+                if(
+                selectedSkills.includes(
+                skill.id
+                )
+                ){
+
+                    return;
+                }
+
+
+                selectedSkills.push(
+                skill.id
+                );
+
+
+                saveBtn.disabled=
+                false;
+
+
+
+                let card=
+
+                document.createElement(
+                'div'
+                );
+
+
+                card.className=
+                'border rounded p-2 mt-2';
+
+
+
+                card.innerHTML=`
+
+                <div>
+                ${skill.name}
+                </div>
+
+                <button
+                class="btn btn-danger btn-sm removeSkill">
+
+                حذف
+
+                </button>
+
+                `;
+
+
+
+                card.querySelector(
+                '.removeSkill'
+                )
+
+                .addEventListener(
+                'click',
+
+                ()=>{
+
+                    selectedSkills=
+                    selectedSkills.filter(
+
+                    id=>
+                    id!==skill.id
+
+                    );
+
+
+                    card.remove();
+
+
+                    if(
+                    selectedSkills.length===0
+                    ){
+
+                        saveBtn.disabled=true;
+
+                    }
+
+                });
+
+
+
+                selectedSkillsContainer
+                .appendChild(
+                card
+                );
+
+            });
+
+
+
+            skillsContainer
+            .appendChild(
+            btn
+            );
+
+        });
+
+    });
 
 });
-
-        skillsContainer.appendChild(button);
-    });
-
-});
-
-saveBtn.addEventListener('click', async () => {
-
-  const skillIds = selectedSkills;
-
-    const response = await fetch('/save-skills', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN':
-            document.querySelector(
-                'meta[name="csrf-token"]'
-            ).content
-        },
-
-        body: JSON.stringify({
-            skills: skillIds
-        })
-    });
-
-    const data = await response.json();
-
-console.log(data);
-
-}); // پایان saveBtn
-
-}); // پایان DOMContentLoaded
-
 </script>
+
 @endpush
