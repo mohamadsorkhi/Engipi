@@ -15,53 +15,77 @@ use App\Http\Controllers\SkillSelectController;
 
 Auth::routes();
 
-// ذخیره مهارت‌ها
-Route::post('/save-skills', [SkillSelectController::class, 'saveSkills']);
 
 // صفحه تست
-Route::get('/test', [SkillSelectController::class, 'index']);
+Route::get(
+'/test',
+[SkillSelectController::class,'index']
+);
+
+
+// ذخیره مهارت‌ها
+Route::post(
+'/save-user-skills',
+[SkillSelectController::class,'saveSkills']
+);
 
 
 // صفحه اصلی بعد از لاگین
-Route::get('/', [DashboardController::class, 'index'])
-    ->name('root')
-    ->middleware('auth');
+Route::get(
+'/',
+[DashboardController::class,'index']
+)
+->name('root')
+->middleware('auth');
 
 
 // مدیریت پروفایل
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])
+->group(function () {
 
-    Route::get('/profile/select', [ProfileSelectController::class, 'index'])
-        ->name('profile.select');
+    Route::get(
+    '/profile/select',
+    [ProfileSelectController::class,'index']
+    )->name('profile.select');
 
-    Route::get('/profiles', [ProfileController::class, 'index'])
-        ->name('profiles.index');
 
-    Route::post('/profiles', [ProfileController::class, 'store'])
-        ->name('profiles.store');
+    Route::get(
+    '/profiles',
+    [ProfileController::class,'index']
+    )->name('profiles.index');
 
-    Route::put('/profiles/{profile}', [ProfileController::class, 'update'])
-        ->name('profiles.update');
+
+    Route::post(
+    '/profiles',
+    [ProfileController::class,'store']
+    )->name('profiles.store');
+
+
+    Route::put(
+    '/profiles/{profile}',
+    [ProfileController::class,'update']
+    )->name('profiles.update');
+
 });
 
 
 // مسیرهای ادمین
-Route::middleware(['auth', 'admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
+Route::middleware(['auth','admin'])
+->prefix('admin')
+->name('admin.')
+->group(function(){
 
-        require __DIR__.'/admin.php';
+    require __DIR__.'/admin.php';
 
 });
 
 
 // مسیرهای کاربر
 Route::middleware(['auth'])
-    ->prefix('user')
-    ->name('user.')
-    ->group(function () {
+->prefix('user')
+->name('user.')
+->group(function(){
 
-        require __DIR__.'/user.php';
+    require __DIR__.'/user.php';
 
 });

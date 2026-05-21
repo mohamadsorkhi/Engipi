@@ -9,17 +9,29 @@ class SkillSelectController extends Controller
 {
     public function index()
     {
-        $domains = SkillDomain::all();
+        $domains =
+        SkillDomain::all();
 
-        return view('test', compact('domains'));
+        return view(
+            'test',
+            compact('domains')
+        );
     }
 
-    public function saveSkills(Request $request)
-    {
+    public function saveSkills(
+    Request $request
+    ){
+
         return response()->json([
-            'success' => true,
-            'message' => 'مهارت‌ها ذخیره شدند',
-            'skills' => $request->skills
+
+            'success'=>true,
+
+            'message'=>'ذخیره شد',
+
+            'received'=>
+            $request->all()
+
         ]);
+
     }
 }
