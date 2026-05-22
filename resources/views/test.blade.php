@@ -80,22 +80,22 @@ data-id="{{ $item->id }}">
 
 
 {{-- SELECTED SUBDOMAINS --}}
+
 <div class="mb-4">
 
-    <label class="form-label fw-bold">
-        گرایش های انتخاب شده
-        (حداکثر ۲)
-    </label>
+<label class="form-label fw-bold">
 
-    <div
-        id="selectedSubdomains"
-        class="d-flex flex-wrap gap-2"
-    >
+گرایش های انتخاب شده (حداکثر ۲)
 
-    </div>
+</label>
+
+<div
+id="selected-subdomains"
+class="d-flex flex-wrap gap-2">
 
 </div>
 
+</div>
 
 
 {{-- SKILLS --}}
@@ -205,33 +205,29 @@ data-id="{{ $item->id }}">
 
 <script>
 
-document.addEventListener(
-'DOMContentLoaded',
+document.addEventListener('DOMContentLoaded',function(){
 
-function(){
-
-const subdomain =
+const subdomain=
 document.getElementById('subdomain');
 
-const skillsContainer =
+const skillsContainer=
 document.getElementById('skillsContainer');
 
 const selectedSkillsContainer=
-document.getElementById(
-'selected-skills'
-);
+document.getElementById('selected-skills');
+
+const selectedSubdomainsContainer=
+document.getElementById('selected-subdomains');
 
 const saveBtn=
-document.getElementById(
-'saveBtn'
-);
+document.getElementById('saveBtn');
 
 const domainButtons=
-document.querySelectorAll(
-'.domain-card'
-);
+document.querySelectorAll('.domain-card');
+
 
 let selectedDomains=[];
+let loadedSubdomains=[];
 let selectedSubdomains=[];
 let selectedSkills=[];
 
@@ -252,9 +248,7 @@ btn.dataset.id;
 
 // حذف حوزه
 if(
-selectedDomains.includes(
-domainId
-)
+selectedDomains.includes(domainId)
 ){
 
 selectedDomains=
@@ -275,10 +269,8 @@ return;
 }
 
 
-// محدودیت
-if(
-selectedDomains.length>=2
-){
+// حداکثر دو حوزه
+if(selectedDomains.length>=2){
 
 alert(
 'حداکثر دو حوزه'
@@ -292,6 +284,7 @@ return;
 selectedDomains.push(
 domainId
 );
+
 
 btn.classList.remove(
 'btn-outline-primary'
@@ -307,6 +300,7 @@ const response=
 await fetch(
 `/api/subdomains/${domainId}`
 );
+
 
 const data=
 await response.json();
@@ -324,18 +318,19 @@ subdomain.disabled=false;
 subdomains.forEach(item=>{
 
 if(
-selectedSubdomains.some(
+loadedSubdomains.some(
 x=>x.id==item.id
 )
 ){
 return;
 }
 
-selectedSubdomains.push(
+loadedSubdomains.push(
 item
 );
 
 });
+
 
 renderSubdomains();
 
@@ -351,8 +346,7 @@ subdomain.innerHTML=
 '<option value="">انتخاب زیررشته</option>';
 
 
-selectedSubdomains
-.forEach(item=>{
+loadedSubdomains.forEach(item=>{
 
 const option=
 new Option(
@@ -370,6 +364,51 @@ option
 
 
 
+function renderSelectedSubdomains(){
+
+selectedSubdomainsContainer.innerHTML='';
+
+selectedSubdomains.forEach(
+(item,index)=>{
+
+const btn=
+document.createElement(
+'button'
+);
+
+btn.type='button';
+
+btn.className=
+'btn btn-primary m-1';
+
+btn.innerHTML=
+`${item.name} ×`;
+
+
+btn.addEventListener(
+'click',
+
+function(){
+
+selectedSubdomains.splice(
+index,
+1
+);
+
+renderSelectedSubdomains();
+
+});
+
+selectedSubdomainsContainer
+.appendChild(btn);
+
+});
+
+}
+
+
+
+
 subdomain.addEventListener(
 'change',
 
@@ -378,16 +417,74 @@ async function(){
 const subdomainID=
 this.value;
 
-skillsContainer.innerHTML='';
 
-if(!subdomainID)
+if(!subdomainID){
 return;
+}
+
+
+// تکراری
+if(
+selectedSubdomains.some(
+x=>x.id==subdomainID
+)
+){
+
+alert(
+'این گرایش قبلا انتخاب شده'
+);
+
+this.value='';
+
+return;
+
+}
+
+
+
+// محدودیت
+if(
+selectedSubdomains.length>=2
+){
+
+alert(
+'حداکثر دو گرایش قابل انتخاب است'
+);
+
+this.value='';
+
+return;
+
+}
+
+
+
+const selectedItem=
+loadedSubdomains.find(
+x=>x.id==subdomainID
+);
+
+
+if(selectedItem){
+
+selectedSubdomains.push(
+selectedItem
+);
+
+renderSelectedSubdomains();
+
+}
+
+
+
+skillsContainer.innerHTML='';
 
 
 const response=
 await fetch(
 `/api/skills/${subdomainID}`
 );
+
 
 const skills=
 await response.json();
@@ -410,6 +507,7 @@ btn.className=
 'btn btn-outline-primary m-1';
 
 
+
 btn.addEventListener(
 'click',
 
@@ -420,10 +518,9 @@ selectedSkills.some(
 s=>s.id==skill.id
 )
 ){
-
 return;
-
 }
+
 
 
 if(
@@ -452,6 +549,15 @@ years:1
 });
 
 
+btn.classList.remove(
+'btn-outline-primary'
+);
+
+btn.classList.add(
+'btn-primary'
+);
+
+
 renderSelectedSkills();
 
 saveBtn.disabled=false;
@@ -459,24 +565,25 @@ saveBtn.disabled=false;
 });
 
 
-skillsContainer
-.appendChild(btn);
+skillsContainer.appendChild(
+btn
+);
 
 });
 
 });
+
 
 
 
 function renderSelectedSkills(){
 
-selectedSkillsContainer
-.innerHTML='';
+selectedSkillsContainer.innerHTML='';
 
 
-selectedSkills
-.forEach(
+selectedSkills.forEach(
 (skill,index)=>{
+
 
 const card=
 document.createElement(
@@ -493,21 +600,17 @@ card.innerHTML=`
 <b>${skill.name}</b>
 </div>
 
-<select
-class="form-select mt-2">
+<select class="form-select mt-2">
 
-<option
-value="مبتدی">
+<option value="مبتدی">
 مبتدی
 </option>
 
-<option
-value="متوسط">
+<option value="متوسط">
 متوسط
 </option>
 
-<option
-value="حرفه ای">
+<option value="حرفه ای">
 حرفه ای
 </option>
 
@@ -521,9 +624,7 @@ min="1">
 
 <button
 class="btn btn-danger mt-2">
-
 حذف
-
 </button>
 
 `;
@@ -537,8 +638,10 @@ card.querySelector(
 select.value=
 skill.level;
 
+
 select.addEventListener(
 'change',
+
 function(){
 
 skill.level=
@@ -553,8 +656,10 @@ card.querySelector(
 'input'
 );
 
+
 years.addEventListener(
 'input',
+
 function(){
 
 skill.years=
@@ -562,7 +667,6 @@ this.value;
 
 }
 );
-
 
 
 card.querySelector(
@@ -584,12 +688,12 @@ renderSelectedSkills();
 saveBtn.disabled=
 selectedSkills.length===0;
 
-}
+});
+
+
+selectedSkillsContainer.appendChild(
+card
 );
-
-
-selectedSkillsContainer
-.appendChild(card);
 
 });
 
@@ -606,11 +710,17 @@ async function(){
 const dataToSave=
 selectedSkills.map(
 skill=>({
-skill_id:skill.id,
-level:skill.level,
-years:skill.years
-})
-);
+
+skill_id:
+skill.id,
+
+level:
+skill.level,
+
+years:
+skill.years
+
+}));
 
 
 const response=
