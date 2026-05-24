@@ -5,7 +5,9 @@
       "Bash(curl *)",
       "Bash(pkill -f \"php artisan serve\")",
       "Bash(php -l app/Http/Controllers/Specialist/SkillController.php)",
-      "Bash(php -l app/Http/Controllers/SkillSelectController.php)"
+      "Bash(php -l app/Http/Controllers/SkillSelectController.php)",
+      "Bash(xargs grep -l \"skill\\\\|subdomain\")",
+      "Bash(git restore *)"
     ]
   }
 }
