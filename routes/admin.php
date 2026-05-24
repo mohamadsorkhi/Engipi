@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ProcessController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\Admin\SkillDomainController;
+use App\Http\Controllers\Admin\SubdomainController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserProfileController;
 use App\Http\Controllers\Admin\TicketController;
@@ -22,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Redirect bare /admin → /admin/dashboard
+Route::redirect('/', '/admin/dashboard');
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // Skill Management
@@ -35,6 +39,9 @@ Route::resource('users', UserController::class)->only(['index', 'show', 'update'
 
 // Skill Domain Management
 Route::resource('domains', SkillDomainController::class)->except(['show', 'create', 'edit']);
+
+// Subdomain Management
+Route::resource('subdomains', SubdomainController::class)->except(['show', 'create', 'edit']);
 
 // Process Management
 Route::resource('processes', ProcessController::class)->except(['show', 'create', 'edit']);

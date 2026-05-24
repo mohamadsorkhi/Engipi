@@ -6,6 +6,7 @@ use App\Actions\Employer\CreateProjectAction;
 use App\Actions\Employer\DeleteProjectAction;
 use App\Actions\Employer\UpdateProjectAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Employer\SimpleStoreProjectRequest;
 use App\Http\Requests\Employer\StoreProjectRequest;
 use App\Http\Requests\Employer\UpdateProjectRequest;
 use App\Models\Project;
@@ -103,6 +104,21 @@ class ProjectController extends Controller
             'message' => 'پروژه با موفقیت ویرایش شد.',
             'redirect' => route('user.projects.index'),
         ]);
+    }
+
+    public function createSimple()
+    {
+        $domains = SkillDomain::with('subdomains.skills')->orderBy('name')->get();
+        return view('employer.projects.create', compact('domains'));
+    }
+
+    public function storeSimple(SimpleStoreProjectRequest $request, CreateProjectAction $action)
+    {
+        $action->execute(Auth::user(), $request->validated());
+
+        return redirect()
+            ->route('user.projects.index')
+            ->with('success', 'پروژه با موفقیت ثبت شد.');
     }
 
     /**

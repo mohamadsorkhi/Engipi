@@ -18,25 +18,19 @@ class UpdateSkillRequest extends FormRequest
         $skillId = $this->route('skill')?->id;
 
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('skills')->ignore($skillId),
-            ],
-            'process_id' => ['nullable', 'uuid', 'exists:processes,id'],
+            'name'         => ['required', 'string', 'max:255', Rule::unique('skills')->ignore($skillId)],
+            'subdomain_id' => ['required', 'uuid', 'exists:subdomains,id'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'نام مهارت الزامی است.',
-            'name.string' => 'نام مهارت باید متن باشد.',
-            'name.max' => 'نام مهارت نباید بیشتر از ۲۵۵ کاراکتر باشد.',
-            'name.unique' => 'این مهارت قبلا ثبت شده است.',
-            'process_id.uuid' => 'شناسه پردازش معتبر نیست.',
-            'process_id.exists' => 'پردازش انتخاب شده یافت نشد.',
+            'name.required'         => 'نام مهارت الزامی است.',
+            'name.max'              => 'نام مهارت نباید بیشتر از ۲۵۵ کاراکتر باشد.',
+            'name.unique'           => 'این مهارت قبلاً ثبت شده است.',
+            'subdomain_id.required' => 'انتخاب زیرحوزه الزامی است.',
+            'subdomain_id.exists'   => 'زیرحوزه انتخاب‌شده یافت نشد.',
         ];
     }
 }

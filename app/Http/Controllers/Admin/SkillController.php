@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreSkillRequest;
 use App\Http\Requests\Admin\UpdateSkillRequest;
 use App\Models\Skill;
+use App\Models\SkillDomain;
 use Illuminate\Http\Request;
 
 class SkillController extends Controller
@@ -18,7 +19,8 @@ class SkillController extends Controller
      */
     public function index(Request $request)
     {
-        $skills = $this->getSkills();
+        $skills  = $this->getSkills($request->get('subdomain_id'));
+        $domains = SkillDomain::with('subdomains')->orderBy('name')->get();
 
         if ($request->ajax()) {
             return response()->json([
@@ -26,7 +28,7 @@ class SkillController extends Controller
             ]);
         }
 
-        return view('admin.skills.index', compact('skills'));
+        return view('admin.skills.index', compact('skills', 'domains'));
     }
 
     /**
@@ -40,15 +42,11 @@ class SkillController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'مهارت با موفقیت افزوده شد.',
-            'table' => view('admin.skills.components.table_and_pagination', compact('skills'))->render(),
-            'close' => true,
+            'table'   => view('admin.skills.components.table_and_pagination', compact('skills'))->render(),
+            'close'   => true,
         ]);
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateSkillRequest $request, Skill $skill, UpdateSkillAction $action)
     {
         $action->execute($skill, $request->validated());
@@ -57,14 +55,11 @@ class SkillController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'مهارت با موفقیت ویرایش شد.',
-            'table' => view('admin.skills.components.table_and_pagination', compact('skills'))->render(),
-            'close' => true,
+            'table'   => view('admin.skills.components.table_and_pagination', compact('skills'))->render(),
+            'close'   => true,
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Skill $skill, DeleteSkillAction $action)
     {
         $action->execute($skill);
@@ -73,16 +68,18 @@ class SkillController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'مهارت با موفقیت حذف شد.',
-            'table' => view('admin.skills.components.table_and_pagination', compact('skills'))->render(),
-            'close' => true,
+            'table'   => view('admin.skills.components.table_and_pagination', compact('skills'))->render(),
         ]);
     }
 
-    /**
-     * Helper function to get paginated skills.
-     */
-    private function getSkills()
+    private function getSkills(?string $subdomainId = null)
     {
-        return Skill::latest()->paginate(50);
+        $query = Skill::with('subdomain.domain')->latest();
+
+        if ($subdomainId) {
+            $query->where('subdomain_id', $subdomainId);
+        }
+
+        return $query->paginate(50);
     }
 }

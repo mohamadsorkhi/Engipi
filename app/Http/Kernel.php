@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'profile' => \App\Http\Middleware\ProfileMiddleware::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'active_role' => \App\Http\Middleware\EnsureActiveRole::class,
     ];
 }

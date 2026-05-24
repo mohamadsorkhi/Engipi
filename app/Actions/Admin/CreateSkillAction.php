@@ -9,8 +9,8 @@ class CreateSkillAction
     public function execute(array $data): Skill
     {
         return Skill::create([
-            'name' => $data['name'],
-            'process_id' => $data['process_id'] ?? null,
+            'name'         => $data['name'],
+            'subdomain_id' => $data['subdomain_id'],
         ]);
     }
 }

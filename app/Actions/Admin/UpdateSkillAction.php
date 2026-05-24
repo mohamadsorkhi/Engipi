@@ -9,8 +9,8 @@ class UpdateSkillAction
     public function execute(Skill $skill, array $data): Skill
     {
         $skill->update([
-            'name' => $data['name'],
-            'process_id' => $data['process_id'] ?? $skill->process_id,
+            'name'         => $data['name'],
+            'subdomain_id' => $data['subdomain_id'],
         ]);
 
         return $skill->fresh();

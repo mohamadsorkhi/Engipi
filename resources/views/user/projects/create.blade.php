@@ -223,8 +223,8 @@
 
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('user.projects.index') }}" class="btn btn-light">انصراف</a>
-                            <button type="submit" class="btn btn-primary ajax-submit" id="submitBtn">
-                                <span class="spinner-border spinner-border-sm" role="status" style="display: none;"></span>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                 ثبت پروژه
                             </button>
                         </div>
@@ -237,25 +237,25 @@
 
 @section('script')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('projectForm');
-    const domainCheckboxes = document.querySelectorAll('.domain-checkbox');
-    const processesContainer = document.getElementById('processes-container');
-    const processesList = document.getElementById('processes-list');
-    const submitBtn = document.getElementById('submitBtn');
-    const workTypeRadios = document.querySelectorAll('input[name="work_type"]');
-    const budgetMin = document.getElementById('budget_min');
-    const budgetMax = document.getElementById('budget_max');
-    
-    let allProcessesMap = new Map();
-    let selectedProcessesState = {}; // Track selected processes and their levels
+document.addEventListener('DOMContentLoaded', function () {
+    const form              = document.getElementById('projectForm');
+    const submitBtn         = document.getElementById('submitBtn');
+    const spinner           = submitBtn.querySelector('.spinner-border');
+    const domainCheckboxes  = document.querySelectorAll('.domain-checkbox');
+    const processesContainer= document.getElementById('processes-container');
+    const processesList     = document.getElementById('processes-list');
+    const workTypeRadios    = document.querySelectorAll('input[name="work_type"]');
+    const budgetMin         = document.getElementById('budget_min');
+    const budgetMax         = document.getElementById('budget_max');
 
-    // Initialize Choices.js for skills multi-select if available
-    let skillsChoices;
+    let allProcessesMap      = new Map();
+    let selectedProcessesState = {};
+
+    // ── Choices.js for skills ─────────────────────────────────────────────
     if (typeof Choices !== 'undefined') {
         const skillsSelect = document.getElementById('skills');
         if (skillsSelect) {
-            skillsChoices = new Choices(skillsSelect, {
+            new Choices(skillsSelect, {
                 removeItemButton: true,
                 placeholder: true,
                 placeholderValue: 'انتخاب کنید...',
@@ -265,132 +265,106 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // ── Work-type card styling ────────────────────────────────────────────
+    workTypeRadios.forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            document.querySelectorAll('.work-type-card').forEach(function (card) {
+                card.classList.remove('border-primary', 'bg-primary-subtle');
+            });
+            if (this.checked) {
+                this.closest('.form-check').querySelector('.work-type-card')
+                    .classList.add('border-primary', 'bg-primary-subtle');
+            }
+        });
+    });
+
+    // ── Budget max ≥ min ──────────────────────────────────────────────────
+    budgetMax.addEventListener('input', function () {
+        const min = parseFloat(budgetMin.value) || 0;
+        const max = parseFloat(this.value) || 0;
+        this.setCustomValidity(max > 0 && max < min ? 'حداکثر بودجه باید بزرگتر از حداقل بودجه باشد' : '');
+    });
+
+    // ── Render processes for selected domains ─────────────────────────────
     function renderProcesses(processes) {
         processesList.innerHTML = '';
-        
+
         if (!processes || processes.length === 0) {
             processesList.innerHTML = '<div class="col-12"><p class="text-muted">پردازشی برای این حوزه تعریف نشده است.</p></div>';
             return;
         }
 
-        processes.forEach((process) => {
-            const isSelected = selectedProcessesState.hasOwnProperty(process.id);
-            const selectedLevels = isSelected ? selectedProcessesState[process.id] : ['practical'];
-            
-            const processHtml = `
-                <div class="col-md-6 col-lg-4">
-                    <div class="card border process-card ${isSelected ? 'border-primary' : ''}" data-process-id="${process.id}">
-                        <div class="card-body">
-                            <div class="form-check mb-3">
-                                <input class="form-check-input process-checkbox" type="checkbox" 
-                                    id="process_${process.id}" 
-                                    data-process-id="${process.id}"
-                                    ${isSelected ? 'checked' : ''}>
-                                <label class="form-check-label fw-medium" for="process_${process.id}">
-                                    ${process.name}
-                                </label>
-                            </div>
-                            <div class="level-select ${isSelected ? '' : 'd-none'}">
-                                <label class="form-label small text-muted mb-2">سطوح مهارت مورد نیاز:</label>
-                                <div class="form-check">
-                                    <input class="form-check-input level-checkbox" type="checkbox" 
-                                        value="practical" id="level_${process.id}_practical" 
-                                        data-process-id="${process.id}" 
-                                        ${selectedLevels.includes('practical') ? 'checked' : ''}>
-                                    <label class="form-check-label small" for="level_${process.id}_practical">
-                                        عملی
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input level-checkbox" type="checkbox" 
-                                        value="proficient" id="level_${process.id}_proficient" 
-                                        data-process-id="${process.id}"
-                                        ${selectedLevels.includes('proficient') ? 'checked' : ''}>
-                                    <label class="form-check-label small" for="level_${process.id}_proficient">
-                                        مسلط
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input level-checkbox" type="checkbox" 
-                                        value="advanced" id="level_${process.id}_advanced" 
-                                        data-process-id="${process.id}"
-                                        ${selectedLevels.includes('advanced') ? 'checked' : ''}>
-                                    <label class="form-check-label small" for="level_${process.id}_advanced">
-                                        پیشرفته
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            processesList.insertAdjacentHTML('beforeend', processHtml);
+        processes.forEach(function (process) {
+            const isSelected   = Object.prototype.hasOwnProperty.call(selectedProcessesState, process.id);
+            const savedLevels  = isSelected ? selectedProcessesState[process.id] : ['practical'];
+
+            const html = '<div class="col-md-6 col-lg-4">' +
+                '<div class="card border process-card ' + (isSelected ? 'border-primary' : '') + '" data-process-id="' + process.id + '">' +
+                '<div class="card-body">' +
+                '<div class="form-check mb-3">' +
+                '<input class="form-check-input process-checkbox" type="checkbox" id="process_' + process.id + '" data-process-id="' + process.id + '" ' + (isSelected ? 'checked' : '') + '>' +
+                '<label class="form-check-label fw-medium" for="process_' + process.id + '">' + process.name + '</label>' +
+                '</div>' +
+                '<div class="level-select ' + (isSelected ? '' : 'd-none') + '">' +
+                '<label class="form-label small text-muted mb-2">سطوح مهارت مورد نیاز:</label>' +
+                ['practical', 'proficient', 'advanced'].map(function (lvl) {
+                    const labels = { practical: 'عملی', proficient: 'مسلط', advanced: 'پیشرفته' };
+                    return '<div class="form-check"><input class="form-check-input level-checkbox" type="checkbox" value="' + lvl + '" id="level_' + process.id + '_' + lvl + '" data-process-id="' + process.id + '" ' + (savedLevels.includes(lvl) ? 'checked' : '') + '><label class="form-check-label small" for="level_' + process.id + '_' + lvl + '">' + labels[lvl] + '</label></div>';
+                }).join('') +
+                '</div></div></div></div>';
+
+            processesList.insertAdjacentHTML('beforeend', html);
         });
 
-        // Add event listeners to checkboxes
-        document.querySelectorAll('.process-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const card = this.closest('.process-card');
+        // Attach listeners to freshly rendered checkboxes
+        processesList.querySelectorAll('.process-checkbox').forEach(function (cb) {
+            cb.addEventListener('change', function () {
+                const card        = this.closest('.process-card');
                 const levelSelect = card.querySelector('.level-select');
-                const processId = this.dataset.processId;
-                
+                const pid         = this.dataset.processId;
+
                 if (this.checked) {
-                    // Check max 3 limit
-                    const checkedCount = document.querySelectorAll('.process-checkbox:checked').length;
-                    if (checkedCount > 3) {
+                    if (document.querySelectorAll('.process-checkbox:checked').length > 3) {
                         this.checked = false;
                         alert('حداکثر ۳ پردازش می‌توانید انتخاب کنید.');
                         return;
                     }
                     card.classList.add('border-primary');
                     levelSelect.classList.remove('d-none');
-                    
-                    // Save to state with default level if not already saved
-                    if (!selectedProcessesState[processId]) {
-                        selectedProcessesState[processId] = ['practical'];
-                    }
+                    if (!selectedProcessesState[pid]) selectedProcessesState[pid] = ['practical'];
                 } else {
                     card.classList.remove('border-primary');
                     levelSelect.classList.add('d-none');
-                    
-                    // Remove from state
-                    delete selectedProcessesState[processId];
+                    delete selectedProcessesState[pid];
                 }
             });
         });
-        
-        // Add event listeners to level checkboxes
-        document.querySelectorAll('.level-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const processId = this.dataset.processId;
-                const level = this.value;
-                
-                // Get all checked levels for this process
-                const checkedLevels = Array.from(
-                    document.querySelectorAll(`.level-checkbox[data-process-id="${processId}"]:checked`)
-                ).map(cb => cb.value);
-                
-                // Update state
-                if (checkedLevels.length > 0) {
-                    selectedProcessesState[processId] = checkedLevels;
+
+        processesList.querySelectorAll('.level-checkbox').forEach(function (cb) {
+            cb.addEventListener('change', function () {
+                const pid = this.dataset.processId;
+                const checked = Array.from(
+                    processesList.querySelectorAll('.level-checkbox[data-process-id="' + pid + '"]:checked')
+                ).map(function (el) { return el.value; });
+
+                if (checked.length > 0) {
+                    selectedProcessesState[pid] = checked;
                 } else {
-                    // At least one level must be selected, recheck this one
                     this.checked = true;
-                    selectedProcessesState[processId] = [level];
+                    selectedProcessesState[pid] = [this.value];
                 }
             });
         });
     }
 
-    // Handle domain checkbox changes - aggregate processes from selected domains
-    domainCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const card = this.closest('.domain-card');
-            const checkedDomains = document.querySelectorAll('.domain-checkbox:checked');
-            
+    // ── Domain checkbox change ────────────────────────────────────────────
+    domainCheckboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            const card         = this.closest('.domain-card');
+            const checkedCount = document.querySelectorAll('.domain-checkbox:checked').length;
+
             if (this.checked) {
-                // Check max 3 limit
-                if (checkedDomains.length > 3) {
+                if (checkedCount > 3) {
                     this.checked = false;
                     alert('حداکثر ۳ حوزه می‌توانید انتخاب کنید.');
                     return;
@@ -399,21 +373,16 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 card.classList.remove('border-primary', 'bg-primary-subtle');
             }
-            
-            // Aggregate processes from all selected domains
+
             allProcessesMap.clear();
-            checkedDomains.forEach(domainCheckbox => {
-                const processesData = domainCheckbox.dataset.processes;
-                if (processesData) {
-                    const processes = JSON.parse(processesData);
-                    processes.forEach(process => {
-                        if (!allProcessesMap.has(process.id)) {
-                            allProcessesMap.set(process.id, process);
-                        }
+            document.querySelectorAll('.domain-checkbox:checked').forEach(function (cb) {
+                try {
+                    JSON.parse(cb.dataset.processes || '[]').forEach(function (p) {
+                        if (!allProcessesMap.has(p.id)) allProcessesMap.set(p.id, p);
                     });
-                }
+                } catch (_) {}
             });
-            
+
             if (allProcessesMap.size > 0) {
                 processesContainer.style.display = 'block';
                 renderProcesses(Array.from(allProcessesMap.values()));
@@ -424,137 +393,129 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Work type card styling
-    workTypeRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            document.querySelectorAll('.work-type-card').forEach(card => {
-                card.classList.remove('border-primary', 'bg-primary-subtle');
-            });
-            if (this.checked) {
-                this.closest('.form-check').querySelector('.work-type-card').classList.add('border-primary', 'bg-primary-subtle');
-            }
-        });
-    });
+    // ── Build domain + process hidden inputs; returns true if valid ───────
+    function buildHiddenInputs() {
+        form.querySelectorAll('input[name^="processes"], input[name^="domains"]').forEach(function (el) { el.remove(); });
 
-    // Budget validation
-    budgetMax.addEventListener('change', function() {
-        const min = parseFloat(budgetMin.value) || 0;
-        const max = parseFloat(this.value) || 0;
-        
-        if (max > 0 && max < min) {
-            this.setCustomValidity('حداکثر بودجه باید بزرگتر از حداقل بودجه باشد');
-            this.classList.add('is-invalid');
-        } else {
-            this.setCustomValidity('');
-            this.classList.remove('is-invalid');
-        }
-    });
-
-    function buildProcessesHiddenInputs(e) {
-        if (!form) return true;
-
-        // Remove any existing hidden inputs for processes and domains
-        form.querySelectorAll('input[name^="processes"]').forEach(el => el.remove());
-        form.querySelectorAll('input[name^="domains"]').forEach(el => el.remove());
-
-        // Validate and build domain hidden inputs
         const checkedDomains = document.querySelectorAll('.domain-checkbox:checked');
         if (checkedDomains.length < 1 || checkedDomains.length > 3) {
-            const errorEl = document.getElementById('domains-error');
-            if (errorEl) {
-                errorEl.querySelector('span').textContent = 'حداقل ۱ و حداکثر ۳ حوزه انتخاب کنید';
-                errorEl.style.display = 'block';
-            }
-            if (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
+            const el = document.getElementById('domains-error');
+            if (el) { el.querySelector('span').textContent = 'حداقل ۱ و حداکثر ۳ حوزه انتخاب کنید'; el.style.display = 'block'; }
             return false;
         }
-        
-        // Create hidden inputs for domains
-        checkedDomains.forEach((checkbox, index) => {
-            const domainInput = document.createElement('input');
-            domainInput.type = 'hidden';
-            domainInput.name = `domains[${index}]`;
-            domainInput.value = checkbox.value;
-            form.appendChild(domainInput);
+        checkedDomains.forEach(function (cb, i) {
+            const inp = document.createElement('input');
+            inp.type = 'hidden'; inp.name = 'domains[' + i + ']'; inp.value = cb.value;
+            form.appendChild(inp);
         });
-        
-        const domainsErrorEl = document.getElementById('domains-error');
-        if (domainsErrorEl) domainsErrorEl.style.display = 'none';
+        const domainsErr = document.getElementById('domains-error');
+        if (domainsErr) domainsErr.style.display = 'none';
 
-        // Validate processes
         const checkedProcesses = document.querySelectorAll('.process-checkbox:checked');
         if (checkedProcesses.length < 1) {
-            const errorEl = document.getElementById('processes-error');
-            if (errorEl) {
-                errorEl.querySelector('span').textContent = 'حداقل ۱ پردازش انتخاب کنید';
-                errorEl.style.display = 'block';
-            }
-            if (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
+            const el = document.getElementById('processes-error');
+            if (el) { el.querySelector('span').textContent = 'حداقل ۱ پردازش انتخاب کنید'; el.style.display = 'block'; }
             return false;
         }
 
-        let inputIndex = 0;
-        let hasError = false;
-
-        checkedProcesses.forEach((checkbox) => {
-            const processId = checkbox.dataset.processId;
-            const card = checkbox.closest('.process-card');
-            const selectedLevels = card ? card.querySelectorAll('.level-checkbox:checked') : [];
-
-            if (!selectedLevels || selectedLevels.length === 0) {
-                alert('لطفا حداقل یک سطح مهارت برای هر پردازش انتخاب کنید.');
-                hasError = true;
+        let idx = 0;
+        let ok  = true;
+        checkedProcesses.forEach(function (cb) {
+            const pid    = cb.dataset.processId;
+            const card   = cb.closest('.process-card');
+            const levels = card ? card.querySelectorAll('.level-checkbox:checked') : [];
+            if (!levels || levels.length === 0) {
+                alert('لطفاً حداقل یک سطح مهارت برای «' + card.querySelector('.form-check-label').textContent.trim() + '» انتخاب کنید.');
+                ok = false;
                 return;
             }
-
-            selectedLevels.forEach((levelCheckbox) => {
-                const idInput = document.createElement('input');
-                idInput.type = 'hidden';
-                idInput.name = `processes[${inputIndex}][id]`;
-                idInput.value = processId;
-                form.appendChild(idInput);
-
-                const levelInput = document.createElement('input');
-                levelInput.type = 'hidden';
-                levelInput.name = `processes[${inputIndex}][level]`;
-                levelInput.value = levelCheckbox.value;
-                form.appendChild(levelInput);
-
-                inputIndex++;
+            levels.forEach(function (lvCb) {
+                const idInp  = document.createElement('input'); idInp.type = 'hidden'; idInp.name = 'processes[' + idx + '][id]';    idInp.value = pid;        form.appendChild(idInp);
+                const lvInp  = document.createElement('input'); lvInp.type = 'hidden'; lvInp.name = 'processes[' + idx + '][level]'; lvInp.value = lvCb.value; form.appendChild(lvInp);
+                idx++;
             });
         });
+        if (!ok) return false;
 
-        if (hasError) {
-            if (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            return false;
-        }
-
-        const errorEl = document.getElementById('processes-error');
-        if (errorEl) errorEl.style.display = 'none';
+        const processesErr = document.getElementById('processes-error');
+        if (processesErr) processesErr.style.display = 'none';
         return true;
     }
 
-    // Critical: ajax-submit uses click handler and builds FormData immediately.
-    // Run BEFORE it using capture phase on the submit button.
-    if (submitBtn) {
-        submitBtn.addEventListener('click', function(e) {
-            buildProcessesHiddenInputs(e);
-        }, true);
+    // ── Show server-side validation errors ────────────────────────────────
+    function showErrors(errors) {
+        Object.keys(errors).forEach(function (key) {
+            const msg = errors[key][0];
+
+            if (key === 'domains' || key === 'domains.0') {
+                const el = document.getElementById('domains-error');
+                if (el) { el.querySelector('span').textContent = msg; el.style.display = 'block'; }
+                return;
+            }
+            if (key === 'processes' || key.startsWith('processes.')) {
+                const el = document.getElementById('processes-error');
+                if (el) { el.querySelector('span').textContent = msg; el.style.display = 'block'; }
+                return;
+            }
+
+            // Map dot-notation key to field name
+            const fieldName = key.replace(/\.(\w+)/g, '[$1]');
+            const field     = form.querySelector('[name="' + fieldName + '"]')
+                           || form.querySelector('[name="' + fieldName + '[]"]');
+            if (!field) return;
+
+            field.classList.add('is-invalid');
+            const fb = field.parentElement.querySelector('.invalid-feedback')
+                    || field.closest('.mb-3, .col-md-12, .col-md-4, .col-12')?.querySelector('.invalid-feedback');
+            if (fb) { fb.querySelector('span').textContent = msg; fb.style.display = 'block'; }
+        });
     }
 
-    // Fallback for non-ajax submits
-    form.addEventListener('submit', function(e) {
-        buildProcessesHiddenInputs(e);
-    }, true);
+    // ── Form submit → validate → AJAX ────────────────────────────────────
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        if (!buildHiddenInputs()) return;
+
+        submitBtn.disabled = true;
+        spinner.classList.remove('d-none');
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+            },
+        })
+        .then(function (response) {
+            return response.json().then(function (data) {
+                return { ok: response.ok, status: response.status, data: data };
+            });
+        })
+        .then(function (result) {
+            if (result.ok) {
+                if (result.data.message) window.showToast(result.data.message, 'success');
+                if (result.data.redirect) {
+                    setTimeout(function () { window.location.assign(result.data.redirect); }, 1000);
+                }
+            } else if (result.status === 422 && result.data.errors) {
+                showErrors(result.data.errors);
+                window.showToast('لطفاً خطاها را برطرف کنید.', 'error');
+            } else {
+                window.showToast(result.data.message || 'خطایی رخ داد. دوباره تلاش کنید.', 'error');
+            }
+        })
+        .catch(function () {
+            window.showToast('خطا در ارتباط با سرور. دوباره تلاش کنید.', 'error');
+        })
+        .finally(function () {
+            submitBtn.disabled = false;
+            spinner.classList.add('d-none');
+        });
+    });
 });
 </script>
 

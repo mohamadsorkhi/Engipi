@@ -97,6 +97,44 @@ class LoginController extends Controller
     }
 
     /**
+     * After login, redirect specialist users who have no skills to the skill selection page.
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->is_admin) {
+            return null;
+        }
+
+        $profiles = $user->profiles;
+
+        if ($profiles->isEmpty()) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'redirect' => route('profile.select'),
+                    'message'  => 'شما با موفقیت وارد شدید.',
+                ]);
+            }
+
+            return redirect()->route('profile.select');
+        }
+
+        $specialistProfile = $profiles->firstWhere('type', 'specialist');
+
+        if ($specialistProfile && $user->skills()->doesntExist()) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'redirect' => route('skill.select'),
+                    'message'  => 'شما با موفقیت وارد شدید.',
+                ]);
+            }
+
+            return redirect()->route('skill.select');
+        }
+
+        return null;
+    }
+
+    /**
      * Send the response after the user was authenticated.
      *
      * @param  \Illuminate\Http\Request  $request

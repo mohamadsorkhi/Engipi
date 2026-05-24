@@ -38,11 +38,15 @@ class ProfileController extends Controller
         $user = Auth::user();
         $profile = $action->execute($user, $request->validated());
 
+        $redirect = $profile->type === 'specialist'
+            ? route('skill.select')
+            : route('root');
+
         return response()->json([
             'status' => 'success',
             'message' => 'پروفایل جدید با موفقیت ایجاد شد.',
             'profile' => $profile,
-            'redirect' => route('root'),
+            'redirect' => $redirect,
         ]);
     }
 

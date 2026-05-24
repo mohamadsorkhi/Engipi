@@ -8,7 +8,11 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Project;
+use App\Models\UserProfile;
 use App\Rules\Persian;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
@@ -116,5 +120,56 @@ class RegisterController extends Controller
                         'redirect' => $this->redirectPath()
                       ])
                     : redirect($this->redirectPath());
+    }
+
+    /**
+     * After registration, create pending project (employer pre-reg flow) or go to role select.
+     */
+    protected function registered(Request $request, $user)
+    {
+        $pending = session()->pull('pending_project');
+
+        if ($pending) {
+            DB::transaction(function () use ($user, $pending) {
+                $profile = UserProfile::create([
+                    'user_id' => $user->id,
+                    'type'    => 'employer',
+                ]);
+
+                do {
+                    $shortId = strtoupper(Str::random(8));
+                } while (Project::where('short_id', $shortId)->exists());
+
+                Project::create([
+                    'employer_id'         => $user->id,
+                    'employer_profile_id' => $profile->id,
+                    'short_id'            => $shortId,
+                    'title'               => $pending['title'],
+                    'description'         => $pending['description'],
+                    'work_type'           => $pending['work_type'],
+                    'budget_min'          => $pending['budget_min'] ?? null,
+                    'budget_max'          => $pending['budget_max'] ?? null,
+                    'view_count'          => 0,
+                ]);
+            });
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message'  => 'ثبت نام شما با موفقیت انجام شد. پروژه‌تان ثبت شد.',
+                    'redirect' => route('user.projects.index'),
+                ]);
+            }
+
+            return redirect()->route('user.projects.index');
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message'  => 'ثبت نام شما با موفقیت انجام شد.',
+                'redirect' => route('profile.select'),
+            ]);
+        }
+
+        return redirect()->route('profile.select');
     }
 }

@@ -15,9 +15,15 @@ class Skill extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        "id",
-        "name"
+        'id',
+        'name',
+        'subdomain_id',
     ];
+
+    public function subdomain()
+    {
+        return $this->belongsTo(Subdomain::class);
+    }
 
     public function subdomains()
     {

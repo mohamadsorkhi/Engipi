@@ -6,6 +6,8 @@ use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\ProfileSelectController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\SkillSelectController;
+use App\Http\Controllers\Employer\GuestProjectController;
+use App\Http\Controllers\Employer\ProjectController as EmployerProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,18 +18,27 @@ use App\Http\Controllers\SkillSelectController;
 Auth::routes();
 
 
-// صفحه تست
-Route::get(
-'/test',
-[SkillSelectController::class,'index']
-);
+// Pre-registration employer project form (guest only)
+Route::middleware(['guest'])->group(function () {
+    Route::get('/post-project', [GuestProjectController::class, 'index'])->name('guest.project');
+    Route::post('/post-project', [GuestProjectController::class, 'store'])->name('guest.project.store');
+});
 
 
-// ذخیره مهارت‌ها
-Route::post(
-'/save-user-skills',
-[SkillSelectController::class,'saveSkills']
-);
+// انتخاب مهارت (specialist only)
+Route::middleware(['auth', 'active_role:specialist'])->group(function () {
+
+    Route::get(
+        '/skill-select',
+        [SkillSelectController::class, 'index']
+    )->name('skill.select');
+
+    Route::post(
+        '/save-user-skills',
+        [SkillSelectController::class, 'saveSkills']
+    )->name('skill.save');
+
+});
 
 
 // صفحه اصلی بعد از لاگین
@@ -36,7 +47,7 @@ Route::get(
 [DashboardController::class,'index']
 )
 ->name('root')
-->middleware('auth');
+->middleware(['auth', 'active_role']);
 
 
 // مدیریت پروفایل
@@ -47,6 +58,11 @@ Route::middleware(['auth'])
     '/profile/select',
     [ProfileSelectController::class,'index']
     )->name('profile.select');
+
+    Route::post(
+    '/profile/activate',
+    [ProfileSelectController::class,'activate']
+    )->name('profile.activate');
 
 
     Route::get(
@@ -78,6 +94,16 @@ Route::middleware(['auth','admin'])
     require __DIR__.'/admin.php';
 
 });
+
+
+// ثبت پروژه توسط کارفرما
+Route::middleware(['auth', 'active_role:employer'])
+    ->prefix('employer')
+    ->name('employer.')
+    ->group(function () {
+        Route::get('/projects/create', [EmployerProjectController::class, 'createSimple'])->name('projects.create');
+        Route::post('/projects', [EmployerProjectController::class, 'storeSimple'])->name('projects.store');
+    });
 
 
 // مسیرهای کاربر

@@ -8,6 +8,6 @@ class GetSkillDomainsAction
 {
     public function execute(int $perPage = 20)
     {
-        return SkillDomain::withCount('processes')->latest()->paginate($perPage);
+        return SkillDomain::withCount('subdomains')->latest()->paginate($perPage);
     }
 }

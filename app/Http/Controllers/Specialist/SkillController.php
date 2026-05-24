@@ -3,117 +3,56 @@
 namespace App\Http\Controllers\Specialist;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Specialist\StoreSkillsRequest;
-use App\Models\Process;
-use App\Models\SkillDomain;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SkillController extends Controller
 {
-    /**
-     * Display the specialist's skills management page.
-     * Shows domain selection, subdomains, process selection and skill levels.
-     */
     public function index()
     {
-        $user = Auth::user();
+        $user    = Auth::user();
+        $profile = $user->profiles()->where('type', 'specialist')->first();
 
-        $profile = $user->profiles()
-            ->where('type', 'specialist')
-            ->first();
+        $skills = $user->skills()
+            ->withPivot(['level', 'years_of_experience'])
+            ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Load domains with:
-        | - subdomains
-        | - skills of each subdomain
-        | - processes
-        |--------------------------------------------------------------------------
-        */
+        $selectedDomains = $profile ? $profile->domains : collect();
 
-        $domains = SkillDomain::with([
-            'subdomains.skills',
-            'processes'
-        ])
-        ->orderBy('name')
-        ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Current selected processes with levels
-        |--------------------------------------------------------------------------
-        */
-
-        $selectedProcesses = $profile
-            ? $profile->processes()->withPivot('level')->get()
-            : collect();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Current selected domains
-        |--------------------------------------------------------------------------
-        */
-
-        $selectedDomains = $profile
-            ? $profile->domains
-            : collect();
-
-        return view('user.skills.index', [
-            'domains' => $domains,
-            'selectedProcesses' => $selectedProcesses,
-            'selectedDomains' => $selectedDomains,
-            'profile' => $profile,
-        ]);
+        return view('user.skills.index', compact('skills', 'selectedDomains', 'profile'));
     }
 
-    /**
-     * Store/update specialist skills.
-     */
-    public function store(StoreSkillsRequest $request)
+    public function store(Request $request)
     {
         $user = Auth::user();
 
-        $profile = $user->profiles()
-            ->where('type', 'specialist')
-            ->first();
+        $validated = $request->validate([
+            'skills'            => ['required', 'array', 'min:1'],
+            'skills.*.skill_id' => ['required', 'uuid', 'exists:skills,id'],
+            'skills.*.level'    => ['required', 'string', 'max:50'],
+            'skills.*.years'    => ['required', 'integer', 'min:0', 'max:50'],
+        ], [
+            'skills.required'            => 'حداقل یک مهارت الزامی است.',
+            'skills.min'                 => 'حداقل یک مهارت الزامی است.',
+            'skills.*.skill_id.required' => 'شناسه مهارت الزامی است.',
+            'skills.*.level.required'    => 'سطح مهارت الزامی است.',
+            'skills.*.years.required'    => 'سال‌های تجربه الزامی است.',
+            'skills.*.years.integer'     => 'سال‌های تجربه باید عدد صحیح باشد.',
+        ]);
 
-        if (!$profile) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'پروفایل متخصص یافت نشد.',
-            ], 403);
-        }
+        $syncData = collect($validated['skills'])
+            ->mapWithKeys(fn($s) => [
+                $s['skill_id'] => [
+                    'level'               => $s['level'],
+                    'years_of_experience' => (int) $s['years'],
+                ],
+            ])
+            ->toArray();
 
-        $validated = $request->validated();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Sync selected domains
-        |--------------------------------------------------------------------------
-        */
-
-        $profile->domains()->sync($validated['domains']);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Sync selected processes with levels
-        |--------------------------------------------------------------------------
-        */
-
-        $syncData = [];
-
-        foreach ($validated['processes'] as $processData) {
-
-            $syncData[$processData['id']] = [
-                'level' => $processData['level'],
-            ];
-
-        }
-
-        $profile->processes()->sync($syncData);
+        $user->skills()->sync($syncData);
 
         return response()->json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'مهارت‌ها با موفقیت بروزرسانی شدند.',
         ]);
     }

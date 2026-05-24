@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan *)",
+      "Bash(curl *)",
+      "Bash(pkill -f \"php artisan serve\")",
+      "Bash(php -l app/Http/Controllers/Specialist/SkillController.php)",
+      "Bash(php -l app/Http/Controllers/SkillSelectController.php)"
+    ]
+  }
+}

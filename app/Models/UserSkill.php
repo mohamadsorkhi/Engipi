@@ -17,7 +17,13 @@ class UserSkill extends Model
         'custom_title',
     ];
 
-    public $incrementing = false;
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-    protected $keyType = 'string';
+    public function skill()
+    {
+        return $this->belongsTo(Skill::class);
+    }
 }

@@ -36,6 +36,15 @@
                                     </p>
                                 </div>
                                 <div class="p-2 mt-4">
+
+                                    @if(session('project_saved'))
+                                        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                                            <i class="ri-checkbox-circle-line me-1"></i>
+                                            اطلاعات پروژه شما ذخیره شد. برای تکمیل ثبت‌نام، اطلاعات زیر را وارد کنید.
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        </div>
+                                    @endif
+
                                     <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
@@ -103,7 +112,20 @@
                                             </h6>
                                             <a href="{{ route('login') }}"
                                                class="btn btn-primary w-100">
-                                                ورود به سایت </a>
+                                                ورود به سایت
+                                            </a>
+                                        </div>
+
+                                        <hr>
+                                        <div class="mt-1">
+                                            <p class="text-muted small text-center mb-2">
+                                                کارفرما هستید و می‌خواهید اول پروژه‌تان را ثبت کنید؟
+                                            </p>
+                                            <a href="{{ route('guest.project') }}"
+                                               class="btn btn-outline-warning w-100">
+                                                <i class="ri-briefcase-line me-1"></i>
+                                                اول پروژه‌ام را ثبت می‌کنم
+                                            </a>
                                         </div>
                                     </form>
 

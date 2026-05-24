@@ -108,6 +108,16 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a
+                                class="nav-link menu-link {{ request()->routeIs('admin.subdomains.*') ? 'active' : '' }}"
+                                href="{{ route('admin.subdomains.index') }}"
+                            >
+                                <i class="ri-node-tree"></i>
+                                <span>زیرحوزه‌ها</span>
+                            </a>
+                        </li>
+
 
 
 
@@ -117,82 +127,93 @@
                         {{-- =================== USER MENU =================== --}}
 
                         @php
-
-                            $profiles = Auth::user()->profiles;
-
-                            $hasEmployerProfile =
-                                $profiles->where('type', 'employer')->isNotEmpty();
-
-                            $hasSpecialistProfile =
-                                $profiles->where('type', 'specialist')->isNotEmpty();
-
+                            $sidebarProfiles      = Auth::user()->profiles;
+                            $activeRole           = session('active_role');
+                            $hasEmployerProfile   = $sidebarProfiles->contains('type', 'employer');
+                            $hasSpecialistProfile = $sidebarProfiles->contains('type', 'specialist');
+                            $showEmployer         = $hasEmployerProfile   && $activeRole === 'employer';
+                            $showSpecialist       = $hasSpecialistProfile && $activeRole === 'specialist';
+                            $roleLabel            = $activeRole === 'employer' ? 'کارفرما'
+                                                  : ($activeRole === 'specialist' ? 'متخصص' : null);
                         @endphp
 
-
-
-                        <li class="menu-title">
-                            <span>منوی کاربر</span>
+                        {{-- ── Role badge + switch link ── --}}
+                        <li class="menu-title d-flex align-items-center justify-content-between pe-2">
+                            <span>
+                                @if($roleLabel)
+                                    <span class="badge bg-{{ $activeRole === 'employer' ? 'primary' : 'success' }}-subtle
+                                                          text-{{ $activeRole === 'employer' ? 'primary' : 'success' }}
+                                                          fs-11 fw-semibold">
+                                        {{ $roleLabel }}
+                                    </span>
+                                @else
+                                    منوی کاربر
+                                @endif
+                            </span>
+                            @if($hasEmployerProfile && $hasSpecialistProfile)
+                                <a href="{{ route('profile.select') }}"
+                                   class="text-muted fs-11"
+                                   title="تغییر نقش">
+                                    <i class="ri-refresh-line"></i>
+                                </a>
+                            @endif
                         </li>
 
-
-
                         <li class="nav-item">
-                            <a
-                                class="nav-link menu-link"
-                                href="{{ route('root') }}"
-                            >
+                            <a class="nav-link menu-link {{ request()->routeIs('root') ? 'active' : '' }}"
+                               href="{{ route('root') }}">
                                 <i class="ri-dashboard-2-line"></i>
                                 <span>داشبورد</span>
                             </a>
                         </li>
 
-
-
+                        @if($hasEmployerProfile && $hasSpecialistProfile)
                         <li class="nav-item">
-                            <a
-                                class="nav-link menu-link"
-                                href="{{ route('profile.select') }}"
-                            >
-                                <i class="ri-user-settings-line"></i>
-                                <span>مدیریت پروفایل</span>
+                            <a class="nav-link menu-link {{ request()->routeIs('profile.select') ? 'active' : '' }}"
+                               href="{{ route('profile.select') }}">
+                                <i class="ri-swap-line"></i>
+                                <span>تغییر نقش</span>
                             </a>
                         </li>
+                        @endif
 
+                        @if($showEmployer)
 
-
-
-                        @if($hasEmployerProfile)
-
-                            <li class="menu-title">
-                                <span>بخش کارفرما</span>
-                            </li>
+                            <li class="menu-title"><span>کارفرما</span></li>
 
                             <li class="nav-item">
-                                <a
-                                    class="nav-link menu-link"
-                                    href="{{ route('user.projects.index') }}"
-                                >
+                                <a class="nav-link menu-link {{ request()->routeIs('user.projects.*') ? 'active' : '' }}"
+                                   href="{{ route('user.projects.index') }}">
                                     <i class="ri-briefcase-line"></i>
                                     <span>پروژه‌های من</span>
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link menu-link {{ request()->routeIs('employer.projects.*') ? 'active' : '' }}"
+                                   href="{{ route('employer.projects.create') }}">
+                                    <i class="ri-add-circle-line"></i>
+                                    <span>ثبت پروژه جدید</span>
+                                </a>
+                            </li>
+
                         @endif
 
+                        @if($showSpecialist)
 
+                            <li class="menu-title"><span>متخصص</span></li>
 
-
-                        @if($hasSpecialistProfile)
-
-                            <li class="menu-title">
-                                <span>بخش متخصص</span>
+                            <li class="nav-item">
+                                <a class="nav-link menu-link {{ request()->routeIs('skill.select') ? 'active' : '' }}"
+                                   href="{{ route('skill.select') }}">
+                                    <i class="ri-equalizer-line"></i>
+                                    <span>انتخاب مهارت</span>
+                                </a>
                             </li>
 
                             <li class="nav-item">
-                                <a
-                                    class="nav-link menu-link"
-                                    href="{{ route('user.skills.index') }}"
-                                >
+                                <a class="nav-link menu-link {{ request()->routeIs('user.skills.*') ? 'active' : '' }}"
+                                   href="{{ route('user.skills.index') }}">
                                     <i class="ri-star-line"></i>
                                     <span>مهارت‌های من</span>
                                 </a>
