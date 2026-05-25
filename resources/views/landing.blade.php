@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 
     <style>
         * { font-family: 'Vazirmatn', sans-serif !important; }
@@ -422,6 +422,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white fw-medium" href="#features">مزایا</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-medium" href="{{ route('about') }}">درباره ما</a>
                 </li>
             </ul>
 
@@ -864,10 +867,10 @@
             <div class="col-6 col-md-4 col-lg-2 offset-lg-2">
                 <h6 class="fw-bold mb-3">EngPis</h6>
                 <ul class="list-unstyled" style="font-size: 0.88rem;">
-                    <li class="mb-2"><a href="#">درباره ما</a></li>
+                    <li class="mb-2"><a href="{{ route('about') }}">درباره ما</a></li>
+                    <li class="mb-2"><a href="{{ route('terms') }}">قوانین و مقررات</a></li>
                     <li class="mb-2"><a href="#">تماس با ما</a></li>
                     <li class="mb-2"><a href="#">وبلاگ</a></li>
-                    <li class="mb-2"><a href="#">فرصت‌های شغلی</a></li>
                 </ul>
             </div>
 
@@ -898,8 +901,8 @@
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-2" style="font-size: 0.83rem;">
             <span>© ۱۴۰۴ EngPis. تمامی حقوق محفوظ است.</span>
             <div class="d-flex gap-3">
-                <a href="#">قوانین و مقررات</a>
-                <a href="#">حریم خصوصی</a>
+                <a href="{{ route('terms') }}">قوانین و مقررات</a>
+                <a href="{{ route('terms') }}">حریم خصوصی</a>
             </div>
         </div>
     </div>

@@ -22,7 +22,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="user-password-edit" class="form-label">رمز عبور جدید</label>
-                        <input type="password" class="form-control" id="user-password-edit" name="password">
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="user-password-edit" name="password">
+                            <button type="button" class="btn btn-light border toggle-password" data-target="#user-password-edit" title="نمایش رمز">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
                         <div class="form-text">در صورتی که قصد تغییر رمز عبور را ندارید، این فیلد را خالی رها کنید.</div>
                         <div class="invalid-feedback"><span></span></div>
                     </div>
@@ -40,3 +45,19 @@
         </div>
     </div>
 </div>
+
+<script>
+document.querySelectorAll('.toggle-password').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        var input = document.querySelector(btn.getAttribute('data-target'));
+        var icon = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    });
+});
+</script>

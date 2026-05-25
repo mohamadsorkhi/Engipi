@@ -53,7 +53,12 @@
 
                                         <div class="mb-3">
                                             <label for="userpassword">رمز عبور</label>
-                                            <input type="password" class="form-control dir-ltr @error('password') is-invalid @enderror" name="password" id="userpassword">
+                                            <div class="input-group">
+                                                <input type="password" class="form-control dir-ltr @error('password') is-invalid @enderror" name="password" id="userpassword">
+                                                <button type="button" class="btn btn-light border toggle-password" data-target="#userpassword" title="نمایش رمز">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </div>
                                             <div class="invalid-feedback">
                                                 <span></span>
                                             </div>
@@ -65,8 +70,13 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="userpassword">تایید رمز عبور</label>
-                                            <input id="password-confirm" type="password" name="password_confirmation" class="form-control dir-ltr">
+                                            <label for="password-confirm">تایید رمز عبور</label>
+                                            <div class="input-group">
+                                                <input id="password-confirm" type="password" name="password_confirmation" class="form-control dir-ltr">
+                                                <button type="button" class="btn btn-light border toggle-password" data-target="#password-confirm" title="نمایش رمز">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </div>
                                             <div class="invalid-feedback">
                                                 <span></span>
                                             </div>
@@ -103,4 +113,19 @@
 @section('script')
     <script src="{{ URL::asset('build/libs/particles.js/particles.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/particles.app.js') }}"></script>
+    <script>
+    document.querySelectorAll('.toggle-password').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var input = document.querySelector(btn.getAttribute('data-target'));
+            var icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    });
+    </script>
 @endsection

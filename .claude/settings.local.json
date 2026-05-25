@@ -12,7 +12,14 @@
       "Bash(php tmp_query.php)",
       "Bash(del tmp_query.php)",
       "Bash(php tmp_verify.php)",
-      "Bash(php tmp_audit.php)"
+      "Bash(php tmp_audit.php)",
+      "PowerShell(Copy-Item *)",
+      "Bash(New-Item *)",
+      "Bash(composer dump-autoload *)",
+      "Bash(echo.)",
+      "Bash(truncate *)",
+      "Bash(xargs grep -l \"skill\")",
+      "Bash(git add *)"
     ]
   }
 }

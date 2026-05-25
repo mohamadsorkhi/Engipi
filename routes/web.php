@@ -48,6 +48,10 @@ Route::get('/', function () {
     return view('landing');
 })->name('root');
 
+// صفحات عمومی
+Route::get('/about', fn() => view('pages.about'))->name('about');
+Route::get('/terms', fn() => view('pages.terms'))->name('terms');
+
 
 // مدیریت پروفایل
 Route::middleware(['auth'])

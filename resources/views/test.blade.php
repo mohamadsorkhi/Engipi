@@ -232,18 +232,21 @@ document.addEventListener('DOMContentLoaded', function () {
             col.dataset.subdomainId = subdomainID;
 
             const card = document.createElement('div');
-            card.className = 'card border border-dashed h-100 mb-0';
-            card.style.cursor     = 'pointer';
-            card.style.transition = 'border-color 0.15s, box-shadow 0.15s';
+            card.className = 'mb-0';
+            card.style.cursor       = 'pointer';
+            card.style.transition   = 'border-color 0.15s, box-shadow 0.15s';
+            card.style.border       = '2px solid #dee2e6';
+            card.style.borderRadius = '8px';
+            card.style.maxHeight    = '80px';
+            card.style.overflow     = 'hidden';
+            card.style.background   = '#fff';
 
             card.innerHTML = `
-                <div class="card-body d-flex flex-column align-items-center justify-content-center text-center p-3">
-                    <div class="avatar-sm mb-2">
-                        <span class="avatar-title bg-primary-subtle text-primary rounded-circle fs-4">
-                            <i class="ri-code-s-slash-line"></i>
-                        </span>
+                <div style="padding:0.4rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;">
+                    <div class="skill-icon" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e7f3ff;color:#405189;flex-shrink:0;margin-bottom:0.2rem;">
+                        <i class="ri-code-s-slash-line" style="font-size:0.85rem;"></i>
                     </div>
-                    <p class="mb-0 fw-medium small text-wrap">${skill.name}</p>
+                    <p style="margin:0;font-weight:500;font-size:0.75rem;line-height:1.2;word-break:break-word;">${skill.name}</p>
                 </div>
             `;
 
@@ -264,13 +267,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     cardRef:     card,
                 });
 
-                card.classList.remove('border-dashed');
-                card.classList.add('border-primary', 'border-2');
-                card.style.boxShadow = '0 0 0 0.2rem rgba(var(--vz-primary-rgb), 0.15)';
+                card.style.border    = '2px solid #00d4aa';
+                card.style.boxShadow = '0 0 0 3px rgba(0,212,170,0.15)';
 
-                const avatar = card.querySelector('.avatar-title');
-                avatar.classList.remove('bg-primary-subtle', 'text-primary');
-                avatar.classList.add('bg-primary', 'text-white');
+                const iconDiv = card.querySelector('.skill-icon');
+                if (iconDiv) { iconDiv.style.background = '#00d4aa'; iconDiv.style.color = '#fff'; }
 
                 renderSelectedSkills();
                 saveBtn.disabled = false;
@@ -292,16 +293,15 @@ document.addEventListener('DOMContentLoaded', function () {
             col.className = 'col-12 col-md-6 col-lg-4';
 
             const card = document.createElement('div');
-            card.className = 'card border mb-0';
+            card.className = 'card mb-0';
+            card.style.border = '2px solid #00d4aa';
             card.innerHTML = `
-                <div class="card-body p-3">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="avatar-sm me-2 flex-shrink-0">
-                            <span class="avatar-title bg-primary text-white rounded-circle fs-5">
-                                <i class="ri-code-s-slash-line"></i>
-                            </span>
+                <div class="card-body" style="padding:0.5rem;font-size:0.85rem;">
+                    <div class="d-flex align-items-center mb-2">
+                        <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#00d4aa;color:#fff;margin-left:0.4rem;flex-shrink:0;">
+                            <i class="ri-code-s-slash-line" style="font-size:0.85rem;"></i>
                         </div>
-                        <h6 class="mb-0 fw-semibold">${skill.name}</h6>
+                        <h6 class="mb-0 fw-semibold" style="font-size:0.85rem;">${skill.name}</h6>
                     </div>
                     <div class="mb-2">
                         <label class="form-label form-label-sm mb-1">سطح</label>
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <option value="حرفه ای">حرفه ای</option>
                         </select>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-2">
                         <label class="form-label form-label-sm mb-1">سال‌های تجربه</label>
                         <input type="number" class="form-control form-control-sm" value="${skill.years}" min="0">
                     </div>
@@ -330,14 +330,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             card.querySelector('button').addEventListener('click', function () {
                 if (skill.cardRef) {
-                    skill.cardRef.classList.remove('border-primary', 'border-2');
-                    skill.cardRef.classList.add('border-dashed');
+                    skill.cardRef.style.border    = '2px solid #dee2e6';
                     skill.cardRef.style.boxShadow = '';
-                    const avatar = skill.cardRef.querySelector('.avatar-title');
-                    if (avatar) {
-                        avatar.classList.remove('bg-primary', 'text-white');
-                        avatar.classList.add('bg-primary-subtle', 'text-primary');
-                    }
+                    const iconDiv = skill.cardRef.querySelector('.skill-icon');
+                    if (iconDiv) { iconDiv.style.background = '#e7f3ff'; iconDiv.style.color = '#405189'; }
                 }
                 selectedSkills.splice(index, 1);
                 renderSelectedSkills();

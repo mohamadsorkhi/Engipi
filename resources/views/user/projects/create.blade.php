@@ -497,21 +497,23 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(function (result) {
             if (result.ok) {
-                if (result.data.message) window.showToast(result.data.message, 'success');
-                if (result.data.redirect) {
-                    setTimeout(function () { window.location.assign(result.data.redirect); }, 1000);
-                }
+                window.showToast(result.data.message || 'پروژه با موفقیت ثبت شد.', 'success');
+                var redirectUrl = result.data.redirect;
+                setTimeout(function () { window.location.assign(redirectUrl); }, 1200);
             } else if (result.status === 422 && result.data.errors) {
                 showErrors(result.data.errors);
                 window.showToast('لطفاً خطاها را برطرف کنید.', 'error');
+                submitBtn.disabled = false;
+                spinner.classList.add('d-none');
             } else {
                 window.showToast(result.data.message || 'خطایی رخ داد. دوباره تلاش کنید.', 'error');
+                submitBtn.disabled = false;
+                spinner.classList.add('d-none');
             }
         })
-        .catch(function () {
+        .catch(function (err) {
+            console.error('Project submit error:', err);
             window.showToast('خطا در ارتباط با سرور. دوباره تلاش کنید.', 'error');
-        })
-        .finally(function () {
             submitBtn.disabled = false;
             spinner.classList.add('d-none');
         });

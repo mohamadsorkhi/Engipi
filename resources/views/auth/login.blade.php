@@ -310,7 +310,9 @@ html, body {
 ════════════════════════════════════════════════════ */
 .ep-showcase {
     flex: 1;
-    background: linear-gradient(150deg, #eaf5fb 0%, #daeef8 45%, #cce6f4 100%);
+    background:
+        linear-gradient(rgba(15,35,64,0.75), rgba(15,35,64,0.75)),
+        url('/images/login-bg.jpg') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -319,14 +321,14 @@ html, body {
     overflow: hidden;
 }
 
-/* Decorative circles */
+/* Decorative circles — lightened so they're visible over the dark overlay */
 .ep-showcase::before {
     content: '';
     position: absolute;
     top: -90px; right: -90px;
     width: 340px; height: 340px;
     border-radius: 50%;
-    background: rgba(0,212,170,0.07);
+    background: rgba(0,212,170,0.10);
     pointer-events: none;
 }
 .ep-showcase::after {
@@ -335,7 +337,7 @@ html, body {
     bottom: -70px; left: -70px;
     width: 280px; height: 280px;
     border-radius: 50%;
-    background: rgba(108,99,255,0.06);
+    background: rgba(108,99,255,0.10);
     pointer-events: none;
 }
 .ep-dot-grid {
@@ -357,14 +359,14 @@ html, body {
 .ep-sc-title {
     font-size: clamp(1.4rem, 2.4vw, 2rem);
     font-weight: 900;
-    color: #1a2a4a;
+    color: #ffffff;
     line-height: 1.45;
     margin-bottom: 0.7rem;
 }
-.ep-sc-title .hl { color: #00a882; }
+.ep-sc-title .hl { color: #00d4aa; }
 .ep-sc-sub {
     font-size: 0.88rem;
-    color: #4e6878;
+    color: rgba(255,255,255,0.75);
     line-height: 1.75;
     margin-bottom: 1.8rem;
     max-width: 400px;
@@ -538,6 +540,13 @@ html, body {
     .ep-form { width: 100%; padding: 2rem 1.6rem; }
     .ep-showcase { display: none; }
 }
+@media (max-width: 767px) {
+    .ep-form {
+        background-image: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url('/images/login-bg.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+}
 @media (max-width: 480px) {
     .ep-form { padding: 1.8rem 1.2rem; }
     .ep-heading { font-size: 1.3rem; }
@@ -565,7 +574,7 @@ html, body {
         </div>
 
         {{-- Heading --}}
-        <h2 class="ep-heading">خوش برگشتی! 👋</h2>
+        <h2 class="ep-heading">خوش آمدید! 👋</h2>
         <p class="ep-subhead">با اطلاعات حساب کاربری خود وارد شوید</p>
 
         {{-- Flash & validation messages --}}
@@ -600,31 +609,26 @@ html, body {
 
             {{-- Password --}}
             <div class="ep-field">
-                <div class="ep-row-label">
-                    <label class="ep-label" for="password-input" style="margin:0;">رمز عبور</label>
-                    <a href="{{ route('password.request') }}" class="ep-forgot">فراموش کردید؟</a>
-                </div>
-                <div class="ep-input-box">
-                    <i class="ri-lock-2-line ep-ico"></i>
-                    <input
-                        type="password"
-                        id="password-input"
-                        name="password"
-                        class="ep-inp password-input @error('password') is-invalid @enderror"
+                <label class="ep-label" for="password">رمز عبور</label>
+                <div style="position:relative;">
+                    <input type="password" name="password" id="password"
+                        class="ep-inp @error('password') is-invalid @enderror"
                         placeholder="••••••••"
                         autocomplete="current-password"
                         required
-                    >
-                    <button type="button" class="ep-eye password-addon" id="password-addon" title="نمایش رمز">
-                        <i class="ri-eye-line align-middle"></i>
-                    </button>
+                        style="padding-left:45px;">
+                    <span onclick="document.getElementById('password').type=document.getElementById('password').type==='password'?'text':'password'; this.innerHTML=document.getElementById('password').type==='password'?'👁':'🙈';"
+                          style="position:absolute;left:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;z-index:10;">👁</span>
                 </div>
             </div>
 
-            {{-- Remember me --}}
-            <div class="ep-remember">
-                <input type="checkbox" id="auth-remember-check" name="remember" class="ep-checkbox">
-                <label for="auth-remember-check" class="ep-check-lbl">مرا به خاطر بسپار</label>
+            {{-- Remember me + Forgot password on one line --}}
+            <div class="ep-remember" style="justify-content: space-between;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <input type="checkbox" id="auth-remember-check" name="remember" class="ep-checkbox">
+                    <label for="auth-remember-check" class="ep-check-lbl" style="color:#00d4aa;">مرا به خاطر بسپار</label>
+                </div>
+                <a href="{{ route('password.request') }}" class="ep-forgot" style="color:#00d4aa;">فراموش کردید؟</a>
             </div>
 
             {{-- CTA button --}}
@@ -632,21 +636,6 @@ html, body {
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
                 <i class="ri-login-box-line"></i>
                 ورود به حساب
-            </button>
-
-            {{-- Divider --}}
-            <div class="ep-divider"><span>یا ورود با</span></div>
-
-            {{-- Google (coming soon) --}}
-            <button type="button" class="ep-btn-google" disabled title="به زودی فعال می‌شود">
-                <svg width="17" height="17" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
-                    <path d="M17.64 9.205c0-.638-.057-1.252-.164-1.841H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.566 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
-                    <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.258c-.806.54-1.837.859-3.048.859-2.344 0-4.328-1.584-5.036-3.713H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/>
-                    <path d="M3.964 10.708c-.18-.54-.282-1.117-.282-1.708s.102-1.167.282-1.707V4.958H.957C.348 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.334z" fill="#FBBC05"/>
-                    <path d="M9 3.58c1.321 0 2.508.454 3.44 1.346l2.582-2.581C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-                </svg>
-                ورود با گوگل
-                <span class="ep-coming">به زودی</span>
             </button>
 
         </form>
@@ -775,8 +764,4 @@ html, body {
     </div>{{-- /ep-showcase --}}
 
 </div>{{-- /ep-wrap --}}
-@endsection
-
-@section('script')
-    <script src="{{ URL::asset('build/js/pages/password-addon.init.js') }}"></script>
 @endsection
