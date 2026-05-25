@@ -233,20 +233,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const card = document.createElement('div');
             card.className = 'mb-0';
-            card.style.cursor       = 'pointer';
-            card.style.transition   = 'border-color 0.15s, box-shadow 0.15s';
-            card.style.border       = '2px solid #dee2e6';
-            card.style.borderRadius = '8px';
-            card.style.maxHeight    = '80px';
-            card.style.overflow     = 'hidden';
-            card.style.background   = '#fff';
+            card.style.cursor          = 'pointer';
+            card.style.transition      = 'border-color 0.15s, box-shadow 0.15s';
+            card.style.border          = '2.5px solid #ced4da';
+            card.style.borderRadius    = '8px';
+            card.style.height          = '70px';
+            card.style.display         = 'flex';
+            card.style.flexDirection   = 'column';
+            card.style.alignItems      = 'center';
+            card.style.justifyContent  = 'center';
+            card.style.background      = '#fff';
+            card.style.overflow        = 'hidden';
 
             card.innerHTML = `
-                <div style="padding:0.4rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;">
-                    <div class="skill-icon" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e7f3ff;color:#405189;flex-shrink:0;margin-bottom:0.2rem;">
-                        <i class="ri-code-s-slash-line" style="font-size:0.85rem;"></i>
+                <div style="padding:8px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;">
+                    <div class="skill-icon" style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e7f3ff;color:#405189;flex-shrink:0;">
+                        <i class="ri-code-s-slash-line" style="font-size:0.78rem;"></i>
                     </div>
-                    <p style="margin:0;font-weight:500;font-size:0.75rem;line-height:1.2;word-break:break-word;">${skill.name}</p>
+                    <p style="margin:4px 0 0;font-weight:500;font-size:0.72rem;line-height:1.2;word-break:break-word;">${skill.name}</p>
                 </div>
             `;
 
@@ -267,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     cardRef:     card,
                 });
 
-                card.style.border    = '2px solid #00d4aa';
+                card.style.border    = '2.5px solid #00d4aa';
                 card.style.boxShadow = '0 0 0 3px rgba(0,212,170,0.15)';
 
                 const iconDiv = card.querySelector('.skill-icon');
@@ -330,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             card.querySelector('button').addEventListener('click', function () {
                 if (skill.cardRef) {
-                    skill.cardRef.style.border    = '2px solid #dee2e6';
+                    skill.cardRef.style.border    = '2.5px solid #ced4da';
                     skill.cardRef.style.boxShadow = '';
                     const iconDiv = skill.cardRef.querySelector('.skill-icon');
                     if (iconDiv) { iconDiv.style.background = '#e7f3ff'; iconDiv.style.color = '#405189'; }

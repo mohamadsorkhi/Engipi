@@ -19,7 +19,9 @@
       "Bash(echo.)",
       "Bash(truncate *)",
       "Bash(xargs grep -l \"skill\")",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }
