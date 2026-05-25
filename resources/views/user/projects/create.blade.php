@@ -221,7 +221,7 @@
 
                         <hr>
 
-                        <div class="d-flex justify-content-end gap-2">
+                        <div class="d-flex justify-content-end gap-2 ep-form-actions">
                             <a href="{{ route('user.projects.index') }}" class="btn btn-light">انصراف</a>
                             <button type="submit" class="btn btn-primary" id="submitBtn">
                                 <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>

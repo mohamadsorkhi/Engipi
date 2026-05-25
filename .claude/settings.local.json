@@ -7,7 +7,12 @@
       "Bash(php -l app/Http/Controllers/Specialist/SkillController.php)",
       "Bash(php -l app/Http/Controllers/SkillSelectController.php)",
       "Bash(xargs grep -l \"skill\\\\|subdomain\")",
-      "Bash(git restore *)"
+      "Bash(git restore *)",
+      "Bash(findstr /i \"DB_\")",
+      "Bash(php tmp_query.php)",
+      "Bash(del tmp_query.php)",
+      "Bash(php tmp_verify.php)",
+      "Bash(php tmp_audit.php)"
     ]
   }
 }

@@ -8,23 +8,25 @@
                 <!-- LOGO -->
                 <div class="navbar-brand-box horizontal-logo">
 
-                    <a href="{{ route('root') }}" class="logo logo-dark">
+                    <a href="{{ route('root') }}" class="logo logo-dark text-decoration-none">
                         <span class="logo-sm">
-                            <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="22">
+                            <span style="font-size:1.1rem;font-weight:900;color:#00d4aa;font-family:'Vazirmatn',sans-serif;">E</span>
                         </span>
-
                         <span class="logo-lg">
-                            <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt="" height="27">
+                            <span style="font-size:1.3rem;font-weight:900;font-family:'Vazirmatn',sans-serif;color:white;letter-spacing:-0.5px;">
+                                <span style="color:#00d4aa;">Eng</span>Pis
+                            </span>
                         </span>
                     </a>
 
-                    <a href="{{ route('root') }}" class="logo logo-light">
+                    <a href="{{ route('root') }}" class="logo logo-light text-decoration-none">
                         <span class="logo-sm">
-                            <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="22">
+                            <span style="font-size:1.1rem;font-weight:900;color:#00d4aa;font-family:'Vazirmatn',sans-serif;">E</span>
                         </span>
-
                         <span class="logo-lg">
-                            <img src="{{ URL::asset('build/images/logo-light.png') }}" alt="" height="27">
+                            <span style="font-size:1.3rem;font-weight:900;font-family:'Vazirmatn',sans-serif;color:white;letter-spacing:-0.5px;">
+                                <span style="color:#00d4aa;">Eng</span>Pis
+                            </span>
                         </span>
                     </a>
 
@@ -116,6 +118,8 @@
 
                 @auth
 
+                    <div class="ep-topbar-icons d-flex align-items-center">
+
                     @if(Auth::user()->is_admin)
 
                         <!-- Admin Quick Actions -->
@@ -202,6 +206,8 @@
                         @endif
 
                     @endif
+
+                    </div>
 
 
 

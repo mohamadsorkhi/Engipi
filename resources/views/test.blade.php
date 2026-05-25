@@ -70,6 +70,14 @@
 
 @endsection
 
+@push('styles')
+<style>
+@media (max-width: 767.98px) {
+    #saveBtn { width: 100%; }
+    #domainContainer .btn { font-size: 0.8rem; padding: 0.35rem 0.75rem; }
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>

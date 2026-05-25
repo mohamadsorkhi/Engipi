@@ -3,25 +3,33 @@
 @section('title', 'داشبورد')
 
 @section('content')
-    <div class="row mb-3">
+    {{-- Welcome Banner --}}
+    <div class="row mb-4">
         <div class="col-12">
-            <div class="d-flex align-items-lg-center flex-lg-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-16 mb-1">سلام، {{ Auth::user()->name }}!</h4>
-                    <p class="text-muted mb-0">خلاصه وضعیت حساب کاربری شما</p>
+            <div class="card border-0 overflow-hidden" style="background: linear-gradient(135deg, #0f2340 0%, #1a3a6a 60%, #0f4d3a 100%) !important; min-height: 110px;">
+                <div class="card-body ep-welcome-body d-flex align-items-center justify-content-between gap-3 py-4">
+                    <div>
+                        <h4 class="mb-1" style="font-size:1.25rem; font-weight:700; color:white;">
+                            سلام، {{ Auth::user()->name }}! <span style="color:#00d4aa;">👋</span>
+                        </h4>
+                        <p class="mb-0" style="color:rgba(220,232,245,0.65); font-size:0.9rem;">خلاصه وضعیت حساب کاربری شما</p>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        @if($employerProfile)
+                            <a href="{{ route('user.projects.create') }}" class="btn btn-primary btn-sm px-3">
+                                <i class="ri-add-line align-bottom me-1"></i> ثبت پروژه
+                            </a>
+                        @endif
+                        @if($specialistProfile)
+                            <a href="{{ route('user.skills.index') }}" class="btn btn-success btn-sm px-3">
+                                <i class="ri-star-line align-bottom me-1"></i> مهارت‌ها
+                            </a>
+                        @endif
+                    </div>
                 </div>
-                <div class="mt-3 mt-lg-0 d-flex gap-2">
-                    @if($employerProfile)
-                        <a href="{{ route('user.projects.create') }}" class="btn btn-primary">
-                            <i class="ri-add-line align-bottom me-1"></i> ثبت پروژه جدید
-                        </a>
-                    @endif
-                    @if($specialistProfile)
-                        <a href="{{ route('user.skills.index') }}" class="btn btn-success">
-                            <i class="ri-star-line align-bottom me-1"></i> مدیریت مهارت‌ها
-                        </a>
-                    @endif
-                </div>
+                {{-- decorative circles --}}
+                <div style="position:absolute;top:-30px;left:-30px;width:140px;height:140px;border-radius:50%;background:rgba(0,212,170,0.06);pointer-events:none;"></div>
+                <div style="position:absolute;bottom:-40px;right:60px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.03);pointer-events:none;"></div>
             </div>
         </div>
     </div>
@@ -129,105 +137,71 @@
     @endif
 
     <!-- Stats Cards -->
-    <div class="row">
-        <!-- Employer Stats -->
+    <div class="row g-3 mb-4">
         @if($employerProfile)
         <div class="col-xl-3 col-md-6">
-            <div class="card card-animate">
+            <div class="card card-animate h-100" style="border-right: 3px solid #00d4aa !important; border-radius: 14px !important;">
                 <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-grow-1 overflow-hidden">
-                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">پروژه‌های من</p>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <p class="fw-medium mb-0" style="font-size:0.78rem;color:rgba(220,232,245,0.55);text-transform:uppercase;letter-spacing:0.08em;">پروژه‌های من</p>
+                        <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,212,170,0.12);display:flex;align-items:center;justify-content:center;">
+                            <i class="ri-briefcase-line" style="color:#00d4aa;font-size:1.2rem;"></i>
                         </div>
                     </div>
-                    <div class="d-flex align-items-end justify-content-between mt-4">
-                        <div>
-                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">{{ $myProjectsCount }}</h4>
-                            <a href="{{ route('user.projects.index') }}" class="text-decoration-underline">مشاهده همه</a>
-                        </div>
-                        <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                <i class="ri-briefcase-line text-primary"></i>
-                            </span>
-                        </div>
-                    </div>
+                    <h3 class="mb-1" style="font-size:2rem;font-weight:800;color:#00d4aa;">{{ $myProjectsCount }}</h3>
+                    <a href="{{ route('user.projects.index') }}" style="font-size:0.8rem;color:rgba(220,232,245,0.5);" class="text-decoration-none">مشاهده همه ←</a>
                 </div>
             </div>
         </div>
-        @endif
 
-        @if($employerProfile)
         <div class="col-xl-3 col-md-6">
-            <div class="card card-animate">
+            <div class="card card-animate h-100" style="border-right: 3px solid #60c8f5 !important; border-radius: 14px !important;">
                 <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-grow-1 overflow-hidden">
-                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">درخواست‌های دریافتی</p>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <p class="fw-medium mb-0" style="font-size:0.78rem;color:rgba(220,232,245,0.55);text-transform:uppercase;letter-spacing:0.08em;">درخواست‌های دریافتی</p>
+                        <div style="width:40px;height:40px;border-radius:10px;background:rgba(3,169,244,0.12);display:flex;align-items:center;justify-content:center;">
+                            <i class="ri-inbox-line" style="color:#60c8f5;font-size:1.2rem;"></i>
                         </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <h3 class="mb-0" style="font-size:2rem;font-weight:800;color:#60c8f5;">{{ $receivedRequestsCount }}</h3>
                         @if($pendingRequestsCount > 0)
-                            <span class="badge bg-warning">{{ $pendingRequestsCount }} در انتظار</span>
+                            <span class="badge" style="background:rgba(255,190,0,0.18);color:#ffd43b;font-size:0.7rem;">{{ $pendingRequestsCount }} در انتظار</span>
                         @endif
                     </div>
-                    <div class="d-flex align-items-end justify-content-between mt-4">
-                        <div>
-                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">{{ $receivedRequestsCount }}</h4>
-                            <a href="{{ route('user.requests.received') }}" class="text-decoration-underline">مشاهده همه</a>
-                        </div>
-                        <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-info-subtle rounded fs-3">
-                                <i class="ri-inbox-line text-info"></i>
-                            </span>
-                        </div>
-                    </div>
+                    <a href="{{ route('user.requests.received') }}" style="font-size:0.8rem;color:rgba(220,232,245,0.5);" class="text-decoration-none">مشاهده همه ←</a>
                 </div>
             </div>
         </div>
         @endif
 
-        <!-- Specialist Stats -->
         @if($specialistProfile)
         <div class="col-xl-3 col-md-6">
-            <div class="card card-animate">
+            <div class="card card-animate h-100" style="border-right: 3px solid #5ddfb0 !important; border-radius: 14px !important;">
                 <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-grow-1 overflow-hidden">
-                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">پروژه‌های پیشنهادی</p>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <p class="fw-medium mb-0" style="font-size:0.78rem;color:rgba(220,232,245,0.55);text-transform:uppercase;letter-spacing:0.08em;">پروژه‌های پیشنهادی</p>
+                        <div style="width:40px;height:40px;border-radius:10px;background:rgba(26,122,82,0.15);display:flex;align-items:center;justify-content:center;">
+                            <i class="ri-lightbulb-flash-line" style="color:#5ddfb0;font-size:1.2rem;"></i>
                         </div>
                     </div>
-                    <div class="d-flex align-items-end justify-content-between mt-4">
-                        <div>
-                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">{{ $matchedProjectsCount }}</h4>
-                            <a href="{{ route('user.matched-projects.index') }}" class="text-decoration-underline">مشاهده همه</a>
-                        </div>
-                        <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-success-subtle rounded fs-3">
-                                <i class="ri-lightbulb-flash-line text-success"></i>
-                            </span>
-                        </div>
-                    </div>
+                    <h3 class="mb-1" style="font-size:2rem;font-weight:800;color:#5ddfb0;">{{ $matchedProjectsCount }}</h3>
+                    <a href="{{ route('user.matched-projects.index') }}" style="font-size:0.8rem;color:rgba(220,232,245,0.5);" class="text-decoration-none">مشاهده همه ←</a>
                 </div>
             </div>
         </div>
 
         <div class="col-xl-3 col-md-6">
-            <div class="card card-animate">
+            <div class="card card-animate h-100" style="border-right: 3px solid #ffd43b !important; border-radius: 14px !important;">
                 <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-grow-1 overflow-hidden">
-                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">درخواست‌های ارسالی</p>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <p class="fw-medium mb-0" style="font-size:0.78rem;color:rgba(220,232,245,0.55);text-transform:uppercase;letter-spacing:0.08em;">درخواست‌های ارسالی</p>
+                        <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,190,0,0.1);display:flex;align-items:center;justify-content:center;">
+                            <i class="ri-send-plane-2-line" style="color:#ffd43b;font-size:1.2rem;"></i>
                         </div>
                     </div>
-                    <div class="d-flex align-items-end justify-content-between mt-4">
-                        <div>
-                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">{{ $sentRequestsCount }}</h4>
-                            <a href="{{ route('user.requests.sent') }}" class="text-decoration-underline">مشاهده همه</a>
-                        </div>
-                        <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-warning-subtle rounded fs-3">
-                                <i class="ri-send-plane-2-line text-warning"></i>
-                            </span>
-                        </div>
-                    </div>
+                    <h3 class="mb-1" style="font-size:2rem;font-weight:800;color:#ffd43b;">{{ $sentRequestsCount }}</h3>
+                    <a href="{{ route('user.requests.sent') }}" style="font-size:0.8rem;color:rgba(220,232,245,0.5);" class="text-decoration-none">مشاهده همه ←</a>
                 </div>
             </div>
         </div>

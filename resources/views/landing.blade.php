@@ -349,9 +349,49 @@
         .footer-social:hover { background: var(--clr-accent); color: white !important; }
         .footer-hr { border-color: rgba(255,255,255,0.08); }
 
+        /* ── Hero inner padding ─────────────────────────────────── */
+        .hero-inner {
+            padding-top: 130px !important;
+            padding-bottom: 110px !important;
+        }
+
         @media (max-width: 767px) {
             .section-wrap { padding: 60px 0; }
             .stat-divider  { display: none; }
+
+            /* Hero */
+            .hero-inner {
+                padding-top: 90px !important;
+                padding-bottom: 60px !important;
+            }
+            .hero-title { font-size: 1.65rem !important; }
+            .hero-sub   { font-size: 0.92rem !important; }
+
+            /* CTA buttons full-width stack */
+            .hero-cta { flex-direction: column !important; }
+            .hero-cta .btn { width: 100% !important; text-align: center !important; }
+
+            /* Navbar collapse overlay */
+            #navMenu.show {
+                background: rgba(15,18,37,0.97);
+                border-radius: 10px;
+                padding: 1rem;
+                margin-top: 0.5rem;
+            }
+
+            /* Stats bar */
+            .stat-num { font-size: 1.8rem; }
+
+            /* Reduce section gaps */
+            .section-wrap { padding: 50px 0; }
+
+            /* CTA banner buttons */
+            .cta-banner .d-flex { flex-direction: column !important; align-items: stretch !important; }
+            .cta-banner .d-flex .btn { width: 100% !important; margin: 0 !important; }
+        }
+
+        @media (max-width: 575px) {
+            .how-tab-nav .nav-link { padding: 0.45rem 1.1rem; font-size: 0.85rem; }
         }
     </style>
 </head>
@@ -404,7 +444,7 @@
      HERO
 ═══════════════════════════════════════════════════════════════ --}}
 <section class="hero d-flex align-items-center text-white">
-    <div class="container py-5" style="padding-top: 130px !important; padding-bottom: 110px !important; position: relative; z-index: 2;">
+    <div class="container py-5 hero-inner" style="position: relative; z-index: 2;">
         <div class="row align-items-center g-5">
 
             {{-- Left: copy --}}
@@ -424,7 +464,7 @@
                     برق، مکانیک، کامپیوتر، عمران و سایر رشته‌های مهندسی متصل می‌کند.
                 </p>
 
-                <div class="d-flex flex-wrap gap-3 mb-5">
+                <div class="d-flex flex-wrap gap-3 mb-5 hero-cta">
                     <a href="{{ route('register') }}" class="btn btn-cta-primary">
                         <i class="ri-add-circle-line me-2"></i>ثبت پروژه
                     </a>
