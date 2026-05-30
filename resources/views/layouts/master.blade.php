@@ -140,6 +140,27 @@
         [dir="rtl"] .app-menu { border-left: 1px solid var(--ep-border) !important; }
         [dir="ltr"] .app-menu { border-right: 1px solid var(--ep-border) !important; }
 
+        /* ─── RTL layout positioning ─────────────────────── */
+        /* Velzon structural CSS uses LTR physical properties; flip them for RTL */
+        @media (min-width: 768px) {
+            [dir="rtl"] .navbar-menu {
+                left: auto !important;
+                right: 0 !important;
+            }
+            [dir="rtl"] #page-topbar {
+                left: 0 !important;
+                right: var(--vz-vertical-menu-width) !important;
+            }
+            [dir="rtl"] .main-content {
+                margin-left: 0 !important;
+                margin-right: var(--vz-vertical-menu-width) !important;
+            }
+            [dir="rtl"] .footer {
+                left: 0 !important;
+                right: var(--vz-vertical-menu-width) !important;
+            }
+        }
+
         .navbar-brand-box {
             background: transparent !important;
             border-bottom: 1px solid var(--ep-border) !important;
