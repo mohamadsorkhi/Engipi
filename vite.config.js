@@ -22,7 +22,7 @@ export default defineConfig({
     },
     build: {
         manifest: "manifest.json",
-        rtl: true,
+        emptyOutDir: false,
         outDir: 'public/build/',
         cssCodeSplit: true,
         rollupOptions: {

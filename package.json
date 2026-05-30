@@ -7,7 +7,7 @@
     "scripts": {
         "clean": "rimraf public/build",
         "dev": "vite",
-        "build": "npm run clean && vite build",
+        "build": "vite build",
         "build-rtl": "rtlcss public/build/css/app.min.css & rtlcss public/build/css/bootstrap.min.css"
     },
     "devDependencies": {
