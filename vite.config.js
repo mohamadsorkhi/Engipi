@@ -13,8 +13,15 @@ const folder = {
 };
 
 export default defineConfig({
+    css: {
+        preprocessorOptions: {
+            scss: {
+                loadPaths: [path.resolve(__dirname)]
+            }
+        }
+    },
     build: {
-        manifest: true,
+        manifest: "manifest.json",
         rtl: true,
         outDir: 'public/build/',
         cssCodeSplit: true,
