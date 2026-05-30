@@ -33,7 +33,7 @@ class ProfileController extends Controller
     /**
      * Add a new profile to the current user.
      */
-    public function store(AddProfileRequest $request, AddProfileAction $action): JsonResponse
+    public function store(AddProfileRequest $request, AddProfileAction $action)
     {
         $user = Auth::user();
         $profile = $action->execute($user, $request->validated());
@@ -42,12 +42,7 @@ class ProfileController extends Controller
             ? route('skill.select')
             : route('root');
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'پروفایل جدید با موفقیت ایجاد شد.',
-            'profile' => $profile,
-            'redirect' => $redirect,
-        ]);
+        return redirect()->to($redirect)->with('success', 'پروفایل جدید با موفقیت ایجاد شد.');
     }
 
     /**
