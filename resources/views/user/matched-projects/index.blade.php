@@ -50,7 +50,7 @@
                                             <p class="text-muted mb-3">{{ Str::limit($project->description, 120) }}</p>
                                             
                                             <div class="d-flex flex-wrap gap-2 mb-3">
-                                                <span class="badge bg-primary-subtle text-primary">{{ $project->domain->name ?? '-' }}</span>
+                                                <span class="badge bg-primary-subtle text-primary">{{ $project->domains->first()?->name ?? '-' }}</span>
                                                 @foreach($project->processes->take(3) as $process)
                                                     <span class="badge bg-info-subtle text-info">{{ $process->name }}</span>
                                                 @endforeach
