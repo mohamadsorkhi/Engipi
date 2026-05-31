@@ -10,7 +10,7 @@ class SkillSelectController extends Controller
 {
     public function index()
     {
-        $domains = SkillDomain::all();
+        $domains = SkillDomain::with('subdomains')->orderBy('name')->get();
 
         return view('test', compact('domains'));
     }

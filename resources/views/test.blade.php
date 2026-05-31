@@ -70,6 +70,15 @@
 
 @endsection
 
+{{-- Subdomain lookup keyed by domain UUID — injected in a script tag to avoid HTML-attribute JSON encoding issues --}}
+<script>
+const domainSubdomainsMap = @json(
+    $domains->mapWithKeys(fn($d) => [
+        $d->id => $d->subdomains->map(fn($s) => ['id' => $s->id, 'name' => $s->name])->values()
+    ])
+);
+</script>
+
 @push('styles')
 <style>
 @media (max-width: 767.98px) {
@@ -101,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ─── DOMAIN SELECTION ───────────────────────────────────────────────
 
     domainButtons.forEach(btn => {
-        btn.addEventListener('click', async function () {
+        btn.addEventListener('click', function () {
             const domainId = btn.dataset.id;
 
             if (selectedDomains.includes(domainId)) {
@@ -139,14 +148,18 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.classList.remove('btn-outline-primary');
             btn.classList.add('btn-primary');
 
-            const response  = await fetch(`/api/subdomains/${domainId}`);
-            const data      = await response.json();
-            const subdomains = Array.isArray(data) ? data : data.data;
+            // Read subdomains from the pre-built JS map (no API call needed)
+            const subdomains = domainSubdomainsMap[domainId] || [];
 
-            // Store keyed by domainId so deselect can clean up precisely
             loadedSubdomainsByDomain[domainId] = subdomains;
-            subdomain.disabled = false;
-            renderSubdomains(Object.values(loadedSubdomainsByDomain).flat());
+            const allFlat = Object.values(loadedSubdomainsByDomain).flat();
+            if (allFlat.length > 0) {
+                subdomain.disabled = false;
+                renderSubdomains(allFlat);
+            } else {
+                subdomain.disabled = true;
+                subdomain.innerHTML = '<option value="">زیرشاخه‌ای برای این حوزه تعریف نشده</option>';
+            }
             clearSkillSelection();
         });
     });
