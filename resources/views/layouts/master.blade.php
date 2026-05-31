@@ -270,6 +270,10 @@
             color: var(--ep-text) !important;
         }
         .form-control::placeholder { color: #94a3b8 !important; }
+        .form-select option {
+            background: #ffffff !important;
+            color: var(--ep-text) !important;
+        }
         .form-label { color: var(--ep-text) !important; font-weight: 500 !important; }
         .form-text  { color: var(--ep-muted) !important; }
         .input-group-text {
