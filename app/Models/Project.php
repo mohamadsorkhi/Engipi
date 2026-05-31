@@ -118,63 +118,75 @@ class Project extends Model
     }
 
     /**
-     * Scope a query to only include projects that match a worker's processes and levels.
-     * It also excludes projects for which the worker has a rejected request.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \App\Models\User  $worker
-     * @return \Illuminate\Database\Eloquent\Builder
+     * Scope matched projects for a specialist worker.
+     * Three matching paths are tried in union:
+     *   1. Direct skill UUID match  — user_skills.skill_id ∈ project_skills.skill_id
+     *   2. Skill-name → process     — skill name matches process name in project_processes
+     *   3. Legacy profile_processes — for data saved via older admin/API flows
      */
     public function scopeForWorkerMatches(Builder $query, User $worker)
     {
-        // Get worker's specialist profile
         $profile = $worker->profiles()->where('type', 'specialist')->first();
-        
+
         if (!$profile) {
-            return $query->whereRaw('1 = 0'); // No specialist profile
+            return $query->whereRaw('1 = 0');
         }
 
-        // Get worker's processes with their levels
-        $workerProcesses = $profile->processes()->withPivot('level')->get();
-
-        if ($workerProcesses->isEmpty()) {
-            return $query->whereRaw('1 = 0'); // No processes selected
-        }
-
-        // Get project IDs where the worker's request was rejected
         $rejectedProjectIds = $worker->requests()
             ->where('status', 'rejected')
             ->pluck('project_id');
 
-        // Build matching logic: worker's process+level must match project's process+desired_levels
-        $matchingProjectIds = DB::table('project_processes as pp')
-            ->join('profile_processes as upp', 'pp.process_id', '=', 'upp.process_id')
-            ->where('upp.profile_id', $profile->id)
-            ->where(function ($q) {
-                // Match if worker's level is in the project's desired_levels JSON array
-                $q->whereRaw("JSON_CONTAINS(pp.desired_levels, JSON_QUOTE(upp.level))")
-                  ->orWhereNull('pp.desired_levels'); // Or if project has no level requirement
-            })
-            ->select('pp.project_id', DB::raw('COUNT(DISTINCT pp.process_id) as matching_processes_count'))
-            ->groupBy('pp.project_id');
+        // ── Path 1: direct skill UUID match ─────────────────────────────
+        $workerSkillIds = DB::table('user_skills')
+            ->where('user_id', $worker->id)
+            ->pluck('skill_id');
 
-        // Get user's selected domain IDs
-        $userDomainIds = DB::table('user_profile_domains')
+        $matchedBySkill = $workerSkillIds->isNotEmpty()
+            ? DB::table('project_skills')
+                ->whereIn('skill_id', $workerSkillIds)
+                ->pluck('project_id')
+            : collect();
+
+        // ── Path 2: skill name → process name in project_processes ───────
+        $matchedByProcessName = collect();
+        if ($workerSkillIds->isNotEmpty()) {
+            $workerSkillNames = DB::table('skills')
+                ->whereIn('id', $workerSkillIds)
+                ->pluck('name');
+
+            if ($workerSkillNames->isNotEmpty()) {
+                $matchedByProcessName = DB::table('project_processes as pp')
+                    ->join('processes as p', 'pp.process_id', '=', 'p.id')
+                    ->whereIn('p.name', $workerSkillNames)
+                    ->pluck('pp.project_id');
+            }
+        }
+
+        // ── Path 3: legacy profile_processes ────────────────────────────
+        $workerProcessIds = DB::table('profile_processes')
             ->where('profile_id', $profile->id)
-            ->pluck('skill_domain_id');
+            ->pluck('process_id');
 
-        if ($userDomainIds->isEmpty()) {
-            return $query->whereRaw('1 = 0'); // No domains selected
+        $matchedByProcess = $workerProcessIds->isNotEmpty()
+            ? DB::table('project_processes')
+                ->whereIn('process_id', $workerProcessIds)
+                ->pluck('project_id')
+            : collect();
+
+        $allMatchingIds = $matchedBySkill
+            ->merge($matchedByProcessName)
+            ->merge($matchedByProcess)
+            ->unique()
+            ->values();
+
+        if ($allMatchingIds->isEmpty()) {
+            return $query->whereRaw('1 = 0');
         }
 
         return $query
-            ->joinSub($matchingProjectIds, 'process_matches', function ($join) {
-                $join->on('projects.id', '=', 'process_matches.project_id');
-            })
-            ->join('project_domains', 'projects.id', '=', 'project_domains.project_id')
-            ->select('projects.*', 'process_matches.matching_processes_count as matching_skills_count')
+            ->whereIn('projects.id', $allMatchingIds)
             ->whereNotIn('projects.id', $rejectedProjectIds)
-            ->whereIn('project_domains.skill_domain_id', $userDomainIds) // Match any of user's domains
+            ->where('projects.employer_id', '!=', $worker->id)
             ->with(['employer', 'skills', 'processes', 'domains'])
             ->distinct();
     }

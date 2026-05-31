@@ -47,27 +47,16 @@ class DashboardController extends Controller
         // Specialist stats
         $sentRequestsCount = $specialistProfile ? $user->requests()->count() : 0;
         
-        // Get matched projects
+        // Get matched projects using the same scope as the matched-projects page
         $matchedProjectsCount = 0;
         $recentMatchedProjects = collect();
-        
+
         if ($specialistProfile) {
-            $userProcessIds = $specialistProfile->processes()->pluck('processes.id')->toArray();
-            
-            if (!empty($userProcessIds)) {
-                $matchedProjectsCount = Project::whereHas('processes', function ($query) use ($userProcessIds) {
-                    $query->whereIn('processes.id', $userProcessIds);
-                })->where('employer_id', '!=', $user->id)->count();
-                
-                $recentMatchedProjects = Project::whereHas('processes', function ($query) use ($userProcessIds) {
-                    $query->whereIn('processes.id', $userProcessIds);
-                })
-                ->where('employer_id', '!=', $user->id)
-                ->with(['employer', 'domains'])
-                ->latest()
+            $matchedProjectsCount  = Project::forWorkerMatches($user)->count();
+            $recentMatchedProjects = Project::forWorkerMatches($user)
+                ->latest('projects.created_at')
                 ->take(5)
                 ->get();
-            }
         }
 
         return view('user.dashboard', compact(

@@ -59,11 +59,43 @@ class SkillSelectController extends Controller
 
         $user->skills()->sync($syncData);
 
-        if (!empty($validated['domains'])) {
-            $profile = $user->profiles()->where('type', 'specialist')->first();
-            if ($profile) {
-                $profile->domains()->sync($validated['domains']);
+        $profile = $user->profiles()->where('type', 'specialist')->first();
+
+        if ($profile && !empty($domainIds)) {
+            // Save domains
+            $profile->domains()->sync($domainIds);
+
+            // Derive profile_processes from skill names — find processes with the same
+            // name as each saved skill, within the selected domains, and save with a
+            // mapped level so the legacy matching path also works.
+            $levelMap = ['مبتدی' => 'practical', 'متوسط' => 'proficient', 'حرفه ای' => 'advanced'];
+
+            $skillRecords = DB::table('skills')
+                ->whereIn('id', collect($validated['skills'])->pluck('skill_id'))
+                ->get()
+                ->keyBy('id');
+
+            $processSyncData = [];
+            foreach ($validated['skills'] as $skillItem) {
+                $skill = $skillRecords->get($skillItem['skill_id']);
+                if (!$skill) continue;
+
+                $matchingProcessIds = DB::table('processes')
+                    ->whereIn('skill_domain_id', $domainIds)
+                    ->where('name', $skill->name)
+                    ->pluck('id');
+
+                $level = $levelMap[$skillItem['level']] ?? 'practical';
+                foreach ($matchingProcessIds as $processId) {
+                    $processSyncData[$processId] = ['level' => $level];
+                }
             }
+
+            if (!empty($processSyncData)) {
+                $profile->processes()->sync($processSyncData);
+            }
+        } elseif ($profile && !empty($validated['domains'])) {
+            $profile->domains()->sync($validated['domains']);
         }
 
         return response()->json([

@@ -16,7 +16,6 @@ class MatchedProjectController extends Controller
         $user = Auth::user();
 
         $projects = Project::forWorkerMatches($user)
-            ->orderBy('matching_skills_count', 'desc')
             ->orderBy('projects.created_at', 'desc')
             ->paginate(10);
 

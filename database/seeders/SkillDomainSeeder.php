@@ -10,8 +10,15 @@ class SkillDomainSeeder extends Seeder
 {
     public function run(): void
     {
-        // Truncate entire skill hierarchy (FK-safe order)
+        // Truncate reference tables AND all pivot tables that reference them.
+        // Re-seeding generates new UUIDs; stale pivot rows would cause silent mismatches.
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('user_skills')->truncate();
+        DB::table('profile_processes')->truncate();
+        DB::table('user_profile_domains')->truncate();
+        DB::table('project_processes')->truncate();
+        DB::table('project_skills')->truncate();
+        DB::table('project_domains')->truncate();
         DB::table('skills')->truncate();
         DB::table('processes')->truncate();
         DB::table('subdomains')->truncate();
