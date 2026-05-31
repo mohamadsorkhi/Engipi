@@ -205,7 +205,6 @@ class Project extends Model
             ->whereIn('projects.id', $allMatchingIds)
             ->whereNotIn('projects.id', $rejectedProjectIds)
             ->where('projects.employer_id', '!=', $worker->id)
-            ->with(['employer', 'skills', 'processes', 'domains'])
-            ->distinct();
+            ->with(['employer', 'skills', 'processes', 'domains']);
     }
 }

@@ -149,15 +149,15 @@
             }
             [dir="rtl"] #page-topbar {
                 left: 0 !important;
-                right: var(--vz-vertical-menu-width) !important;
+                right: 250px !important;
             }
             [dir="rtl"] .main-content {
                 margin-left: 0 !important;
-                margin-right: var(--vz-vertical-menu-width) !important;
+                margin-right: 250px !important;
             }
             [dir="rtl"] .footer {
                 left: 0 !important;
-                right: var(--vz-vertical-menu-width) !important;
+                right: 250px !important;
             }
         }
 
