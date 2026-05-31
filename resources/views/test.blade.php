@@ -436,7 +436,7 @@ document.addEventListener('DOMContentLoaded', function () {
             sel.value = skill.level;
             sel.addEventListener('change', function () { skill.level = this.value; });
 
-            card.querySelector('input').addEventListener('input', function () { skill.years = this.value; });
+            card.querySelector('input').addEventListener('input', function () { skill.years = parseInt(this.value, 10) || 0; });
 
             card.querySelector('button').addEventListener('click', function () {
                 if (skill.cardRef) {

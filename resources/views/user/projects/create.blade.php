@@ -411,12 +411,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const domainsErr = document.getElementById('domains-error');
         if (domainsErr) domainsErr.style.display = 'none';
 
+        // Processes are optional — clear any previous error and build inputs only for checked ones
         const checkedProcesses = document.querySelectorAll('.process-checkbox:checked');
-        if (checkedProcesses.length < 1) {
-            const el = document.getElementById('processes-error');
-            if (el) { el.querySelector('span').textContent = 'حداقل ۱ پردازش انتخاب کنید'; el.style.display = 'block'; }
-            return false;
-        }
+        const processesErr2 = document.getElementById('processes-error');
+        if (processesErr2) processesErr2.style.display = 'none';
 
         let idx = 0;
         let ok  = true;

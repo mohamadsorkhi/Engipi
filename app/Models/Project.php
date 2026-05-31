@@ -173,9 +173,27 @@ class Project extends Model
                 ->pluck('project_id')
             : collect();
 
+        // ── Path 4: skill-name bridge across project_skills ─────────────
+        // Handles the case where employer and specialist pick the same tool
+        // (e.g. Revit) from different subdomains, yielding different UUIDs.
+        $matchedBySkillName = collect();
+        if ($workerSkillIds->isNotEmpty()) {
+            $workerSkillNames = $workerSkillNames ?? DB::table('skills')
+                ->whereIn('id', $workerSkillIds)
+                ->pluck('name');
+
+            if ($workerSkillNames->isNotEmpty()) {
+                $matchedBySkillName = DB::table('project_skills as ps')
+                    ->join('skills as s', 'ps.skill_id', '=', 's.id')
+                    ->whereIn('s.name', $workerSkillNames)
+                    ->pluck('ps.project_id');
+            }
+        }
+
         $allMatchingIds = $matchedBySkill
             ->merge($matchedByProcessName)
             ->merge($matchedByProcess)
+            ->merge($matchedBySkillName)
             ->unique()
             ->values();
 
