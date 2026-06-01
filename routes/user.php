@@ -8,6 +8,7 @@ use App\Http\Controllers\Specialist\SkillController;
 use App\Http\Controllers\Specialist\MatchedProjectController;
 use App\Http\Controllers\Specialist\RequestController as SpecialistRequestController;
 use App\Http\Controllers\User\TicketController;
+use App\Http\Controllers\User\MessagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,5 +62,10 @@ Route::middleware('active_role')->group(function () {
     Route::post('/tickets/{ticket}/message', [TicketController::class, 'message'])->name('tickets.message');
     Route::post('/tickets/{ticket}/close', [TicketController::class, 'close'])->name('tickets.close');
     Route::post('/tickets/{ticket}/reopen', [TicketController::class, 'reopen'])->name('tickets.reopen');
+
+    // Messages
+    Route::get('/messages', [MessagesController::class, 'index'])->name('messages.index');
+    Route::get('/messages/{user}', [MessagesController::class, 'show'])->name('messages.show');
+    Route::post('/messages', [MessagesController::class, 'store'])->name('messages.store');
 
 });

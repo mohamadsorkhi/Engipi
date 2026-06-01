@@ -179,6 +179,14 @@
                         </li>
                         @endif
 
+                        <li class="nav-item">
+                            <a class="nav-link menu-link {{ request()->routeIs('user.messages.*') ? 'active' : '' }}"
+                               href="{{ route('user.messages.index') }}">
+                                <i class="ri-message-3-line"></i>
+                                <span>پیام‌ها</span>
+                            </a>
+                        </li>
+
                         @if($showEmployer)
 
                             <li class="menu-title"><span>کارفرما</span></li>
