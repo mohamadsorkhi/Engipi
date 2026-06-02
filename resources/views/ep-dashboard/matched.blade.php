@@ -49,7 +49,7 @@
                             <div class="foot">
                                 <span class="date">
                                     <i class="ri-calendar-line"></i>
-                                    {{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($project->created_at))->ago() }}
+                                    {{ \Carbon\Carbon::parse($project->created_at)->diffForHumans() }}
                                 </span>
                                 <a href="{{ $showUrl }}" class="btn btn-soft-primary">مشاهده و ارسال درخواست</a>
                             </div>

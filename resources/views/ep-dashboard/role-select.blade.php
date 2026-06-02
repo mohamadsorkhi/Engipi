@@ -22,7 +22,7 @@
 
         <div class="role-grid">
             {{-- Employer card --}}
-            <form method="POST" action="{{ route('user.profile.store') }}">
+            <form method="POST" action="{{ route('profiles.store') }}">
                 @csrf
                 <input type="hidden" name="type" value="employer">
                 <div class="role emp">
@@ -36,7 +36,7 @@
             </form>
 
             {{-- Specialist card --}}
-            <form method="POST" action="{{ route('user.profile.store') }}">
+            <form method="POST" action="{{ route('profiles.store') }}">
                 @csrf
                 <input type="hidden" name="type" value="specialist">
                 <div class="role spec">
