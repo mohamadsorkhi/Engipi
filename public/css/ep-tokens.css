@@ -1,0 +1,111 @@
+/* EngPis — Design Tokens (CSS custom properties)
+   Source: ui_kits/preview/colors_and_type.css
+   Load this before ep-website.css or ep-dashboard.css */
+
+:root {
+  /* Brand core */
+  --ep-primary:        #405189;
+  --ep-primary-600:    #354674;
+  --ep-primary-700:    #2b3a61;
+  --ep-accent:         #0ab39c;
+  --ep-accent-600:     #089b87;
+  --ep-accent-bright:  #00d4aa;
+
+  /* Ink & surfaces */
+  --ep-dark:           #1a1d2e;
+  --ep-ink:            #333333;
+  --ep-muted:          #878a99;
+  --ep-surface:        #f8f9fc;
+  --ep-white:          #ffffff;
+  --ep-border:         #ebebf0;
+  --ep-border-strong:  #d9dbe4;
+
+  /* Category / accent spectrum */
+  --ep-c-amber:        #d4a017;
+  --ep-c-gold:         #ffbe00;
+  --ep-c-green:        #43a047;
+  --ep-c-red:          #ef5350;
+  --ep-c-purple:       #9c27b0;
+  --ep-c-sky:          #03a9f4;
+  --ep-c-orange:       #ff9800;
+
+  --ep-d-teal:         #00d4aa;
+  --ep-d-sky:          #60c8f5;
+  --ep-d-mint:         #5ddfb0;
+  --ep-d-gold:         #ffd43b;
+
+  /* Soft tints */
+  --ep-tint-primary:   rgba(64, 81, 137, 0.10);
+  --ep-tint-accent:    rgba(10, 179, 156, 0.10);
+  --ep-tint-amber:     rgba(255, 190, 0, 0.10);
+  --ep-tint-green:     rgba(67, 160, 71, 0.10);
+  --ep-tint-red:       rgba(239, 83, 80, 0.10);
+  --ep-tint-purple:    rgba(156, 39, 176, 0.10);
+  --ep-tint-sky:       rgba(3, 169, 244, 0.10);
+  --ep-tint-orange:    rgba(255, 152, 0, 0.10);
+
+  /* Gradients */
+  --ep-grad-hero:    linear-gradient(135deg, #0f1225 0%, #405189 55%, #0c8b7a 100%);
+  --ep-grad-cta:     linear-gradient(135deg, #405189 0%, #0c8b7a 100%);
+  --ep-grad-welcome: linear-gradient(135deg, #0f2340 0%, #1a3a6a 60%, #0f4d3a 100%);
+
+  /* Radii */
+  --ep-r-xs:   8px;
+  --ep-r-sm:   10px;
+  --ep-r-md:   14px;
+  --ep-r-lg:   16px;
+  --ep-r-xl:   18px;
+  --ep-r-2xl:  24px;
+  --ep-r-pill: 50px;
+
+  /* Shadows */
+  --ep-shadow-xs:      0 2px 20px rgba(0,0,0,0.04);
+  --ep-shadow-sm:      0 4px 30px rgba(0,0,0,0.06);
+  --ep-shadow-md:      0 12px 36px rgba(0,0,0,0.07);
+  --ep-shadow-lg:      0 18px 45px rgba(0,0,0,0.08);
+  --ep-shadow-cta:     0 10px 28px rgba(10,179,156,0.38);
+  --ep-shadow-primary: 0 4px 14px rgba(64,81,137,0.30);
+
+  /* Motion */
+  --ep-ease:      cubic-bezier(.4,0,.2,1);
+  --ep-dur-fast:  .2s;
+  --ep-dur:       .25s;
+  --ep-dur-slow:  .3s;
+  --ep-lift:      translateY(-4px);
+  --ep-lift-lg:   translateY(-6px);
+
+  /* Typography */
+  --ep-font: 'Vazirmatn', -apple-system, 'Segoe UI', Tahoma, sans-serif;
+
+  --ep-fs-hero:    clamp(2rem, 4.5vw, 3.2rem);
+  --ep-fs-section: clamp(1.6rem, 3vw, 2.2rem);
+  --ep-fs-lead:    1.1rem;
+  --ep-fs-body:    1rem;
+  --ep-fs-sm:      0.88rem;
+  --ep-fs-xs:      0.78rem;
+}
+
+/* Base */
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  font-family: var(--ep-font);
+  color: var(--ep-ink);
+  background: var(--ep-white);
+  font-size: var(--ep-fs-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+}
+
+/* Eyebrow pill */
+.ep-eyebrow {
+  display: inline-block;
+  background: var(--ep-tint-primary);
+  color: var(--ep-primary);
+  border-radius: var(--ep-r-pill);
+  padding: 0.35rem 1.1rem;
+  font-size: var(--ep-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
