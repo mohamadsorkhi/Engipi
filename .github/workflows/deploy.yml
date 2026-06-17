@@ -22,6 +22,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
+          timeout: 60000
+          log-level: verbose
           server-dir: /laravel_app/
           exclude: |
             **/.git*
@@ -39,6 +41,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
+          timeout: 60000
+          log-level: verbose
           local-dir: ./public/
           server-dir: /public_html/
           exclude: |
