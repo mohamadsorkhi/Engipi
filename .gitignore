@@ -19,3 +19,12 @@ yarn-error.log
 /.vscode
 /.nova
 /.zed
+# کش‌های storage
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+
+# فایل‌های public مخصوص محیط
+/public/index.php
+/public/.htaccess
