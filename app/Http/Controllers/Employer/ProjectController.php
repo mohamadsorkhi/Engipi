@@ -33,8 +33,8 @@ class ProjectController extends Controller
     public function create()
     {
         $domains = SkillDomain::with('processes.skills')->orderBy('name')->get();
-        $skills = Skill::orderBy('name')->get();
-        
+        $skills = Skill::select('id', 'name', 'skill_type')->orderBy('name')->get();
+
         return view('user.projects.create', compact('domains', 'skills'));
     }
 

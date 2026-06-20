@@ -145,15 +145,16 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <div id="processes-container" style="display: none;">
-                                    <label class="form-label">
-                                        پردازش‌های مورد نیاز <span class="text-danger">*</span>
+                                    <label for="processes" class="form-label">
+                                        مهارت‌های پردازشی <span class="text-danger">*</span>
                                         <small class="text-muted">(حداقل ۱ پردازش انتخاب کنید)</small>
                                     </label>
-                                    <div class="alert alert-info small mb-3">
+                                    <select class="form-select" id="processes" multiple></select>
+                                    <div class="alert alert-info small mb-3 mt-2">
                                         <i class="ri-information-line me-1"></i>
                                         برای هر پردازش انتخاب شده، سطح مهارت مورد نیاز را مشخص کنید.
                                     </div>
-                                    <div id="processes-list" class="row g-3"></div>
+                                    <div id="processes-cards" class="row g-3"></div>
                                     <div class="invalid-feedback d-block" id="processes-error"><span></span></div>
                                 </div>
                             </div>
@@ -163,17 +164,19 @@
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h6 class="fw-semibold text-primary mb-3">
-                                    <i class="ri-tools-line me-2"></i>مهارت‌های مورد نیاز (اختیاری)
+                                    <i class="ri-tools-line me-2"></i>مهارت‌های میدانی (اختیاری)
                                 </h6>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="skills" class="form-label">مهارت‌ها</label>
-                                <select class="form-select" id="skills" name="skills[]" multiple>
+                                <select class="form-select" id="skills" multiple>
                                     @foreach($skills as $skill)
-                                        <option value="{{ $skill->id }}">{{ $skill->name }}</option>
+                                        <option value="{{ $skill->id }}" data-skill-type="{{ $skill->skill_type }}">{{ $skill->name }}</option>
                                     @endforeach
                                 </select>
                                 <div class="form-text">مهارت‌های خاص مورد نیاز پروژه را انتخاب کنید</div>
+                                <div class="invalid-feedback d-block" id="skills-error"><span></span></div>
+                                <div id="skills-cards" class="row g-3 mt-3"></div>
                             </div>
                         </div>
 
@@ -237,25 +240,43 @@
 
 @section('script')
 <script>
+const allSkillsData = @json($skills->map(fn($s) => ['id' => $s->id, 'name' => $s->name, 'skill_type' => $s->skill_type]));
+
 document.addEventListener('DOMContentLoaded', function () {
     const form              = document.getElementById('projectForm');
     const submitBtn         = document.getElementById('submitBtn');
     const spinner           = submitBtn.querySelector('.spinner-border');
     const domainCheckboxes  = document.querySelectorAll('.domain-checkbox');
     const processesContainer= document.getElementById('processes-container');
-    const processesList     = document.getElementById('processes-list');
+    const processesCards    = document.getElementById('processes-cards');
+    const skillsCards       = document.getElementById('skills-cards');
     const workTypeRadios    = document.querySelectorAll('input[name="work_type"]');
     const budgetMin         = document.getElementById('budget_min');
     const budgetMax         = document.getElementById('budget_max');
 
-    let allProcessesMap      = new Map();
+    let allProcessesMap        = new Map();
     let selectedProcessesState = {};
+    let selectedSkillsState    = {};
+    const SKILL_LEVELS = ['مبتدی', 'متوسط', 'حرفه ای'];
 
-    // ── Choices.js for skills ─────────────────────────────────────────────
-    if (typeof Choices !== 'undefined') {
-        const skillsSelect = document.getElementById('skills');
-        if (skillsSelect) {
-            new Choices(skillsSelect, {
+    // ── Shared chip-selector + card factory used by both the processes and
+    // skills sections, so they behave identically. Listeners are bound once
+    // to the underlying <select> element and survive option rebuilds, since
+    // setOptions() only replaces the element's children, not the element.
+    function createChipCardSelector(selectEl, onAdd, onRemove) {
+        var instance = null;
+
+        selectEl.addEventListener('addItem', function (e) {
+            onAdd(e.detail.value, e.detail.label);
+        });
+        selectEl.addEventListener('removeItem', function (e) {
+            onRemove(e.detail.value);
+        });
+
+        function buildInstance() {
+            if (instance) { instance.destroy(); instance = null; }
+            if (typeof Choices === 'undefined') return;
+            instance = new Choices(selectEl, {
                 removeItemButton: true,
                 placeholder: true,
                 placeholderValue: 'انتخاب کنید...',
@@ -263,88 +284,154 @@ document.addEventListener('DOMContentLoaded', function () {
                 itemSelectText: 'انتخاب',
             });
         }
-    }
 
-    // ── Work-type card styling ────────────────────────────────────────────
-    workTypeRadios.forEach(function (radio) {
-        radio.addEventListener('change', function () {
-            document.querySelectorAll('.work-type-card').forEach(function (card) {
-                card.classList.remove('border-primary', 'bg-primary-subtle');
+        function setOptions(options, selectedIds) {
+            var selected = selectedIds || [];
+            if (instance) { instance.destroy(); instance = null; }
+            selectEl.innerHTML = '';
+            options.forEach(function (opt) {
+                var el = document.createElement('option');
+                el.value = opt.id;
+                el.textContent = opt.name;
+                if (opt.dataset) {
+                    Object.keys(opt.dataset).forEach(function (k) { el.dataset[k] = opt.dataset[k]; });
+                }
+                if (selected.indexOf(opt.id) !== -1) { el.selected = true; }
+                selectEl.appendChild(el);
             });
-            if (this.checked) {
-                this.closest('.form-check').querySelector('.work-type-card')
-                    .classList.add('border-primary', 'bg-primary-subtle');
-            }
-        });
-    });
-
-    // ── Budget max ≥ min ──────────────────────────────────────────────────
-    budgetMax.addEventListener('input', function () {
-        const min = parseFloat(budgetMin.value) || 0;
-        const max = parseFloat(this.value) || 0;
-        this.setCustomValidity(max > 0 && max < min ? 'حداکثر بودجه باید بزرگتر از حداقل بودجه باشد' : '');
-    });
-
-    // ── Render processes for selected domains ─────────────────────────────
-    function renderProcesses(processes) {
-        processesList.innerHTML = '';
-
-        if (!processes || processes.length === 0) {
-            processesList.innerHTML = '<div class="col-12"><p class="text-muted">پردازشی برای این حوزه تعریف نشده است.</p></div>';
-            return;
+            buildInstance();
         }
 
-        processes.forEach(function (process) {
-            const isSelected   = Object.prototype.hasOwnProperty.call(selectedProcessesState, process.id);
-            const savedLevels  = isSelected ? selectedProcessesState[process.id] : ['practical'];
+        function getSelectedIds() {
+            if (!instance) return [];
+            return instance.getValue(true).map(function (v) { return typeof v === 'object' ? v.value : v; });
+        }
 
-            const html = '<div class="col-md-6 col-lg-4">' +
-                '<div class="card border process-card ' + (isSelected ? 'border-primary' : '') + '" data-process-id="' + process.id + '">' +
-                '<div class="card-body">' +
-                '<div class="form-check mb-3">' +
-                '<input class="form-check-input process-checkbox" type="checkbox" id="process_' + process.id + '" data-process-id="' + process.id + '" ' + (isSelected ? 'checked' : '') + '>' +
-                '<label class="form-check-label fw-medium" for="process_' + process.id + '">' + process.name + '</label>' +
-                '</div>' +
-                '<div class="level-select ' + (isSelected ? '' : 'd-none') + '">' +
-                '<label class="form-label small text-muted mb-2">سطوح مهارت مورد نیاز:</label>' +
-                ['practical', 'proficient', 'advanced'].map(function (lvl) {
-                    const labels = { practical: 'عملی', proficient: 'مسلط', advanced: 'پیشرفته' };
-                    return '<div class="form-check"><input class="form-check-input level-checkbox" type="checkbox" value="' + lvl + '" id="level_' + process.id + '_' + lvl + '" data-process-id="' + process.id + '" ' + (savedLevels.includes(lvl) ? 'checked' : '') + '><label class="form-check-label small" for="level_' + process.id + '_' + lvl + '">' + labels[lvl] + '</label></div>';
-                }).join('') +
-                '</div></div></div></div>';
+        function removeByValue(id) {
+            if (instance) instance.removeActiveItemsByValue(id);
+        }
 
-            processesList.insertAdjacentHTML('beforeend', html);
+        return { init: buildInstance, setOptions: setOptions, getSelectedIds: getSelectedIds, removeByValue: removeByValue };
+    }
+
+    // ── "مهارت‌های میدانی" (skills) chip selector + cards ──────────────────
+    function renderSkillCard(skillId, skillName) {
+        if (skillsCards.querySelector('[data-skill-card-id="' + skillId + '"]')) return;
+        if (!selectedSkillsState[skillId]) selectedSkillsState[skillId] = { level: SKILL_LEVELS[1], years: '' };
+        const saved = selectedSkillsState[skillId];
+
+        const html = '<div class="col-md-6 col-lg-4" data-skill-card-id="' + skillId + '">' +
+            '<div class="card border border-primary skill-card" data-skill-id="' + skillId + '">' +
+            '<div class="card-body">' +
+            '<div class="d-flex justify-content-between align-items-start mb-2">' +
+            '<span class="fw-medium">' + skillName + '</span>' +
+            '<button type="button" class="btn btn-sm btn-link text-danger p-0 remove-skill-card" data-skill-id="' + skillId + '"><i class="ri-close-line"></i></button>' +
+            '</div>' +
+            '<div class="row g-2">' +
+            '<div class="col-6">' +
+            '<label class="form-label small text-muted mb-1">سطح مهارت</label>' +
+            '<select class="form-select form-select-sm skill-level" data-skill-id="' + skillId + '">' +
+            SKILL_LEVELS.map(function (lvl) {
+                return '<option value="' + lvl + '" ' + (saved.level === lvl ? 'selected' : '') + '>' + lvl + '</option>';
+            }).join('') +
+            '</select>' +
+            '</div>' +
+            '<div class="col-6">' +
+            '<label class="form-label small text-muted mb-1">سال‌های تجربه</label>' +
+            '<input type="number" class="form-control form-control-sm skill-years" data-skill-id="' + skillId + '" min="0" max="50" value="' + saved.years + '">' +
+            '</div>' +
+            '</div></div></div></div>';
+
+        skillsCards.insertAdjacentHTML('beforeend', html);
+
+        const cardEl = skillsCards.querySelector('[data-skill-card-id="' + skillId + '"]');
+        cardEl.querySelector('.remove-skill-card').addEventListener('click', function () {
+            skillsSelector.removeByValue(skillId);
+        });
+        cardEl.querySelector('.skill-level').addEventListener('change', function () {
+            selectedSkillsState[skillId].level = this.value;
+        });
+        cardEl.querySelector('.skill-years').addEventListener('input', function () {
+            selectedSkillsState[skillId].years = this.value;
+        });
+    }
+
+    function removeSkillCard(skillId) {
+        const card = skillsCards.querySelector('[data-skill-card-id="' + skillId + '"]');
+        if (card) card.remove();
+        delete selectedSkillsState[skillId];
+    }
+
+    const skillsSelector = createChipCardSelector(document.getElementById('skills'), renderSkillCard, removeSkillCard);
+    skillsSelector.init();
+
+    function filterSkillsByWorkType(workType) {
+        const selected = skillsSelector.getSelectedIds();
+
+        let visible;
+        if (workType === 'onsite') {
+            visible = allSkillsData.filter(function (s) { return s.skill_type === 'field'; });
+        } else if (workType === 'remote') {
+            visible = allSkillsData.filter(function (s) { return s.skill_type === 'software'; });
+        } else {
+            visible = allSkillsData; // hybrid: show all
+        }
+
+        const visibleIds   = new Set(visible.map(function (s) { return s.id; }));
+        const stillValid   = selected.filter(function (id) { return visibleIds.has(id); });
+        const removedCount = selected.length - stillValid.length;
+
+        selected.forEach(function (id) {
+            if (stillValid.indexOf(id) === -1) removeSkillCard(id);
         });
 
-        // Attach listeners to freshly rendered checkboxes
-        processesList.querySelectorAll('.process-checkbox').forEach(function (cb) {
-            cb.addEventListener('change', function () {
-                const card        = this.closest('.process-card');
-                const levelSelect = card.querySelector('.level-select');
-                const pid         = this.dataset.processId;
+        skillsSelector.setOptions(
+            visible.map(function (s) { return { id: s.id, name: s.name, dataset: { skillType: s.skill_type } }; }),
+            stillValid
+        );
 
-                if (this.checked) {
-                    if (document.querySelectorAll('.process-checkbox:checked').length > 3) {
-                        this.checked = false;
-                        alert('حداکثر ۳ پردازش می‌توانید انتخاب کنید.');
-                        return;
-                    }
-                    card.classList.add('border-primary');
-                    levelSelect.classList.remove('d-none');
-                    if (!selectedProcessesState[pid]) selectedProcessesState[pid] = ['practical'];
-                } else {
-                    card.classList.remove('border-primary');
-                    levelSelect.classList.add('d-none');
-                    delete selectedProcessesState[pid];
-                }
-            });
+        if (removedCount > 0 && typeof window.showToast === 'function') {
+            window.showToast(removedCount + ' مهارت انتخاب‌شده با نوع همکاری جدید سازگار نبود و حذف شد.', 'warning');
+        }
+    }
+
+    // ── "مهارت‌های پردازشی" (processes) chip selector + cards ──────────────
+    function renderProcessCard(processId, processName) {
+        if (processesCards.querySelector('[data-process-card-id="' + processId + '"]')) return;
+        if (Object.keys(selectedProcessesState).length >= 3) {
+            alert('حداکثر ۳ پردازش می‌توانید انتخاب کنید.');
+            processesSelector.removeByValue(processId);
+            return;
+        }
+        if (!selectedProcessesState[processId]) selectedProcessesState[processId] = ['practical'];
+        const savedLevels = selectedProcessesState[processId];
+        const labels = { practical: 'عملی', proficient: 'مسلط', advanced: 'پیشرفته' };
+
+        const html = '<div class="col-md-6 col-lg-4" data-process-card-id="' + processId + '">' +
+            '<div class="card border border-primary process-card" data-process-id="' + processId + '">' +
+            '<div class="card-body">' +
+            '<div class="d-flex justify-content-between align-items-start mb-2">' +
+            '<span class="fw-medium">' + processName + '</span>' +
+            '<button type="button" class="btn btn-sm btn-link text-danger p-0 remove-process-card" data-process-id="' + processId + '"><i class="ri-close-line"></i></button>' +
+            '</div>' +
+            '<div class="level-select">' +
+            '<label class="form-label small text-muted mb-2">سطوح مهارت مورد نیاز:</label>' +
+            ['practical', 'proficient', 'advanced'].map(function (lvl) {
+                return '<div class="form-check"><input class="form-check-input level-checkbox" type="checkbox" value="' + lvl + '" id="level_' + processId + '_' + lvl + '" data-process-id="' + processId + '" ' + (savedLevels.includes(lvl) ? 'checked' : '') + '><label class="form-check-label small" for="level_' + processId + '_' + lvl + '">' + labels[lvl] + '</label></div>';
+            }).join('') +
+            '</div></div></div></div>';
+
+        processesCards.insertAdjacentHTML('beforeend', html);
+
+        const cardEl = processesCards.querySelector('[data-process-card-id="' + processId + '"]');
+        cardEl.querySelector('.remove-process-card').addEventListener('click', function () {
+            processesSelector.removeByValue(processId);
         });
-
-        processesList.querySelectorAll('.level-checkbox').forEach(function (cb) {
+        cardEl.querySelectorAll('.level-checkbox').forEach(function (cb) {
             cb.addEventListener('change', function () {
                 const pid = this.dataset.processId;
                 const checked = Array.from(
-                    processesList.querySelectorAll('.level-checkbox[data-process-id="' + pid + '"]:checked')
+                    processesCards.querySelectorAll('.level-checkbox[data-process-id="' + pid + '"]:checked')
                 ).map(function (el) { return el.value; });
 
                 if (checked.length > 0) {
@@ -356,6 +443,54 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    function removeProcessCard(processId) {
+        const card = processesCards.querySelector('[data-process-card-id="' + processId + '"]');
+        if (card) card.remove();
+        delete selectedProcessesState[processId];
+    }
+
+    const processesSelector = createChipCardSelector(document.getElementById('processes'), renderProcessCard, removeProcessCard);
+    processesSelector.init();
+
+    // Rebuild the available processes whenever the selected domains change,
+    // preserving cards/state for processes that remain selectable.
+    function updateProcessesOptions() {
+        const available   = Array.from(allProcessesMap.values());
+        const availableIds = new Set(available.map(function (p) { return p.id; }));
+
+        Object.keys(selectedProcessesState).forEach(function (pid) {
+            if (!availableIds.has(pid)) removeProcessCard(pid);
+        });
+
+        const stillSelected = Object.keys(selectedProcessesState).filter(function (pid) { return availableIds.has(pid); });
+
+        processesSelector.setOptions(
+            available.map(function (p) { return { id: p.id, name: p.name }; }),
+            stillSelected
+        );
+    }
+
+    // ── Work-type card styling + skill filtering ──────────────────────────
+    workTypeRadios.forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            document.querySelectorAll('.work-type-card').forEach(function (card) {
+                card.classList.remove('border-primary', 'bg-primary-subtle');
+            });
+            if (this.checked) {
+                this.closest('.form-check').querySelector('.work-type-card')
+                    .classList.add('border-primary', 'bg-primary-subtle');
+                filterSkillsByWorkType(this.value);
+            }
+        });
+    });
+
+    // ── Budget max ≥ min ──────────────────────────────────────────────────
+    budgetMax.addEventListener('input', function () {
+        const min = parseFloat(budgetMin.value) || 0;
+        const max = parseFloat(this.value) || 0;
+        this.setCustomValidity(max > 0 && max < min ? 'حداکثر بودجه باید بزرگتر از حداقل بودجه باشد' : '');
+    });
 
     // ── Domain checkbox change ────────────────────────────────────────────
     domainCheckboxes.forEach(function (checkbox) {
@@ -383,19 +518,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 } catch (_) {}
             });
 
-            if (allProcessesMap.size > 0) {
-                processesContainer.style.display = 'block';
-                renderProcesses(Array.from(allProcessesMap.values()));
-            } else {
-                processesContainer.style.display = 'none';
-                processesList.innerHTML = '';
-            }
+            processesContainer.style.display = allProcessesMap.size > 0 ? 'block' : 'none';
+            updateProcessesOptions();
         });
     });
 
     // ── Build domain + process hidden inputs; returns true if valid ───────
     function buildHiddenInputs() {
-        form.querySelectorAll('input[name^="processes"], input[name^="domains"]').forEach(function (el) { el.remove(); });
+        form.querySelectorAll('input[name^="processes"], input[name^="domains"], input[name^="skills"]').forEach(function (el) { el.remove(); });
 
         const checkedDomains = document.querySelectorAll('.domain-checkbox:checked');
         if (checkedDomains.length < 1 || checkedDomains.length > 3) {
@@ -411,19 +541,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const domainsErr = document.getElementById('domains-error');
         if (domainsErr) domainsErr.style.display = 'none';
 
-        // Processes are optional — clear any previous error and build inputs only for checked ones
-        const checkedProcesses = document.querySelectorAll('.process-checkbox:checked');
+        // Processes are optional — clear any previous error and build inputs only for selected cards
+        const processCardEls = processesCards.querySelectorAll('.process-card');
         const processesErr2 = document.getElementById('processes-error');
         if (processesErr2) processesErr2.style.display = 'none';
 
         let idx = 0;
         let ok  = true;
-        checkedProcesses.forEach(function (cb) {
-            const pid    = cb.dataset.processId;
-            const card   = cb.closest('.process-card');
-            const levels = card ? card.querySelectorAll('.level-checkbox:checked') : [];
+        processCardEls.forEach(function (card) {
+            const pid    = card.dataset.processId;
+            const levels = card.querySelectorAll('.level-checkbox:checked');
             if (!levels || levels.length === 0) {
-                alert('لطفاً حداقل یک سطح مهارت برای «' + card.querySelector('.form-check-label').textContent.trim() + '» انتخاب کنید.');
+                alert('لطفاً حداقل یک سطح مهارت برای «' + card.querySelector('.fw-medium').textContent.trim() + '» انتخاب کنید.');
                 ok = false;
                 return;
             }
@@ -437,6 +566,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const processesErr = document.getElementById('processes-error');
         if (processesErr) processesErr.style.display = 'none';
+
+        // Skills are optional — clear any previous error and build inputs only for selected cards
+        const skillCardEls = skillsCards.querySelectorAll('.skill-card');
+        const skillsErr = document.getElementById('skills-error');
+        if (skillsErr) skillsErr.style.display = 'none';
+
+        let sIdx = 0;
+        skillCardEls.forEach(function (card) {
+            const sid   = card.dataset.skillId;
+            const level = card.querySelector('.skill-level').value;
+            const years = card.querySelector('.skill-years').value;
+            if (!level || years === '' || isNaN(parseInt(years, 10)) || parseInt(years, 10) < 0) {
+                alert('لطفاً سطح و سال‌های تجربه را برای «' + card.querySelector('.fw-medium').textContent.trim() + '» مشخص کنید.');
+                ok = false;
+                return;
+            }
+            const idInp  = document.createElement('input'); idInp.type = 'hidden'; idInp.name = 'skills[' + sIdx + '][id]';                  idInp.value = sid;   form.appendChild(idInp);
+            const lvInp  = document.createElement('input'); lvInp.type = 'hidden'; lvInp.name = 'skills[' + sIdx + '][level]';               lvInp.value = level; form.appendChild(lvInp);
+            const yrInp  = document.createElement('input'); yrInp.type = 'hidden'; yrInp.name = 'skills[' + sIdx + '][years_of_experience]'; yrInp.value = years; form.appendChild(yrInp);
+            sIdx++;
+        });
+        if (!ok) return false;
+
         return true;
     }
 
@@ -452,6 +604,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             if (key === 'processes' || key.startsWith('processes.')) {
                 const el = document.getElementById('processes-error');
+                if (el) { el.querySelector('span').textContent = msg; el.style.display = 'block'; }
+                return;
+            }
+            if (key === 'skills' || key.startsWith('skills.')) {
+                const el = document.getElementById('skills-error');
                 if (el) { el.querySelector('span').textContent = msg; el.style.display = 'block'; }
                 return;
             }

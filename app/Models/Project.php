@@ -72,7 +72,9 @@ class Project extends Model
      */
     public function skills()
     {
-        return $this->belongsToMany(Skill::class, 'project_skills')->withTimestamps();
+        return $this->belongsToMany(Skill::class, 'project_skills')
+            ->withPivot(['level', 'years_of_experience'])
+            ->withTimestamps();
     }
 
     public function processes()

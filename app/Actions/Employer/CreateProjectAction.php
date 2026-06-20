@@ -55,9 +55,15 @@ class CreateProjectAction
                 $project->processes()->attach($attachData);
             }
 
-            // Attach skills if provided
+            // Attach skills with level + years of experience if provided
             if (!empty($data['skills'])) {
-                $project->skills()->attach($data['skills']);
+                $skillsData = collect($data['skills'])->mapWithKeys(fn($skill) => [
+                    $skill['id'] => [
+                        'level' => $skill['level'],
+                        'years_of_experience' => $skill['years_of_experience'],
+                    ],
+                ])->toArray();
+                $project->skills()->attach($skillsData);
             }
 
             // Handle file uploads
