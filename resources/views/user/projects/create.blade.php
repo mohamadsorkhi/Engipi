@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const saved = selectedSkillsState[skillId];
 
         const html = '<div class="col-md-6 col-lg-4" data-skill-card-id="' + skillId + '">' +
-            '<div class="card border border-primary skill-card" data-skill-id="' + skillId + '">' +
+            '<div class="card skill-card" data-skill-id="' + skillId + '">' +
             '<div class="card-body">' +
             '<div class="d-flex justify-content-between align-items-start mb-2">' +
             '<span class="fw-medium">' + skillName + '</span>' +
@@ -436,7 +436,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const labels = { practical: 'عملی', proficient: 'مسلط', advanced: 'پیشرفته' };
 
         const html = '<div class="col-md-6 col-lg-4" data-process-card-id="' + processId + '">' +
-            '<div class="card border border-primary process-card" data-process-id="' + processId + '">' +
+            '<div class="card process-card" data-process-id="' + processId + '">' +
             '<div class="card-body">' +
             '<div class="d-flex justify-content-between align-items-start mb-2">' +
             '<span class="fw-medium">' + processName + '</span>' +
@@ -747,6 +747,14 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 .card-radio .form-check-input {
     display: none;
+}
+.card.process-card {
+    background-color: rgba(var(--vz-primary-rgb), .07) !important;
+    border-left: 3px solid var(--vz-primary) !important;
+}
+.card.skill-card {
+    background-color: rgba(var(--vz-success-rgb), .07) !important;
+    border-left: 3px solid var(--vz-success) !important;
 }
 </style>
 @endsection
