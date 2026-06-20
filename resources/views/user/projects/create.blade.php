@@ -32,10 +32,13 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="description" class="form-label">توضیحات فنی پروژه <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="description" name="description" rows="5" 
-                                    placeholder="شرح فنی پروژه، الزامات، استانداردها و خروجی‌های مورد انتظار..." 
+                                <textarea class="form-control" id="description" name="description" rows="5"
+                                    placeholder="شرح فنی پروژه، الزامات، استانداردها و خروجی‌های مورد انتظار..."
                                     required minlength="20"></textarea>
-                                <div class="form-text">حداقل ۲۰ کاراکتر</div>
+                                <div class="form-text d-flex justify-content-between">
+                                    <span>حداقل ۲۰ کاراکتر</span>
+                                    <span id="description-counter">۰ / ۲۰</span>
+                                </div>
                                 <div class="invalid-feedback"><span></span></div>
                             </div>
                         </div>
@@ -145,9 +148,12 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <div id="processes-container" style="display: none;">
-                                    <label for="processes" class="form-label">
-                                        مهارت‌های پردازشی <span class="text-danger">*</span>
-                                        <small class="text-muted">(حداقل ۱ پردازش انتخاب کنید)</small>
+                                    <label for="processes" class="form-label d-flex align-items-center justify-content-between">
+                                        <span>
+                                            مهارت‌های پردازشی <span class="text-danger">*</span>
+                                            <small class="text-muted">(حداقل ۱ پردازش انتخاب کنید)</small>
+                                        </span>
+                                        <small class="text-muted fw-medium" id="processes-counter">۰ از ۳</small>
                                     </label>
                                     <select class="form-select" id="processes" multiple></select>
                                     <div class="alert alert-info small mb-3 mt-2">
@@ -195,14 +201,16 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="budget_min" class="form-label">حداقل بودجه (تومان)</label>
-                                <input type="number" class="form-control" id="budget_min" name="budget_min" 
-                                    min="0" placeholder="مثال: 5000000">
+                                <input type="text" class="form-control" id="budget_min" inputmode="numeric" autocomplete="off"
+                                    placeholder="مثال: 5,000,000">
+                                <input type="hidden" id="budget_min_value" name="budget_min">
                                 <div class="invalid-feedback"><span></span></div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="budget_max" class="form-label">حداکثر بودجه (تومان)</label>
-                                <input type="number" class="form-control" id="budget_max" name="budget_max" 
-                                    min="0" placeholder="مثال: 10000000">
+                                <input type="text" class="form-control" id="budget_max" inputmode="numeric" autocomplete="off"
+                                    placeholder="مثال: 10,000,000">
+                                <input type="hidden" id="budget_max_value" name="budget_max">
                                 <div class="invalid-feedback"><span></span></div>
                             </div>
                         </div>
@@ -253,11 +261,31 @@ document.addEventListener('DOMContentLoaded', function () {
     const workTypeRadios    = document.querySelectorAll('input[name="work_type"]');
     const budgetMin         = document.getElementById('budget_min');
     const budgetMax         = document.getElementById('budget_max');
+    const budgetMinHidden   = document.getElementById('budget_min_value');
+    const budgetMaxHidden   = document.getElementById('budget_max_value');
+    const descriptionInput   = document.getElementById('description');
+    const descriptionCounter = document.getElementById('description-counter');
+    const processesCounterEl = document.getElementById('processes-counter');
 
     let allProcessesMap        = new Map();
     let selectedProcessesState = {};
     let selectedSkillsState    = {};
     const SKILL_LEVELS = ['مبتدی', 'متوسط', 'حرفه ای'];
+
+    function toPersianDigits(n) {
+        const map = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        return String(n).replace(/[0-9]/g, function (d) { return map[d]; });
+    }
+
+    function scrollToError(el) {
+        if (!el) return;
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function updateProcessesCounter() {
+        if (!processesCounterEl) return;
+        processesCounterEl.textContent = toPersianDigits(Object.keys(selectedProcessesState).length) + ' از ' + toPersianDigits(3);
+    }
 
     // ── Shared chip-selector + card factory used by both the processes and
     // skills sections, so they behave identically. Listeners are bound once
@@ -442,12 +470,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         });
+
+        updateProcessesCounter();
     }
 
     function removeProcessCard(processId) {
         const card = processesCards.querySelector('[data-process-card-id="' + processId + '"]');
         if (card) card.remove();
         delete selectedProcessesState[processId];
+        updateProcessesCounter();
     }
 
     const processesSelector = createChipCardSelector(document.getElementById('processes'), renderProcessCard, removeProcessCard);
@@ -485,12 +516,34 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ── Budget max ≥ min ──────────────────────────────────────────────────
-    budgetMax.addEventListener('input', function () {
-        const min = parseFloat(budgetMin.value) || 0;
-        const max = parseFloat(this.value) || 0;
-        this.setCustomValidity(max > 0 && max < min ? 'حداکثر بودجه باید بزرگتر از حداقل بودجه باشد' : '');
-    });
+    // ── Description live character counter ─────────────────────────────────
+    if (descriptionInput && descriptionCounter) {
+        descriptionInput.addEventListener('input', function () {
+            const len = this.value.length;
+            descriptionCounter.textContent = toPersianDigits(len) + ' / ' + toPersianDigits(20);
+            descriptionCounter.classList.toggle('text-success', len >= 20);
+            descriptionCounter.classList.toggle('text-danger', len > 0 && len < 20);
+        });
+    }
+
+    // ── Budget thousands-separator formatting + max ≥ min validity ─────────
+    function checkBudgetValidity() {
+        const min = parseFloat(budgetMinHidden.value) || 0;
+        const max = parseFloat(budgetMaxHidden.value) || 0;
+        budgetMax.setCustomValidity(max > 0 && max < min ? 'حداکثر بودجه باید بزرگتر از حداقل بودجه باشد' : '');
+    }
+
+    function formatBudgetInput(displayEl, hiddenEl) {
+        displayEl.addEventListener('input', function () {
+            const raw = this.value.replace(/[^0-9]/g, '');
+            hiddenEl.value = raw;
+            this.value = raw ? Number(raw).toLocaleString('en-US') : '';
+            checkBudgetValidity();
+        });
+    }
+
+    formatBudgetInput(budgetMin, budgetMinHidden);
+    formatBudgetInput(budgetMax, budgetMaxHidden);
 
     // ── Domain checkbox change ────────────────────────────────────────────
     domainCheckboxes.forEach(function (checkbox) {
@@ -531,6 +584,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (checkedDomains.length < 1 || checkedDomains.length > 3) {
             const el = document.getElementById('domains-error');
             if (el) { el.querySelector('span').textContent = 'حداقل ۱ و حداکثر ۳ حوزه انتخاب کنید'; el.style.display = 'block'; }
+            scrollToError(el);
             return false;
         }
         checkedDomains.forEach(function (cb, i) {
@@ -594,36 +648,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ── Show server-side validation errors ────────────────────────────────
     function showErrors(errors) {
+        let firstErrorEl = null;
+
         Object.keys(errors).forEach(function (key) {
             const msg = errors[key][0];
+            let el = null;
 
             if (key === 'domains' || key === 'domains.0') {
-                const el = document.getElementById('domains-error');
+                el = document.getElementById('domains-error');
                 if (el) { el.querySelector('span').textContent = msg; el.style.display = 'block'; }
-                return;
-            }
-            if (key === 'processes' || key.startsWith('processes.')) {
-                const el = document.getElementById('processes-error');
+            } else if (key === 'processes' || key.startsWith('processes.')) {
+                el = document.getElementById('processes-error');
                 if (el) { el.querySelector('span').textContent = msg; el.style.display = 'block'; }
-                return;
-            }
-            if (key === 'skills' || key.startsWith('skills.')) {
-                const el = document.getElementById('skills-error');
+            } else if (key === 'skills' || key.startsWith('skills.')) {
+                el = document.getElementById('skills-error');
                 if (el) { el.querySelector('span').textContent = msg; el.style.display = 'block'; }
-                return;
+            } else {
+                // Map dot-notation key to field name
+                const fieldName = key.replace(/\.(\w+)/g, '[$1]');
+                const field     = form.querySelector('[name="' + fieldName + '"]')
+                               || form.querySelector('[name="' + fieldName + '[]"]');
+                if (field) {
+                    field.classList.add('is-invalid');
+                    if (field.type === 'hidden') {
+                        const visibleField = document.getElementById(field.id.replace('_value', ''));
+                        if (visibleField) visibleField.classList.add('is-invalid');
+                    }
+                    const fb = field.parentElement.querySelector('.invalid-feedback')
+                            || field.closest('.mb-3, .col-md-12, .col-md-4, .col-12')?.querySelector('.invalid-feedback');
+                    if (fb) { fb.querySelector('span').textContent = msg; fb.style.display = 'block'; }
+                    el = field;
+                }
             }
 
-            // Map dot-notation key to field name
-            const fieldName = key.replace(/\.(\w+)/g, '[$1]');
-            const field     = form.querySelector('[name="' + fieldName + '"]')
-                           || form.querySelector('[name="' + fieldName + '[]"]');
-            if (!field) return;
-
-            field.classList.add('is-invalid');
-            const fb = field.parentElement.querySelector('.invalid-feedback')
-                    || field.closest('.mb-3, .col-md-12, .col-md-4, .col-12')?.querySelector('.invalid-feedback');
-            if (fb) { fb.querySelector('span').textContent = msg; fb.style.display = 'block'; }
+            if (el && !firstErrorEl) firstErrorEl = el;
         });
+
+        scrollToError(firstErrorEl);
     }
 
     // ── Form submit → validate → AJAX ────────────────────────────────────
