@@ -7,34 +7,27 @@
 @endsection
 
 @section('css')
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after {
-    font-family: 'Vazirmatn', sans-serif !important;
-    box-sizing: border-box;
-}
 html, body {
     height: 100%;
     margin: 0; padding: 0;
     background: #fff !important;
-    color: #1a2a4a !important;
+    color: var(--bp-text) !important;
 }
 
 /* ─── Outer wrapper ── */
-.ep-wrap {
+.bp-auth-wrap {
     display: flex;
     flex-direction: row;
     min-height: 100vh;
 }
 
 /* ════════════════════════════════════════════════════
-   SHOWCASE PANEL  (left side in RTL, 58%)
+   SHOWCASE PANEL  (left side in RTL, navy blueprint)
 ════════════════════════════════════════════════════ */
-.ep-showcase {
+.bp-auth-showcase {
     flex: 1;
-    background:
-        linear-gradient(rgba(15,35,64,0.70), rgba(15,35,64,0.70)),
-        url('/images/register-bg.jpg') center/cover no-repeat;
+    background: var(--bp-navy);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,116 +35,40 @@ html, body {
     position: relative;
     overflow: hidden;
 }
-.ep-showcase::before {
-    content: '';
-    position: absolute;
-    top: -90px; right: -90px;
-    width: 340px; height: 340px;
-    border-radius: 50%;
-    background: rgba(0,212,170,0.10);
-    pointer-events: none;
-}
-.ep-showcase::after {
-    content: '';
-    position: absolute;
-    bottom: -70px; left: -70px;
-    width: 280px; height: 280px;
-    border-radius: 50%;
-    background: rgba(108,99,255,0.10);
-    pointer-events: none;
-}
-.ep-dot-grid {
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
-    background-size: 28px 28px;
-    pointer-events: none;
-}
-.ep-showcase-inner {
-    max-width: 460px;
-    width: 100%;
-    position: relative;
-    z-index: 2;
-}
+.bp-auth-showcase .grid-bg { position: absolute; inset: 0; opacity: .6; }
+.bp-auth-showcase .glow { position: absolute; border-radius: 50%; filter: blur(10px); }
+.bp-auth-showcase .g1 { top: -100px; inset-inline-end: -60px; width: 340px; height: 340px; background: radial-gradient(circle, rgba(31,111,235,.35), transparent 70%); }
+.bp-auth-showcase .g2 { bottom: -120px; inset-inline-start: -40px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(0,184,169,.22), transparent 70%); }
+.bp-auth-showcase-inner { max-width: 460px; width: 100%; position: relative; z-index: 2; }
 
 /* ─── Showcase copy ── */
-.ep-sc-title {
-    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
-    font-weight: 900;
-    color: #ffffff;
-    line-height: 1.5;
-    margin-bottom: 0.7rem;
-}
-.ep-sc-title .hl { color: #00d4aa; }
-.ep-sc-sub {
-    font-size: 0.88rem;
-    color: rgba(255,255,255,0.72);
-    line-height: 1.75;
-    margin-bottom: 2rem;
-    max-width: 380px;
-}
+.bp-auth-sc-title { font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 900; color: #fff; line-height: 1.5; margin-bottom: 0.7rem; }
+.bp-auth-sc-title .hl { color: var(--bp-blue-l); }
+.bp-auth-sc-sub { font-size: 0.88rem; color: rgba(255,255,255,.72); line-height: 1.75; margin-bottom: 2rem; max-width: 380px; }
 
 /* ─── Stats ── */
-.ep-stats {
-    display: flex;
-    gap: 1.2rem;
-    flex-wrap: wrap;
-    margin-bottom: 2rem;
-}
-.ep-stat {
-    background: rgba(255,255,255,0.10);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 14px;
-    padding: 0.9rem 1.2rem;
-    flex: 1;
-    min-width: 90px;
-    text-align: center;
-}
-.ep-stat-num {
-    font-size: 1.3rem;
-    font-weight: 900;
-    color: #00d4aa;
-    line-height: 1.1;
-}
-.ep-stat-lbl {
-    font-size: 0.68rem;
-    color: rgba(255,255,255,0.65);
-    margin-top: 3px;
-}
+.bp-auth-stats { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.bp-auth-stat { background: rgba(255,255,255,.08); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.15); border-radius: var(--bp-r-lg); padding: 0.9rem 1.2rem; flex: 1; min-width: 90px; text-align: center; }
+.bp-auth-stat-num { font-size: 1.3rem; font-weight: 900; color: var(--bp-blue-l); line-height: 1.1; }
+.bp-auth-stat-lbl { font-size: 0.68rem; color: rgba(255,255,255,.65); margin-top: 3px; }
 
 /* ─── Floating cards ── */
-.ep-float {
-    position: absolute;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 10px 32px rgba(0,40,80,0.18);
-    padding: 11px 16px;
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    min-width: 150px;
-    z-index: 3;
+.bp-auth-float {
+    position: absolute; background: #fff; border-radius: var(--bp-r-lg);
+    box-shadow: var(--bp-sh-lg); padding: 11px 16px;
+    display: flex; align-items: center; gap: 11px; min-width: 150px; z-index: 3;
 }
-.ep-float-1 { bottom: 60px; right: 20px; animation: floatUp 5s ease-in-out infinite; }
-.ep-float-2 { top: 80px;   left: 20px;  animation: floatUp 5s ease-in-out infinite; animation-delay: 2.5s; }
-@keyframes floatUp {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-9px); }
-}
-.ep-float-ic {
-    width: 34px; height: 34px;
-    border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; flex-shrink: 0;
-}
-.ep-float-num { font-size: 0.95rem; font-weight: 800; color: #1a2a4a; line-height: 1.1; }
-.ep-float-lbl { font-size: 0.63rem; color: #8898aa; margin-top: 1px; }
+.bp-auth-float-1 { bottom: 60px; right: 20px; animation: bpAuthFloat 5s ease-in-out infinite; }
+.bp-auth-float-2 { top: 80px; left: 20px; animation: bpAuthFloat 5s ease-in-out infinite; animation-delay: 2.5s; }
+@keyframes bpAuthFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+.bp-auth-float-ic { width: 34px; height: 34px; border-radius: var(--bp-r); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+.bp-auth-float-num { font-size: 0.95rem; font-weight: 800; color: var(--bp-ink); line-height: 1.1; }
+.bp-auth-float-lbl { font-size: 0.63rem; color: var(--bp-muted); margin-top: 1px; }
 
 /* ════════════════════════════════════════════════════
    FORM PANEL  (right side in RTL, 42%)
 ════════════════════════════════════════════════════ */
-.ep-form {
+.bp-auth-form {
     width: 42%;
     flex-shrink: 0;
     display: flex;
@@ -163,182 +80,139 @@ html, body {
     z-index: 2;
     overflow-y: auto;
 }
-[dir="rtl"] .ep-form {
-    border-left: 1px solid #f0f4fa;
-    box-shadow: -12px 0 40px rgba(0,0,0,0.05);
+[dir="rtl"] .bp-auth-form {
+    border-left: 1px solid var(--bp-hair);
+    box-shadow: -12px 0 40px rgba(14,27,44,.05);
 }
 
 /* ─── Logo ── */
-.ep-logo { margin-bottom: 1.6rem; }
-.ep-logo a { text-decoration: none; }
-.ep-logo-word { font-size: 1.55rem; font-weight: 900; color: #1a2a4a; letter-spacing: -0.5px; }
-.ep-logo-word .acc { color: #00d4aa; }
+.bp-auth-logo { margin-bottom: 1.6rem; }
+.bp-auth-logo a { text-decoration: none; }
+.bp-auth-logo-word { font-size: 1.55rem; font-weight: 900; color: var(--bp-ink); letter-spacing: -0.5px; }
+.bp-auth-logo-word .a { color: var(--bp-blue); }
 
 /* ─── Heading ── */
-.ep-heading { font-size: 1.4rem; font-weight: 800; color: #1a2a4a; margin: 0 0 0.25rem; }
-.ep-subhead  { font-size: 0.85rem; color: #8090a4; margin: 0 0 1.2rem; }
+.bp-auth-heading { font-size: 1.4rem; font-weight: 800; color: var(--bp-ink); margin: 0 0 0.25rem; }
+.bp-auth-subhead { font-size: 0.85rem; color: var(--bp-muted); margin: 0 0 1.2rem; }
 
 /* ─── Role path cards ── */
-.ep-role-row { display: flex; gap: 0.6rem; margin-bottom: 1.2rem; }
-.ep-role-card {
+.bp-auth-role-row { display: flex; gap: 0.6rem; margin-bottom: 1.2rem; }
+.bp-auth-role-card {
     flex: 1; text-align: center; padding: 0.75rem 0.5rem;
-    border: 1.5px solid #e5eaf3; border-radius: 12px;
-    text-decoration: none; color: #1a2a4a;
-    transition: all 0.2s; cursor: pointer;
+    border: 1.5px solid var(--bp-border); border-radius: var(--bp-r-lg);
+    text-decoration: none; color: var(--bp-ink);
+    transition: all 0.2s var(--bp-ease); cursor: pointer;
 }
-.ep-role-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.08); transform: translateY(-2px); color: #1a2a4a; }
-.ep-role-card.employer { border-color: #ffc107; }
-.ep-role-card.specialist { border-color: #00d4aa; background: rgba(0,212,170,0.04); }
-.ep-role-icon { font-size: 1.35rem; margin-bottom: 0.2rem; }
-.ep-role-name { font-size: 0.82rem; font-weight: 700; display: block; }
-.ep-role-desc { font-size: 0.68rem; color: #8090a4; line-height: 1.4; }
+.bp-auth-role-card:hover { box-shadow: var(--bp-sh-sm); transform: translateY(-2px); color: var(--bp-ink); border-color: var(--bp-blue); }
+.bp-auth-role-card.employer { border-color: #E0930B; }
+.bp-auth-role-card.specialist { border-color: var(--bp-teal); background: var(--bp-tint-teal); }
+.bp-auth-role-icon { font-size: 1.35rem; margin-bottom: 0.2rem; }
+.bp-auth-role-name { font-size: 0.82rem; font-weight: 700; display: block; }
+.bp-auth-role-desc { font-size: 0.68rem; color: var(--bp-muted); line-height: 1.4; }
 
 /* ─── Divider ── */
-.ep-divider-sm {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;
-}
-.ep-divider-sm::before, .ep-divider-sm::after {
-    content: ''; flex: 1; height: 1px; background: #e5eaf3;
-}
-.ep-divider-sm span { font-size: 0.72rem; color: #b0bfcc; white-space: nowrap; }
+.bp-auth-divider-sm { display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; }
+.bp-auth-divider-sm::before, .bp-auth-divider-sm::after { content: ''; flex: 1; height: 1px; background: var(--bp-border); }
+.bp-auth-divider-sm span { font-size: 0.72rem; color: var(--bp-muted); white-space: nowrap; }
 
 /* ─── Alerts ── */
-.ep-alert-ok {
-    background: #f0fdf8; border: 1px solid #a7f3d0; color: #065f46;
-    border-radius: 10px; padding: 10px 14px; font-size: 0.83rem; margin-bottom: 1rem;
-}
-.ep-alert-err {
-    background: #fff5f5; border: 1px solid #fca5a5; color: #991b1b;
-    border-radius: 10px; padding: 10px 14px; font-size: 0.83rem; margin-bottom: 1rem;
-}
+.bp-auth-alert-ok { background: var(--bp-tint-green); border: 1px solid #2E9E5B55; color: #1d6e40; border-radius: var(--bp-r); padding: 10px 14px; font-size: 0.83rem; margin-bottom: 1rem; }
+.bp-auth-alert-err { background: var(--bp-tint-red); border: 1px solid #E14B4B55; color: #a32f2f; border-radius: var(--bp-r); padding: 10px 14px; font-size: 0.83rem; margin-bottom: 1rem; }
 
 /* ─── Field ── */
-.ep-field { margin-bottom: 0.85rem; }
-.ep-field-row { display: flex; gap: 0.75rem; }
-.ep-field-row .ep-field { flex: 1; }
-.ep-label { display: block; font-size: 0.8rem; font-weight: 600; color: #374558; margin-bottom: 0.35rem; }
-.ep-input-box { position: relative; display: flex; align-items: center; }
-.ep-ico {
-    position: absolute; font-size: 1rem; color: #b0bfcc;
-    pointer-events: none; z-index: 2; top: 50%; transform: translateY(-50%);
-}
-[dir="rtl"] .ep-ico { right: 13px; }
-.ep-inp {
+.bp-auth-field { margin-bottom: 0.85rem; }
+.bp-auth-field-row { display: flex; gap: 0.75rem; }
+.bp-auth-field-row .bp-auth-field { flex: 1; }
+.bp-auth-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--bp-text); margin-bottom: 0.35rem; }
+.bp-auth-input-box { position: relative; display: flex; align-items: center; }
+.bp-auth-ico { position: absolute; font-size: 1rem; color: var(--bp-muted); pointer-events: none; z-index: 2; top: 50%; transform: translateY(-50%); }
+[dir="rtl"] .bp-auth-ico { right: 13px; }
+.bp-auth-inp {
     width: 100%;
     padding: 10px 42px 10px 42px;
-    border: 1.5px solid #e5eaf3; border-radius: 10px;
-    font-size: 0.855rem; color: #1a2a4a; background: #fafbfd;
+    border: 1.5px solid var(--bp-border); border-radius: var(--bp-r);
+    font-size: 0.855rem; color: var(--bp-ink); background: var(--bp-surface);
     outline: none; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     direction: ltr;
 }
-[dir="rtl"] .ep-inp { text-align: right; }
-.ep-inp::placeholder { color: #b8c4d0; direction: ltr; text-align: left; }
-.ep-inp:focus { border-color: #00d4aa; background: #fff; box-shadow: 0 0 0 3.5px rgba(0,212,170,0.13); }
-.ep-inp.is-invalid { border-color: #ef5350; }
-.ep-eye {
+[dir="rtl"] .bp-auth-inp { text-align: right; }
+.bp-auth-inp::placeholder { color: #b8c4d0; direction: ltr; text-align: left; }
+.bp-auth-inp:focus { border-color: var(--bp-blue); background: #fff; box-shadow: 0 0 0 3.5px var(--bp-tint-blue); }
+.bp-auth-inp.is-invalid { border-color: #E14B4B !important; }
+.bp-auth-inp.is-invalid:focus { box-shadow: 0 0 0 3px rgba(225,75,75,.12) !important; }
+.bp-auth-eye {
     position: absolute; top: 50%; transform: translateY(-50%);
-    background: none; border: none; color: #b0bfcc; cursor: pointer;
+    background: none; border: none; color: var(--bp-muted); cursor: pointer;
     font-size: 1rem; padding: 4px 8px; transition: color 0.2s; z-index: 2; line-height: 1;
 }
-[dir="rtl"] .ep-eye { left: 8px; }
-.ep-eye:hover { color: #00d4aa; }
-.ep-hint { font-size: 0.72rem; color: #a0aab4; margin-top: 3px; }
-
-/* ─── CTA button ── */
-.ep-btn-cta {
-    display: flex; align-items: center; justify-content: center; gap: 7px;
-    width: 100%; padding: 12px 20px;
-    background: linear-gradient(120deg, #00d4aa 0%, #6c63ff 100%);
-    color: #fff; font-size: 0.92rem; font-weight: 700;
-    border: none; border-radius: 10px; cursor: pointer;
-    transition: transform 0.22s, box-shadow 0.22s, filter 0.22s;
-    margin-bottom: 0.9rem; margin-top: 0.4rem;
-}
-.ep-btn-cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(0,212,170,0.32);
-    filter: brightness(1.04);
-}
+[dir="rtl"] .bp-auth-eye { left: 8px; }
+.bp-auth-eye:hover { color: var(--bp-blue); }
+.bp-auth-hint { font-size: 0.72rem; color: var(--bp-muted); margin-top: 3px; }
 
 /* ─── Sign in row ── */
-.ep-signin { text-align: center; font-size: 0.82rem; color: #8090a4; margin: 0; }
-.ep-signin a { color: #00a882; font-weight: 700; text-decoration: none; transition: color 0.2s; }
-.ep-signin a:hover { color: #00d4aa; text-decoration: underline; }
+.bp-auth-signin { text-align: center; font-size: 0.82rem; color: var(--bp-muted); margin: 0; }
+.bp-auth-signin a { color: var(--bp-blue); font-weight: 700; text-decoration: none; transition: color 0.2s; }
+.bp-auth-signin a:hover { color: var(--bp-blue-d); text-decoration: underline; }
 
 /* ─── Inline field errors ── */
-.ep-field .invalid-feedback {
-    display: none;
-    font-size: 0.77rem;
-    color: #ef5350;
-    margin-top: 4px;
-    padding-right: 2px;
-}
-.ep-field .invalid-feedback.d-block { display: block !important; }
-.ep-inp.is-invalid { border-color: #ef5350 !important; }
-.ep-inp.is-invalid:focus { box-shadow: 0 0 0 3px rgba(239,83,80,0.12) !important; }
+.bp-auth-field .invalid-feedback { display: none; font-size: 0.77rem; color: #E14B4B; margin-top: 4px; padding-right: 2px; }
+.bp-auth-field .invalid-feedback.d-block { display: block !important; }
 
 /* ─── Responsive ── */
 @media (max-width: 900px) {
-    .ep-form { width: 100%; padding: 2rem 1.8rem; }
-    .ep-showcase { display: none; }
-}
-@media (max-width: 767px) {
-    .ep-form {
-        background-image: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url('/images/register-bg.jpg');
-        background-size: cover;
-        background-position: center;
-    }
+    .bp-auth-form { width: 100%; padding: 2rem 1.8rem; }
+    .bp-auth-showcase { display: none; }
 }
 @media (max-width: 480px) {
-    .ep-form { padding: 1.6rem 1.1rem; }
-    .ep-heading { font-size: 1.2rem; }
-    .ep-field-row { flex-direction: column; gap: 0; }
+    .bp-auth-form { padding: 1.6rem 1.1rem; }
+    .bp-auth-heading { font-size: 1.2rem; }
+    .bp-auth-field-row { flex-direction: column; gap: 0; }
 }
 </style>
 @endsection
 
 @section('content')
-<div class="ep-wrap">
+<div class="bp-auth-wrap">
 
     {{-- ════════════ FORM PANEL — right in RTL ════════════ --}}
-    <div class="ep-form">
+    <div class="bp-auth-form">
 
         {{-- Logo --}}
-        <div class="ep-logo">
+        <div class="bp-auth-logo">
             <a href="{{ route('root') }}">
-                <div class="ep-logo-word"><span class="acc">Eng</span>Pis</div>
+                <div class="bp-auth-logo-word"><span class="a">Eng</span>Pis</div>
             </a>
         </div>
 
         {{-- Heading --}}
-        <h2 class="ep-heading">ثبت نام رایگان</h2>
-        <p class="ep-subhead">همین حالا حساب کاربری رایگان خود را بسازید</p>
+        <h2 class="bp-auth-heading">ثبت نام رایگان</h2>
+        <p class="bp-auth-subhead">همین حالا حساب کاربری رایگان خود را بسازید</p>
 
         {{-- Role path selector --}}
-        <div class="ep-role-row">
-            <a href="{{ route('guest.project') }}" class="ep-role-card employer">
-                <div class="ep-role-icon"><i class="ri-briefcase-line" style="color:#ffc107;"></i></div>
-                <span class="ep-role-name">کارفرما</span>
-                <span class="ep-role-desc">اول پروژه‌ام را ثبت می‌کنم</span>
+        <div class="bp-auth-role-row">
+            <a href="{{ route('guest.project') }}" class="bp-auth-role-card employer">
+                <div class="bp-auth-role-icon"><i class="ri-briefcase-line" style="color:#E0930B;"></i></div>
+                <span class="bp-auth-role-name">کارفرما</span>
+                <span class="bp-auth-role-desc">اول پروژه‌ام را ثبت می‌کنم</span>
             </a>
-            <div class="ep-role-card specialist">
-                <div class="ep-role-icon"><i class="ri-user-star-line" style="color:#00d4aa;"></i></div>
-                <span class="ep-role-name">فریلنسر</span>
-                <span class="ep-role-desc">فرم زیر را تکمیل می‌کنم</span>
+            <div class="bp-auth-role-card specialist">
+                <div class="bp-auth-role-icon"><i class="ri-user-star-line" style="color:var(--bp-teal);"></i></div>
+                <span class="bp-auth-role-name">فریلنسر</span>
+                <span class="bp-auth-role-desc">فرم زیر را تکمیل می‌کنم</span>
             </div>
         </div>
 
-        <div class="ep-divider-sm"><span>اطلاعات حساب</span></div>
+        <div class="bp-auth-divider-sm"><span>اطلاعات حساب</span></div>
 
         {{-- Alerts --}}
         @if(session('project_saved'))
-            <div class="ep-alert-ok">
+            <div class="bp-auth-alert-ok">
                 <i class="ri-checkbox-circle-line me-1"></i>
                 اطلاعات پروژه شما ذخیره شد. ثبت‌نام را تکمیل کنید.
             </div>
         @endif
         @if($errors->any())
-            <div class="ep-alert-err">
+            <div class="bp-auth-alert-err">
                 @foreach($errors->all() as $error)
                     <div>{{ $error }}</div>
                 @endforeach
@@ -350,13 +224,13 @@ html, body {
             @csrf
 
             {{-- Name row --}}
-            <div class="ep-field-row">
-                <div class="ep-field mb-3">
-                    <label class="ep-label" for="first_name">نام <span style="color:#ef5350;">*</span></label>
-                    <div class="ep-input-box">
-                        <i class="ri-user-3-line ep-ico"></i>
+            <div class="bp-auth-field-row">
+                <div class="bp-auth-field mb-3">
+                    <label class="bp-auth-label" for="first_name">نام <span style="color:#E14B4B;">*</span></label>
+                    <div class="bp-auth-input-box">
+                        <i class="ri-user-3-line bp-auth-ico"></i>
                         <input type="text" id="first_name" name="first_name"
-                               class="ep-inp @error('first_name') is-invalid @enderror"
+                               class="bp-auth-inp @error('first_name') is-invalid @enderror"
                                value="{{ old('first_name') }}"
                                placeholder="علی" required minlength="2" maxlength="255">
                     </div>
@@ -364,12 +238,12 @@ html, body {
                         <span>@error('first_name'){{ $message }}@enderror</span>
                     </div>
                 </div>
-                <div class="ep-field mb-3">
-                    <label class="ep-label" for="last_name">نام خانوادگی <span style="color:#ef5350;">*</span></label>
-                    <div class="ep-input-box">
-                        <i class="ri-user-3-line ep-ico"></i>
+                <div class="bp-auth-field mb-3">
+                    <label class="bp-auth-label" for="last_name">نام خانوادگی <span style="color:#E14B4B;">*</span></label>
+                    <div class="bp-auth-input-box">
+                        <i class="ri-user-3-line bp-auth-ico"></i>
                         <input type="text" id="last_name" name="last_name"
-                               class="ep-inp @error('last_name') is-invalid @enderror"
+                               class="bp-auth-inp @error('last_name') is-invalid @enderror"
                                value="{{ old('last_name') }}"
                                placeholder="رضایی" required minlength="2" maxlength="255">
                     </div>
@@ -380,12 +254,12 @@ html, body {
             </div>
 
             {{-- Mobile --}}
-            <div class="ep-field mb-3">
-                <label class="ep-label" for="mobile">شماره موبایل <span style="color:#ef5350;">*</span></label>
-                <div class="ep-input-box">
-                    <i class="ri-smartphone-line ep-ico"></i>
+            <div class="bp-auth-field mb-3">
+                <label class="bp-auth-label" for="mobile">شماره موبایل <span style="color:#E14B4B;">*</span></label>
+                <div class="bp-auth-input-box">
+                    <i class="ri-smartphone-line bp-auth-ico"></i>
                     <input type="text" id="mobile" name="mobile"
-                           class="ep-inp @error('mobile') is-invalid @enderror"
+                           class="bp-auth-inp @error('mobile') is-invalid @enderror"
                            value="{{ old('mobile') }}"
                            placeholder="09123456789" required pattern="^09\d{9}$">
                 </div>
@@ -395,12 +269,12 @@ html, body {
             </div>
 
             {{-- Email --}}
-            <div class="ep-field mb-3">
-                <label class="ep-label" for="useremail">ایمیل <span style="color:#ef5350;">*</span></label>
-                <div class="ep-input-box">
-                    <i class="ri-mail-line ep-ico"></i>
+            <div class="bp-auth-field mb-3">
+                <label class="bp-auth-label" for="useremail">ایمیل <span style="color:#E14B4B;">*</span></label>
+                <div class="bp-auth-input-box">
+                    <i class="ri-mail-line bp-auth-ico"></i>
                     <input type="email" id="useremail" name="email"
-                           class="ep-inp @error('email') is-invalid @enderror"
+                           class="bp-auth-inp @error('email') is-invalid @enderror"
                            value="{{ old('email') }}"
                            placeholder="email@example.com" required autocomplete="email">
                 </div>
@@ -410,11 +284,11 @@ html, body {
             </div>
 
             {{-- Password --}}
-            <div class="ep-field mb-3">
-                <label class="ep-label" for="password">رمز عبور <span style="color:#ef5350;">*</span></label>
+            <div class="bp-auth-field mb-3">
+                <label class="bp-auth-label" for="password">رمز عبور <span style="color:#E14B4B;">*</span></label>
                 <div style="position:relative;">
                     <input type="password" name="password" id="password"
-                           class="ep-inp @error('password') is-invalid @enderror"
+                           class="bp-auth-inp @error('password') is-invalid @enderror"
                            placeholder="حداقل ۸ کاراکتر" required minlength="8" autocomplete="new-password"
                            style="padding-left:45px;">
                     <span onclick="document.getElementById('password').type=document.getElementById('password').type==='password'?'text':'password'; this.innerHTML=document.getElementById('password').type==='password'?'👁':'🙈';"
@@ -426,11 +300,11 @@ html, body {
             </div>
 
             {{-- Password confirmation --}}
-            <div class="ep-field mb-3">
-                <label class="ep-label" for="password_confirmation">تایید رمز عبور <span style="color:#ef5350;">*</span></label>
+            <div class="bp-auth-field mb-3">
+                <label class="bp-auth-label" for="password_confirmation">تایید رمز عبور <span style="color:#E14B4B;">*</span></label>
                 <div style="position:relative;">
                     <input type="password" name="password_confirmation" id="password_confirmation"
-                           class="ep-inp @error('password_confirmation') is-invalid @enderror"
+                           class="bp-auth-inp @error('password_confirmation') is-invalid @enderror"
                            placeholder="••••••••" required minlength="8" autocomplete="new-password"
                            style="padding-left:45px;">
                     <span onclick="document.getElementById('password_confirmation').type=document.getElementById('password_confirmation').type==='password'?'text':'password'; this.innerHTML=document.getElementById('password_confirmation').type==='password'?'👁':'🙈';"
@@ -442,7 +316,7 @@ html, body {
             </div>
 
             {{-- Submit --}}
-            <button type="submit" class="ep-btn-cta ajax-submit">
+            <button type="submit" class="bp-btn bp-btn--primary ajax-submit" style="width:100%; justify-content:center; margin-bottom:0.9rem; margin-top:0.4rem;">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
                 <i class="ri-user-add-line"></i>
                 ثبت نام رایگان
@@ -451,90 +325,92 @@ html, body {
         </form>
 
         {{-- Sign in link --}}
-        <p class="ep-signin">
+        <p class="bp-auth-signin">
             قبلاً ثبت‌نام کرده‌اید؟&nbsp;
             <a href="{{ route('login') }}">ورود به حساب</a>
         </p>
 
-    </div>{{-- /ep-form --}}
+    </div>{{-- /bp-auth-form --}}
 
 
     {{-- ════════════ SHOWCASE PANEL — left in RTL ════════════ --}}
-    <div class="ep-showcase">
-        <div class="ep-dot-grid"></div>
+    <div class="bp-auth-showcase">
+        <div class="grid-bg bp-grid"></div>
+        <div class="glow g1"></div>
+        <div class="glow g2"></div>
 
-        <div class="ep-showcase-inner">
+        <div class="bp-auth-showcase-inner">
 
             {{-- Brand --}}
             <div style="margin-bottom:1.8rem;">
                 <a href="{{ route('root') }}" style="text-decoration:none;">
                     <span style="font-size:1.9rem;font-weight:900;color:white;letter-spacing:-0.5px;">
-                        <span style="color:#00d4aa;">Eng</span>Pis
+                        <span style="color:var(--bp-blue-l);">Eng</span>Pis
                     </span>
                 </a>
             </div>
 
             {{-- Heading --}}
-            <h2 class="ep-sc-title">
+            <h2 class="bp-auth-sc-title">
                 به بزرگترین پلتفرم<br>
                 <span class="hl">مهندسی ایران</span> بپیوندید
             </h2>
-            <p class="ep-sc-sub">
+            <p class="bp-auth-sc-sub">
                 ثبت‌نام رایگان است. کارفرمایان پروژه‌هایشان را ثبت می‌کنند و متخصصان بهترین فرصت‌های مهندسی را می‌یابند.
             </p>
 
             {{-- Stats --}}
-            <div class="ep-stats">
-                <div class="ep-stat">
-                    <div class="ep-stat-num">+۵۰۰</div>
-                    <div class="ep-stat-lbl">پروژه فعال</div>
+            <div class="bp-auth-stats">
+                <div class="bp-auth-stat">
+                    <div class="bp-auth-stat-num">+۵۰۰</div>
+                    <div class="bp-auth-stat-lbl">پروژه فعال</div>
                 </div>
-                <div class="ep-stat">
-                    <div class="ep-stat-num">+۱۲۰۰</div>
-                    <div class="ep-stat-lbl">متخصص</div>
+                <div class="bp-auth-stat">
+                    <div class="bp-auth-stat-num">+۱۲۰۰</div>
+                    <div class="bp-auth-stat-lbl">متخصص</div>
                 </div>
-                <div class="ep-stat">
-                    <div class="ep-stat-num">+۱۵</div>
-                    <div class="ep-stat-lbl">حوزه تخصصی</div>
+                <div class="bp-auth-stat">
+                    <div class="bp-auth-stat-num">+۱۵</div>
+                    <div class="bp-auth-stat-lbl">حوزه تخصصی</div>
                 </div>
             </div>
 
             {{-- Trust badges --}}
             <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
                 <div style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:0.82rem;">
-                    <i class="ri-shield-check-line" style="color:#00d4aa;"></i> ثبت‌نام رایگان
+                    <i class="ri-shield-check-line" style="color:var(--bp-teal);"></i> ثبت‌نام رایگان
                 </div>
                 <div style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:0.82rem;">
-                    <i class="ri-lock-line" style="color:#00d4aa;"></i> اطلاعات محفوظ
+                    <i class="ri-lock-line" style="color:var(--bp-teal);"></i> اطلاعات محفوظ
                 </div>
                 <div style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:0.82rem;">
-                    <i class="ri-rocket-line" style="color:#00d4aa;"></i> شروع فوری
+                    <i class="ri-rocket-line" style="color:var(--bp-teal);"></i> شروع فوری
                 </div>
             </div>
 
         </div>
 
         {{-- Floating cards --}}
-        <div class="ep-float ep-float-1">
-            <div class="ep-float-ic" style="background:#00d4aa1a;">
-                <i class="ri-briefcase-line" style="color:#00d4aa;"></i>
+        <div class="bp-auth-float bp-auth-float-1">
+            <div class="bp-auth-float-ic" style="background:var(--bp-tint-blue);">
+                <i class="ri-briefcase-line" style="color:var(--bp-blue);"></i>
             </div>
             <div>
-                <div class="ep-float-num">+۵۰۰</div>
-                <div class="ep-float-lbl">پروژه ثبت‌شده</div>
+                <div class="bp-auth-float-num">+۵۰۰</div>
+                <div class="bp-auth-float-lbl">پروژه ثبت‌شده</div>
             </div>
         </div>
-        <div class="ep-float ep-float-2">
-            <div class="ep-float-ic" style="background:#6c63ff1a;">
-                <i class="ri-user-star-line" style="color:#6c63ff;"></i>
+        <div class="bp-auth-float bp-auth-float-2">
+            <div class="bp-auth-float-ic" style="background:var(--bp-tint-teal);">
+                <i class="ri-user-star-line" style="color:var(--bp-teal);"></i>
             </div>
             <div>
-                <div class="ep-float-num">+۱۲۰۰</div>
-                <div class="ep-float-lbl">متخصص فعال</div>
+                <div class="bp-auth-float-num">+۱۲۰۰</div>
+                <div class="bp-auth-float-lbl">متخصص فعال</div>
             </div>
         </div>
 
-    </div>{{-- /ep-showcase --}}
+    </div>{{-- /bp-auth-showcase --}}
 
-</div>{{-- /ep-wrap --}}
+</div>{{-- /bp-auth-wrap --}}
 @endsection
