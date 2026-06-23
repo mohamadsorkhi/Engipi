@@ -45,7 +45,14 @@ Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('user.dashboard');
     }
-    return view('landing');
+
+    return view('landing', [
+        'projectsCount' => \App\Models\Project::count(),
+        'specialistsCount' => \App\Models\UserProfile::where('type', 'specialist')->count(),
+        'employersCount' => \App\Models\UserProfile::where('type', 'employer')->count(),
+        'domainsCount' => \App\Models\SkillDomain::count(),
+        'domains' => \App\Models\SkillDomain::withCount('subdomains')->orderBy('name')->get(),
+    ]);
 })->name('root');
 
 // صفحات عمومی
