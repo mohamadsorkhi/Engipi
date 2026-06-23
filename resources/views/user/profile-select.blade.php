@@ -132,8 +132,8 @@
                                 <div class="card-body text-center p-4 p-lg-5">
 
                                     <div class="avatar-xl mx-auto mb-4">
-                                        <span class="avatar-title bg-success text-white rounded-circle"
-                                              style="font-size:2.2rem;">
+                                        <span class="avatar-title rounded-circle"
+                                              style="font-size:2.2rem; background:var(--bp-teal); color:#fff;">
                                             <i class="ri-user-star-line"></i>
                                         </span>
                                     </div>
@@ -144,7 +144,7 @@
                                         و با پروژه‌های مناسب match شوید
                                     </p>
 
-                                    <span class="btn btn-success px-4">
+                                    <span class="btn bp-btn-teal px-4">
                                         ورود به داشبورد متخصص
                                         <i class="ri-arrow-left-line ms-1"></i>
                                     </span>
@@ -161,8 +161,8 @@
 
                         <div class="card-body text-center p-4 p-lg-5" id="specialist-cta">
                             <div class="avatar-xl mx-auto mb-4">
-                                <span class="avatar-title bg-success-subtle text-success rounded-circle"
-                                      style="font-size:2.2rem;">
+                                <span class="avatar-title rounded-circle"
+                                      style="font-size:2.2rem; background:var(--bp-tint-teal); color:var(--bp-teal);">
                                     <i class="ri-user-star-line"></i>
                                 </span>
                             </div>
@@ -171,7 +171,7 @@
                                 مهارت‌هایتان را ثبت کنید<br>
                                 و با پروژه‌های مناسب match شوید
                             </p>
-                            <button type="button" class="btn btn-outline-success px-4"
+                            <button type="button" class="btn bp-btn-outline-teal px-4"
                                     onclick="showForm('specialist')">
                                 <i class="ri-add-line me-1"></i>ایجاد پروفایل متخصص
                             </button>
@@ -192,7 +192,7 @@
                                            required minlength="2" maxlength="255">
                                     <div class="form-text">حداقل ۲ کاراکتر</div>
                                 </div>
-                                <button type="submit" class="btn btn-success w-100 ajax-submit">
+                                <button type="submit" class="btn bp-btn-teal w-100 ajax-submit">
                                     <span class="spinner-border spinner-border-sm me-1"
                                           role="status" style="display:none;"></span>
                                     ثبت و ورود به داشبورد
@@ -253,7 +253,7 @@
                         <div class="card border">
                             <div class="card-header py-2">
                                 <h6 class="mb-0 fw-semibold">
-                                    <i class="ri-user-star-line me-1 text-success"></i>پروفایل متخصص
+                                    <i class="ri-user-star-line me-1" style="color:var(--bp-teal);"></i>پروفایل متخصص
                                 </h6>
                             </div>
                             <div class="card-body">
@@ -270,7 +270,7 @@
                                         <textarea name="bio" class="form-control"
                                                   rows="3">{{ $specialistProfile->bio }}</textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-sm btn-success ajax-submit">
+                                    <button type="submit" class="btn btn-sm bp-btn-teal ajax-submit">
                                         <span class="spinner-border spinner-border-sm" role="status" style="display:none;"></span>
                                         ذخیره
                                     </button>
@@ -293,30 +293,53 @@
 @push('styles')
 <style>
 .role-card {
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    transition: transform .25s var(--bp-ease), box-shadow .25s var(--bp-ease), border-color .25s;
 }
 .role-card--employer,
 .role-card--specialist {
     border-width: 2px !important;
 }
 .role-card--employer {
-    border-color: var(--vz-primary) !important;
+    border-color: var(--bp-blue) !important;
 }
 .role-card--specialist {
-    border-color: var(--vz-success) !important;
+    border-color: var(--bp-teal) !important;
 }
 .role-card--employer-new,
 .role-card--specialist-new {
     border-style: dashed !important;
     border-width: 2px !important;
+    border-color: var(--bp-border) !important;
 }
 .role-submit-btn:hover .role-card,
 .role-submit-btn:focus .role-card {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    box-shadow: var(--bp-sh-lg);
 }
 .role-submit-btn:focus {
     outline: none;
+}
+
+.bp-btn-teal {
+    background: var(--bp-teal) !important;
+    border-color: var(--bp-teal) !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+}
+.bp-btn-teal:hover {
+    background: var(--bp-teal-d) !important;
+    border-color: var(--bp-teal-d) !important;
+    color: #fff !important;
+}
+.bp-btn-outline-teal {
+    background: transparent !important;
+    border: 1px solid var(--bp-teal) !important;
+    color: var(--bp-teal) !important;
+    font-weight: 700 !important;
+}
+.bp-btn-outline-teal:hover {
+    background: var(--bp-teal) !important;
+    color: #fff !important;
 }
 </style>
 @endpush

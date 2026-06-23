@@ -6,16 +6,16 @@
 
 <div class="row">
 <div class="col-12">
-<div class="card">
+<div class="bp-panel2">
 
-    <div class="card-header d-flex align-items-center justify-content-between">
-        <h5 class="card-title mb-0"><i class="ri-star-line text-primary me-2"></i>مهارت‌های من</h5>
+    <div class="bp-ph">
+        <h5 class="mb-0"><i class="ri-star-line text-primary me-2"></i>مهارت‌های من</h5>
         <a href="{{ route('skill.select') }}" class="btn btn-primary btn-sm">
             <i class="ri-add-line me-1"></i>افزودن / ویرایش مهارت‌ها
         </a>
     </div>
 
-    <div class="card-body">
+    <div class="bp-pb">
 
         {{-- DOMAINS --}}
         @if($selectedDomains->isNotEmpty())
@@ -58,8 +58,8 @@
             <div class="row g-3" id="skillsGrid">
                 @foreach($skills as $skill)
                 <div class="col-12 col-md-6 col-lg-4" data-skill-id="{{ $skill->id }}">
-                    <div class="card border h-100 mb-0">
-                        <div class="card-body p-3">
+                    <div class="bp-skill-card h-100">
+                        <div class="p-3">
 
                             <div class="d-flex align-items-start mb-3">
                                 <div class="avatar-sm flex-shrink-0 me-2">
@@ -122,6 +122,19 @@
 </div>
 </div>
 
+<style>
+.bp-panel2 { background: #fff; border: 1px solid var(--bp-border); border-radius: var(--bp-r-lg); overflow: hidden; }
+.bp-ph { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--bp-hair); }
+.bp-ph h5 { font-size: 1rem; font-weight: 700; }
+.bp-pb { padding: 20px; }
+.bp-skill-card {
+    background: #fff;
+    border: 1px solid var(--bp-border);
+    border-radius: var(--bp-r-lg);
+    transition: transform .25s var(--bp-ease), box-shadow .25s, border-color .25s;
+}
+.bp-skill-card:hover { border-color: var(--bp-blue); transform: translateY(-3px); box-shadow: var(--bp-sh-md); }
+</style>
 @endsection
 
 @push('scripts')

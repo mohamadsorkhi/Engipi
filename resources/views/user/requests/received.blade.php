@@ -5,20 +5,20 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0"><i class="ri-inbox-line text-primary me-2"></i>درخواست‌های دریافتی</h5>
+            <div class="bp-panel2">
+                <div class="bp-ph">
+                    <h5 class="mb-0"><i class="ri-inbox-line text-primary me-2"></i>درخواست‌های دریافتی</h5>
                 </div>
-                <div class="card-body">
+                <div class="bp-pb-table">
                     @if($requests->isEmpty())
-                        <div class="alert alert-info text-center mb-0">
+                        <div class="alert alert-info text-center mb-0 mt-3">
                             <i class="ri-information-line me-2"></i>
                             هنوز درخواستی برای پروژه‌های شما ارسال نشده است.
                         </div>
                     @else
                         <div class="table-responsive">
-                            <table class="table table-borderless table-centered align-middle mb-0">
-                                <thead class="text-muted table-light">
+                            <table class="table table-borderless table-centered align-middle bp-table mb-0">
+                                <thead class="text-muted">
                                     <tr>
                                         <th>پروژه</th>
                                         <th>متخصص</th>
@@ -81,4 +81,14 @@
             </div>
         </div>
     </div>
+
+    <style>
+    .bp-panel2 { background: #fff; border: 1px solid var(--bp-border); border-radius: var(--bp-r-lg); overflow: hidden; }
+    .bp-ph { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--bp-hair); }
+    .bp-ph h5 { font-size: 1rem; font-weight: 700; }
+    .bp-pb-table { padding: 8px 20px 20px; }
+    .table.bp-table thead th { color: var(--bp-muted); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--bp-hair); }
+    .table.bp-table tbody tr:hover { background: var(--bp-tint-blue); }
+    .table.bp-table tbody td { border-bottom: 1px solid var(--bp-hair); }
+    </style>
 @endsection

@@ -49,7 +49,15 @@
         body { background: var(--ep-bg) !important; color: var(--ep-text) !important; }
         #layout-wrapper { background: var(--ep-bg) !important; }
         .main-content { background: var(--ep-bg) !important; }
-        .page-content { background: var(--ep-bg) !important; padding-top: 90px !important; }
+        /* Engineering blueprint grid watermark, matching .bp-grid on the landing page */
+        .page-content {
+            background-color: var(--ep-bg) !important;
+            background-image:
+                linear-gradient(rgba(31,111,235,.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(31,111,235,.05) 1px, transparent 1px) !important;
+            background-size: 28px 28px !important;
+            padding-top: 90px !important;
+        }
 
         /* ─── Topbar ────────────────────────────────────── */
         #page-topbar {
@@ -181,14 +189,15 @@
         #vertical-hover { color: #94a3b8 !important; }
         #vertical-hover:hover { color: var(--ep-accent) !important; }
 
-        /* ─── Cards ─────────────────────────────────────── */
+        /* ─── Cards (matching .bp-card on the landing page) ─────────────── */
         .card {
             background: var(--ep-card) !important;
-            border: 1px solid var(--ep-border) !important;
-            box-shadow: 0 1px 8px rgba(0,0,0,0.06) !important;
-            border-radius: 14px !important;
+            border: 1px solid var(--bp-border) !important;
+            box-shadow: var(--bp-sh-sm) !important;
+            border-radius: var(--bp-r-lg) !important;
+            transition: transform .25s var(--bp-ease), box-shadow .25s var(--bp-ease), border-color .25s !important;
         }
-        .card:hover { border-color: rgba(31,111,235,0.25) !important; }
+        .card:hover { border-color: var(--bp-blue) !important; }
         .card-header {
             background: transparent !important;
             border-bottom: 1px solid var(--ep-border) !important;
@@ -197,7 +206,7 @@
         .card-title { color: var(--ep-text) !important; font-weight: 600 !important; }
         .card-text { color: var(--ep-muted) !important; }
         .card-body { color: var(--ep-text) !important; }
-        .card-animate:hover { box-shadow: 0 8px 24px rgba(31,111,235,0.14) !important; transform: translateY(-2px); }
+        .card-animate:hover { box-shadow: var(--bp-sh-md) !important; transform: translateY(-4px); }
         .card.border-dashed {
             border-style: dashed !important;
             border-color: rgba(31,111,235,0.30) !important;
@@ -233,17 +242,18 @@
             letter-spacing: 0.06em !important;
         }
 
-        /* ─── Forms ─────────────────────────────────────── */
+        /* ─── Forms (matching .inp/.sel/.ta on the landing page) ─────────── */
         .form-control, .form-select {
             background: #ffffff !important;
             border-color: var(--ep-border-2) !important;
             color: var(--ep-text) !important;
-            border-radius: 8px !important;
+            border-radius: var(--bp-r) !important;
+            padding: 0.6rem 0.85rem !important;
         }
         .form-control:focus, .form-select:focus {
             background: #ffffff !important;
             border-color: var(--ep-accent) !important;
-            box-shadow: 0 0 0 3px rgba(31,111,235,0.12) !important;
+            box-shadow: 0 0 0 3px var(--bp-tint-blue) !important;
             color: var(--ep-text) !important;
         }
         .form-control::placeholder { color: #94a3b8 !important; }
@@ -251,13 +261,14 @@
             background: #ffffff !important;
             color: var(--ep-text) !important;
         }
-        .form-label { color: var(--ep-text) !important; font-weight: 500 !important; }
-        .form-text  { color: var(--ep-muted) !important; }
+        .form-label { color: var(--bp-ink) !important; font-weight: 700 !important; font-size: 0.88rem !important; }
+        .form-text  { color: var(--ep-muted) !important; font-size: 0.76rem !important; }
         .input-group-text {
             background: #f8fafc !important;
             border-color: var(--ep-border-2) !important;
             color: var(--ep-muted) !important;
         }
+        .border-primary { border-color: var(--bp-blue) !important; }
 
         /* ─── Badges ────────────────────────────────────── */
         .badge.bg-warning         { background: rgba(224,147,11,0.15) !important; color: #E0930B !important; }
@@ -380,7 +391,7 @@
                 padding-right: 0.625rem !important;
                 padding-left:  0.625rem !important;
             }
-            .card          { border-radius: 10px !important; }
+            .card          { border-radius: var(--bp-r-lg) !important; }
             .card-body     { padding: 0.875rem !important; }
             .card-header   { padding: 0.75rem 0.875rem !important; }
             .card-animate:hover { transform: none !important; }

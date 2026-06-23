@@ -5,11 +5,11 @@
 @section('content')
     @php
         $workTypes = [
-            'remote' => ['name' => 'دورکاری', 'icon' => 'ri-global-line', 'class' => 'success'],
-            'onsite' => ['name' => 'حضوری', 'icon' => 'ri-building-line', 'class' => 'primary'],
-            'hybrid' => ['name' => 'ترکیبی', 'icon' => 'ri-git-merge-line', 'class' => 'info'],
+            'remote' => ['name' => 'دورکاری', 'icon' => 'ri-home-wifi-line', 'style' => 'background:var(--bp-teal);color:#fff;'],
+            'onsite' => ['name' => 'حضوری', 'icon' => 'ri-building-line', 'style' => 'background:var(--bp-blue);color:#fff;'],
+            'hybrid' => ['name' => 'ترکیبی', 'icon' => 'ri-git-merge-line', 'style' => 'background:var(--bp-tint-blue);color:var(--bp-blue);'],
         ];
-        $wt = $workTypes[$project->work_type] ?? ['name' => '-', 'icon' => 'ri-question-line', 'class' => 'secondary'];
+        $wt = $workTypes[$project->work_type] ?? ['name' => '-', 'icon' => 'ri-question-line', 'style' => 'background:var(--bp-surface);color:var(--bp-muted);'];
     @endphp
 
     <div class="row">
@@ -127,7 +127,7 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
                             <span class="text-muted">نوع اجرا</span>
-                            <span class="badge bg-{{ $wt['class'] }}">
+                            <span class="badge" style="{{ $wt['style'] }}">
                                 <i class="{{ $wt['icon'] }} me-1"></i>{{ $wt['name'] }}
                             </span>
                         </li>

@@ -5,11 +5,12 @@
 @section('content')
     <x-admin.breadcrumb title="ثبت تیکت جدید" parent="تیکت‌ها" parentUrl="{{ route('user.tickets.index') }}"/>
 
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title mb-0">ثبت تیکت</h5>
+    <div class="bp-fcard">
+        <div class="bp-fh">
+            <div class="bp-fh-icon"><i class="ri-customer-service-2-line"></i></div>
+            <h5>ثبت تیکت</h5>
         </div>
-        <div class="card-body">
+        <div class="bp-fb">
             <form action="{{ route('user.tickets.store') }}" method="POST">
                 @csrf
 
@@ -45,4 +46,12 @@
             </form>
         </div>
     </div>
+
+    <style>
+    .bp-fcard { background: #fff; border: 1px solid var(--bp-border); border-radius: var(--bp-r-lg); overflow: hidden; }
+    .bp-fh { padding: 16px 24px; border-bottom: 1px solid var(--bp-hair); display: flex; align-items: center; gap: 10px; }
+    .bp-fh-icon { width: 34px; height: 34px; border-radius: var(--bp-r); background: var(--bp-tint-blue); color: var(--bp-blue); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex: none; }
+    .bp-fh h5 { font-size: 1rem; font-weight: 700; margin: 0; }
+    .bp-fb { padding: 24px; }
+    </style>
 @endsection

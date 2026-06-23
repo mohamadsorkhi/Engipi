@@ -16,14 +16,11 @@
 
             {{-- EMPLOYER --}}
             <div class="col-md-6">
-                <div class="card border border-dashed h-100">
+                <div class="bp-role bp-role-emp h-100">
                     <div class="card-body text-center p-4 p-lg-5">
 
-                        <div class="avatar-lg mx-auto mb-3">
-                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle"
-                                  style="font-size: 2.2rem;">
-                                <i class="ri-briefcase-line"></i>
-                            </span>
+                        <div class="bp-role-chip mx-auto mb-3">
+                            <i class="ri-briefcase-line"></i>
                         </div>
 
                         <h4 class="mb-2">کارفرما هستم</h4>
@@ -47,14 +44,11 @@
 
             {{-- SPECIALIST --}}
             <div class="col-md-6">
-                <div class="card border border-dashed h-100">
+                <div class="bp-role bp-role-spec h-100">
                     <div class="card-body text-center p-4 p-lg-5">
 
-                        <div class="avatar-lg mx-auto mb-3">
-                            <span class="avatar-title bg-success-subtle text-success rounded-circle"
-                                  style="font-size: 2.2rem;">
-                                <i class="ri-user-star-line"></i>
-                            </span>
+                        <div class="bp-role-chip mx-auto mb-3">
+                            <i class="ri-user-star-line"></i>
                         </div>
 
                         <h4 class="mb-2">متخصص هستم</h4>
@@ -65,7 +59,7 @@
                         {{-- step 1: show entry button --}}
                         <div id="specialist-btn">
                             <button type="button"
-                                    class="btn btn-success btn-lg w-100"
+                                    class="btn bp-btn-teal btn-lg w-100"
                                     onclick="showSpecialistForm()">
                                 ورود به عنوان متخصص
                             </button>
@@ -92,7 +86,7 @@
                                     >
                                     <div class="form-text">حداقل ۲ کاراکتر</div>
                                 </div>
-                                <button type="submit" class="btn btn-success btn-lg w-100 ajax-submit">
+                                <button type="submit" class="btn bp-btn-teal btn-lg w-100 ajax-submit">
                                     <span class="spinner-border spinner-border-sm me-1"
                                           role="status" style="display:none;"></span>
                                     ثبت و ادامه
@@ -114,6 +108,45 @@
 </div>
 
 @endsection
+
+@push('styles')
+<style>
+.bp-role {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--bp-border);
+    border-radius: var(--bp-r-lg);
+    overflow: hidden;
+    transition: transform .25s var(--bp-ease), box-shadow .25s, border-color .25s;
+}
+.bp-role::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 4px; }
+.bp-role-emp::before { background: var(--bp-blue); }
+.bp-role-spec::before { background: var(--bp-teal); }
+.bp-role:hover { transform: translateY(-5px); box-shadow: var(--bp-sh-lg); }
+.bp-role-emp:hover { border-color: var(--bp-blue); }
+.bp-role-spec:hover { border-color: var(--bp-teal); }
+.bp-role-chip {
+    width: 66px; height: 66px;
+    border-radius: var(--bp-r-lg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+}
+.bp-role-emp .bp-role-chip { background: var(--bp-tint-blue); color: var(--bp-blue); }
+.bp-role-spec .bp-role-chip { background: var(--bp-tint-teal); color: var(--bp-teal); }
+
+.bp-btn-teal {
+    background: var(--bp-teal) !important;
+    border-color: var(--bp-teal) !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+}
+.bp-btn-teal:hover {
+    background: var(--bp-teal-d) !important;
+    border-color: var(--bp-teal-d) !important;
+    color: #fff !important;
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>

@@ -5,28 +5,28 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0"><i class="ri-briefcase-line text-primary me-2"></i>ثبت پروژه مهندسی جدید</h5>
-                </div>
-                <div class="card-body">
-                    <p class="text-muted mb-4">
-                        مشخصات پروژه مهندسی خود را وارد کنید تا متخصصان فنی مناسب بتوانند همکاری کنند.
-                    </p>
 
-                    <form id="projectForm" action="{{ route('user.projects.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+            <div class="bp-form-head mb-4">
+                <h4 class="mb-1"><i class="ri-briefcase-line text-primary me-2"></i>ثبت پروژه مهندسی جدید</h4>
+                <p class="text-muted mb-0">
+                    مشخصات پروژه مهندسی خود را وارد کنید تا متخصصان فنی مناسب بتوانند همکاری کنند.
+                </p>
+            </div>
 
-                        <!-- Basic Info -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h6 class="fw-semibold text-primary mb-3">
-                                    <i class="ri-file-text-line me-2"></i>اطلاعات پایه
-                                </h6>
-                            </div>
+            <form id="projectForm" action="{{ route('user.projects.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <!-- Basic Info -->
+                <div class="bp-fcard mb-4">
+                    <div class="bp-fh">
+                        <div class="bp-fh-icon"><i class="ri-file-text-line"></i></div>
+                        <h5>اطلاعات پایه</h5>
+                    </div>
+                    <div class="bp-fb">
+                        <div class="row">
                             <div class="col-md-12 mb-3">
                                 <label for="title" class="form-label">عنوان پروژه مهندسی <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="title" name="title" 
+                                <input type="text" class="form-control" id="title" name="title"
                                     placeholder="مثال: طراحی و پیاده‌سازی سیستم کنترل صنعتی" required minlength="5" maxlength="255">
                                 <div class="invalid-feedback"><span></span></div>
                             </div>
@@ -42,160 +42,145 @@
                                 <div class="invalid-feedback"><span></span></div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Work Type -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h6 class="fw-semibold text-primary mb-3">
-                                    <i class="ri-map-pin-line me-2"></i>نوع اجرای پروژه <span class="text-danger">*</span>
-                                </h6>
-                            </div>
-                            <div class="col-12">
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <div class="form-check card-radio">
-                                            <input class="form-check-input" type="radio" name="work_type" 
-                                                id="work_type_remote" value="remote" required>
-                                            <label class="form-check-label w-100" for="work_type_remote">
-                                                <div class="d-flex align-items-center p-3 border rounded cursor-pointer work-type-card">
-                                                    <div class="avatar-sm flex-shrink-0 me-3">
-                                                        <span class="avatar-title bg-success-subtle text-success rounded-circle">
-                                                            <i class="ri-global-line fs-4"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        <h6 class="mb-0">دورکاری</h6>
-                                                        <small class="text-muted">کار از راه دور</small>
-                                                    </div>
-                                                </div>
-                                            </label>
+                <!-- Work Type -->
+                <div class="bp-fcard mb-4">
+                    <div class="bp-fh">
+                        <div class="bp-fh-icon"><i class="ri-map-pin-line"></i></div>
+                        <h5>نوع اجرای پروژه <span class="text-danger">*</span></h5>
+                    </div>
+                    <div class="bp-fb">
+                        <div class="bp-wt-grid">
+                            <div class="form-check card-radio">
+                                <input class="form-check-input" type="radio" name="work_type"
+                                    id="work_type_remote" value="remote" required>
+                                <label class="form-check-label w-100" for="work_type_remote">
+                                    <div class="bp-wt">
+                                        <i class="ri-check-line bp-wt-check"></i>
+                                        <div class="bp-wt-ic"><i class="ri-home-wifi-line"></i></div>
+                                        <div>
+                                            <div class="bp-wt-t">دورکاری</div>
+                                            <div class="bp-wt-s">کار از راه دور</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check card-radio">
-                                            <input class="form-check-input" type="radio" name="work_type" 
-                                                id="work_type_onsite" value="onsite">
-                                            <label class="form-check-label w-100" for="work_type_onsite">
-                                                <div class="d-flex align-items-center p-3 border rounded cursor-pointer work-type-card">
-                                                    <div class="avatar-sm flex-shrink-0 me-3">
-                                                        <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                                            <i class="ri-building-line fs-4"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        <h6 class="mb-0">حضوری</h6>
-                                                        <small class="text-muted">حضور در محل کار</small>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check card-radio">
-                                            <input class="form-check-input" type="radio" name="work_type" 
-                                                id="work_type_hybrid" value="hybrid">
-                                            <label class="form-check-label w-100" for="work_type_hybrid">
-                                                <div class="d-flex align-items-center p-3 border rounded cursor-pointer work-type-card">
-                                                    <div class="avatar-sm flex-shrink-0 me-3">
-                                                        <span class="avatar-title bg-info-subtle text-info rounded-circle">
-                                                            <i class="ri-git-merge-line fs-4"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        <h6 class="mb-0">ترکیبی</h6>
-                                                        <small class="text-muted">هم حضوری هم دورکاری</small>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="invalid-feedback" id="work-type-error"></div>
-                            </div>
-                        </div>
-
-                        <!-- Domain & Processes -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h6 class="fw-semibold text-primary mb-3">
-                                    <i class="ri-stack-line me-2"></i>حوزه‌های تخصصی و پردازش‌ها
-                                </h6>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label">حوزه‌های تخصصی <span class="text-danger">*</span>
-                                    <small class="text-muted">(حداقل ۱ و حداکثر ۳ حوزه انتخاب کنید)</small>
                                 </label>
-                                <div class="row g-3" id="domains-list">
-                                    @foreach($domains as $domain)
-                                    <div class="col-md-6 col-lg-4">
-                                        <div class="card border domain-card" data-domain-id="{{ $domain->id }}">
-                                            <div class="card-body">
-                                                <div class="form-check">
-                                                    <input class="form-check-input domain-checkbox" type="checkbox" 
-                                                        id="domain_{{ $domain->id }}" 
-                                                        value="{{ $domain->id }}"
-                                                        data-processes='@json($domain->processes)'>
-                                                    <label class="form-check-label fw-medium" for="domain_{{ $domain->id }}">
-                                                        {{ $domain->name }}
-                                                    </label>
-                                                </div>
-                                            </div>
+                            </div>
+                            <div class="form-check card-radio">
+                                <input class="form-check-input" type="radio" name="work_type"
+                                    id="work_type_onsite" value="onsite">
+                                <label class="form-check-label w-100" for="work_type_onsite">
+                                    <div class="bp-wt">
+                                        <i class="ri-check-line bp-wt-check"></i>
+                                        <div class="bp-wt-ic"><i class="ri-building-line"></i></div>
+                                        <div>
+                                            <div class="bp-wt-t">حضوری</div>
+                                            <div class="bp-wt-s">حضور در محل کار</div>
                                         </div>
                                     </div>
-                                    @endforeach
-                                </div>
-                                <div class="invalid-feedback d-block" id="domains-error"><span></span></div>
+                                </label>
                             </div>
-                            <div class="col-12 mb-3">
-                                <div id="processes-container" style="display: none;">
-                                    <label for="processes" class="form-label d-flex align-items-center justify-content-between">
-                                        <span>
-                                            مهارت‌های پردازشی <span class="text-danger">*</span>
-                                            <small class="text-muted">(حداقل ۱ پردازش انتخاب کنید)</small>
-                                        </span>
-                                        <small class="text-muted fw-medium" id="processes-counter">۰ از ۳</small>
-                                    </label>
-                                    <select class="form-select" id="processes" multiple></select>
-                                    <div class="alert alert-info small mb-3 mt-2">
-                                        <i class="ri-information-line me-1"></i>
-                                        برای هر پردازش انتخاب شده، سطح مهارت مورد نیاز را مشخص کنید.
+                            <div class="form-check card-radio">
+                                <input class="form-check-input" type="radio" name="work_type"
+                                    id="work_type_hybrid" value="hybrid">
+                                <label class="form-check-label w-100" for="work_type_hybrid">
+                                    <div class="bp-wt">
+                                        <i class="ri-check-line bp-wt-check"></i>
+                                        <div class="bp-wt-ic"><i class="ri-git-merge-line"></i></div>
+                                        <div>
+                                            <div class="bp-wt-t">ترکیبی</div>
+                                            <div class="bp-wt-s">هم حضوری هم دورکاری</div>
+                                        </div>
                                     </div>
-                                    <div id="processes-cards" class="row g-3"></div>
-                                    <div class="invalid-feedback d-block" id="processes-error"><span></span></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="invalid-feedback" id="work-type-error"></div>
+                    </div>
+                </div>
+
+                <!-- Domain & Processes -->
+                <div class="bp-fcard mb-4">
+                    <div class="bp-fh">
+                        <div class="bp-fh-icon"><i class="ri-stack-line"></i></div>
+                        <h5>حوزه‌های تخصصی و پردازش‌ها</h5>
+                    </div>
+                    <div class="bp-fb">
+                        <div class="mb-3">
+                            <label class="form-label">حوزه‌های تخصصی <span class="text-danger">*</span>
+                                <small class="text-muted">(حداقل ۱ و حداکثر ۳ حوزه انتخاب کنید)</small>
+                            </label>
+                            <div class="bp-domain-grid" id="domains-list">
+                                @foreach($domains as $domain)
+                                <div class="bp-domain" data-domain-id="{{ $domain->id }}">
+                                    <div class="form-check">
+                                        <input class="form-check-input domain-checkbox" type="checkbox"
+                                            id="domain_{{ $domain->id }}"
+                                            value="{{ $domain->id }}"
+                                            data-processes='@json($domain->processes)'>
+                                        <label class="form-check-label fw-medium" for="domain_{{ $domain->id }}">
+                                            {{ $domain->name }}
+                                        </label>
+                                    </div>
                                 </div>
+                                @endforeach
+                            </div>
+                            <div class="invalid-feedback d-block" id="domains-error"><span></span></div>
+                        </div>
+                        <div class="mb-0">
+                            <div id="processes-container" style="display: none;">
+                                <label for="processes" class="form-label d-flex align-items-center justify-content-between">
+                                    <span>
+                                        مهارت‌های پردازشی <span class="text-danger">*</span>
+                                        <small class="text-muted">(حداقل ۱ پردازش انتخاب کنید)</small>
+                                    </span>
+                                    <small class="text-muted fw-medium" id="processes-counter">۰ از ۳</small>
+                                </label>
+                                <select class="form-select" id="processes" multiple></select>
+                                <div class="alert alert-info small mb-3 mt-2">
+                                    <i class="ri-information-line me-1"></i>
+                                    برای هر پردازش انتخاب شده، سطح مهارت مورد نیاز را مشخص کنید.
+                                </div>
+                                <div id="processes-cards" class="row g-3"></div>
+                                <div class="invalid-feedback d-block" id="processes-error"><span></span></div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Skills (Optional) -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h6 class="fw-semibold text-primary mb-3">
-                                    <i class="ri-tools-line me-2"></i>مهارت‌های میدانی (اختیاری)
-                                </h6>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="skills" class="form-label">مهارت‌ها</label>
-                                <select class="form-select" id="skills" multiple>
-                                    @foreach($skills as $skill)
-                                        <option value="{{ $skill->id }}" data-skill-type="{{ $skill->skill_type }}">{{ $skill->name }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="form-text">مهارت‌های خاص مورد نیاز پروژه را انتخاب کنید</div>
-                                <div class="invalid-feedback d-block" id="skills-error"><span></span></div>
-                                <div id="skills-cards" class="row g-3 mt-3"></div>
-                            </div>
+                <!-- Skills (Optional) -->
+                <div class="bp-fcard mb-4">
+                    <div class="bp-fh">
+                        <div class="bp-fh-icon"><i class="ri-tools-line"></i></div>
+                        <h5>مهارت‌های میدانی (اختیاری)</h5>
+                    </div>
+                    <div class="bp-fb">
+                        <div class="mb-0">
+                            <label for="skills" class="form-label">مهارت‌ها</label>
+                            <select class="form-select" id="skills" multiple>
+                                @foreach($skills as $skill)
+                                    <option value="{{ $skill->id }}" data-skill-type="{{ $skill->skill_type }}">{{ $skill->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="form-text">مهارت‌های خاص مورد نیاز پروژه را انتخاب کنید</div>
+                            <div class="invalid-feedback d-block" id="skills-error"><span></span></div>
+                            <div id="skills-cards" class="row g-3 mt-3"></div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Timeline & Budget -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h6 class="fw-semibold text-primary mb-3">
-                                    <i class="ri-time-line me-2"></i>زمان‌بندی و بودجه
-                                </h6>
-                            </div>
+                <!-- Timeline & Budget -->
+                <div class="bp-fcard mb-4">
+                    <div class="bp-fh">
+                        <div class="bp-fh-icon"><i class="ri-time-line"></i></div>
+                        <h5>زمان‌بندی و بودجه</h5>
+                    </div>
+                    <div class="bp-fb">
+                        <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="duration_days" class="form-label">مدت زمان (روز)</label>
-                                <input type="number" class="form-control" id="duration_days" name="duration_days" 
+                                <input type="number" class="form-control" id="duration_days" name="duration_days"
                                     min="1" placeholder="مثال: 30">
                                 <div class="invalid-feedback"><span></span></div>
                             </div>
@@ -214,34 +199,37 @@
                                 <div class="invalid-feedback"><span></span></div>
                             </div>
                         </div>
-
-                        <!-- File Upload -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h6 class="fw-semibold text-primary mb-3">
-                                    <i class="ri-attachment-line me-2"></i>فایل‌های پیوست (اختیاری)
-                                </h6>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="files" class="form-label">بارگذاری فایل</label>
-                                <input type="file" class="form-control" id="files" name="files[]" multiple>
-                                <div class="form-text">حداکثر حجم هر فایل: ۱۰ مگابایت</div>
-                                <div class="invalid-feedback"><span></span></div>
-                            </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="d-flex justify-content-end gap-2 ep-form-actions">
-                            <a href="{{ route('user.projects.index') }}" class="btn btn-light">انصراف</a>
-                            <button type="submit" class="btn btn-primary" id="submitBtn">
-                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                ثبت پروژه
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+
+                <!-- File Upload -->
+                <div class="bp-fcard mb-4">
+                    <div class="bp-fh">
+                        <div class="bp-fh-icon"><i class="ri-attachment-line"></i></div>
+                        <h5>فایل‌های پیوست (اختیاری)</h5>
+                    </div>
+                    <div class="bp-fb">
+                        <div class="mb-0">
+                            <label for="files" class="form-label">بارگذاری فایل</label>
+                            <input type="file" class="form-control" id="files" name="files[]" multiple>
+                            <div class="form-text">حداکثر حجم هر فایل: ۱۰ مگابایت</div>
+                            <div class="invalid-feedback"><span></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-form-foot ep-form-actions">
+                    <span class="bp-form-note"><i class="ri-shield-check-line"></i>اطلاعات پروژه شما محفوظ و امن نگه‌داری می‌شود.</span>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('user.projects.index') }}" class="btn btn-light">انصراف</a>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            ثبت پروژه
+                        </button>
+                    </div>
+                </div>
+            </form>
+
         </div>
     </div>
 @endsection
@@ -505,12 +493,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // ── Work-type card styling + skill filtering ──────────────────────────
     workTypeRadios.forEach(function (radio) {
         radio.addEventListener('change', function () {
-            document.querySelectorAll('.work-type-card').forEach(function (card) {
-                card.classList.remove('border-primary', 'bg-primary-subtle');
+            document.querySelectorAll('.bp-wt').forEach(function (card) {
+                card.classList.remove('sel');
             });
             if (this.checked) {
-                this.closest('.form-check').querySelector('.work-type-card')
-                    .classList.add('border-primary', 'bg-primary-subtle');
+                this.closest('.form-check').querySelector('.bp-wt').classList.add('sel');
                 filterSkillsByWorkType(this.value);
             }
         });
@@ -548,7 +535,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ── Domain checkbox change ────────────────────────────────────────────
     domainCheckboxes.forEach(function (checkbox) {
         checkbox.addEventListener('change', function () {
-            const card         = this.closest('.domain-card');
+            const card         = this.closest('.bp-domain');
             const checkedCount = document.querySelectorAll('.domain-checkbox:checked').length;
 
             if (this.checked) {
@@ -557,9 +544,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('حداکثر ۳ حوزه می‌توانید انتخاب کنید.');
                     return;
                 }
-                card.classList.add('border-primary', 'bg-primary-subtle');
+                card.classList.add('sel');
             } else {
-                card.classList.remove('border-primary', 'bg-primary-subtle');
+                card.classList.remove('sel');
             }
 
             allProcessesMap.clear();
@@ -738,23 +725,112 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <style>
-.work-type-card, .domain-card {
+/* ── Form head ────────────────────────────────────────────────────────── */
+.bp-form-head h4 { font-weight: 800; }
+
+/* ── Section card, matching .fcard on the landing/blueprint reference ──── */
+.bp-fcard {
+    background: #fff;
+    border: 1px solid var(--bp-border);
+    border-radius: var(--bp-r-lg);
+    overflow: hidden;
+}
+.bp-fh {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--bp-hair);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.bp-fh-icon {
+    width: 34px; height: 34px;
+    border-radius: var(--bp-r);
+    background: var(--bp-tint-blue);
+    color: var(--bp-blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex: none;
+}
+.bp-fh h5 { font-size: 1rem; font-weight: 700; margin: 0; }
+.bp-fb { padding: 24px; }
+
+/* ── Work-type cards, matching .wt on the blueprint reference ───────────── */
+.bp-wt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 640px) { .bp-wt-grid { grid-template-columns: 1fr; } }
+.card-radio .form-check-input { display: none; }
+.bp-wt {
+    border: 1px solid var(--bp-border);
+    border-radius: var(--bp-r-lg);
+    padding: 16px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all .2s var(--bp-ease);
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+    position: relative;
 }
-.work-type-card:hover, .domain-card:hover {
-    border-color: var(--vz-primary) !important;
+.bp-wt:hover { border-color: var(--bp-blue); }
+.bp-wt.sel { border-color: var(--bp-blue); background: var(--bp-tint-blue); box-shadow: 0 0 0 1px var(--bp-blue) inset; }
+.bp-wt-ic {
+    width: 38px; height: 38px;
+    border-radius: var(--bp-r);
+    background: var(--bp-surface);
+    color: var(--bp-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex: none;
+    transition: all .2s var(--bp-ease);
 }
-.card-radio .form-check-input {
-    display: none;
+.bp-wt.sel .bp-wt-ic { background: var(--bp-blue); color: #fff; }
+.bp-wt-t { font-weight: 700; font-size: .92rem; color: var(--bp-ink); }
+.bp-wt-s { font-size: .76rem; color: var(--bp-muted); }
+.bp-wt-check {
+    position: absolute; top: 12px; inset-inline-end: 12px;
+    color: var(--bp-blue); font-size: 1.1rem;
+    opacity: 0; transition: opacity .2s;
 }
+.bp-wt.sel .bp-wt-check { opacity: 1; }
+
+/* ── Domain checkbox cards ──────────────────────────────────────────────── */
+.bp-domain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 860px) { .bp-domain-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .bp-domain-grid { grid-template-columns: 1fr; } }
+.bp-domain {
+    background: #fff;
+    border: 1px solid var(--bp-border);
+    border-radius: var(--bp-r-lg);
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all .2s var(--bp-ease);
+}
+.bp-domain:hover { border-color: var(--bp-blue); transform: translateY(-2px); box-shadow: var(--bp-sh-sm); }
+.bp-domain.sel { border-color: var(--bp-blue); background: var(--bp-tint-blue); }
+
+/* ── Process / skill chip-cards ─────────────────────────────────────────── */
 .card.process-card {
-    background-color: rgba(var(--vz-primary-rgb), .07) !important;
-    border-left: 3px solid var(--vz-primary) !important;
+    background-color: var(--bp-tint-blue) !important;
+    border-left: 3px solid var(--bp-blue) !important;
 }
 .card.skill-card {
-    background-color: rgba(var(--vz-success-rgb), .07) !important;
-    border-left: 3px solid var(--vz-success) !important;
+    background-color: var(--bp-tint-teal) !important;
+    border-left: 3px solid var(--bp-teal) !important;
 }
+
+/* ── Form footer ─────────────────────────────────────────────────────────── */
+.bp-form-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.bp-form-note {
+    font-size: .82rem;
+    color: var(--bp-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.bp-form-note i { color: var(--bp-teal); }
 </style>
 @endsection

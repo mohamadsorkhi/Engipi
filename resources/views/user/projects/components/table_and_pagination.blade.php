@@ -6,8 +6,8 @@
     </div>
 @else
     <div class="table-responsive">
-        <table class="table table-borderless table-centered align-middle mb-0">
-            <thead class="text-muted table-light">
+        <table class="table table-borderless table-centered align-middle bp-table mb-0">
+            <thead class="text-muted">
                 <tr>
                     <th>عنوان</th>
                     <th>حوزه</th>
@@ -20,9 +20,9 @@
             <tbody>
                 @php
                     $workTypes = [
-                        'remote' => ['name' => 'دورکاری', 'class' => 'bg-success'],
-                        'onsite' => ['name' => 'حضوری', 'class' => 'bg-primary'],
-                        'hybrid' => ['name' => 'ترکیبی', 'class' => 'bg-info'],
+                        'remote' => ['name' => 'دورکاری', 'style' => 'background:var(--bp-teal);color:#fff;'],
+                        'onsite' => ['name' => 'حضوری', 'style' => 'background:var(--bp-blue);color:#fff;'],
+                        'hybrid' => ['name' => 'ترکیبی', 'style' => 'background:var(--bp-tint-blue);color:var(--bp-blue);'],
                     ];
                 @endphp
                 @foreach($projects as $project)
@@ -42,11 +42,11 @@
                             @endif
                         </td>
                         <td>
-                            @php $wt = $workTypes[$project->work_type] ?? ['name' => '-', 'class' => 'bg-secondary']; @endphp
-                            <span class="badge {{ $wt['class'] }}">{{ $wt['name'] }}</span>
+                            @php $wt = $workTypes[$project->work_type] ?? ['name' => '-', 'style' => 'background:var(--bp-surface);color:var(--bp-muted);']; @endphp
+                            <span class="badge" style="{{ $wt['style'] }}">{{ $wt['name'] }}</span>
                         </td>
                         <td>
-                            <span class="badge bg-info">{{ $project->requests_count ?? $project->requests()->count() }}</span>
+                            <span class="badge" style="background:var(--bp-tint-sky);color:var(--bp-c-sky);">{{ $project->requests_count ?? $project->requests()->count() }}</span>
                         </td>
                         <td class="text-muted">{{ $project->created_at }}</td>
                         <td>
