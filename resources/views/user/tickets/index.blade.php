@@ -7,7 +7,7 @@
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">لیست تیکت‌ها</h5>
+            <h5 class="card-title mb-0"><i class="ri-customer-service-2-line text-primary me-2"></i>لیست تیکت‌ها</h5>
             <a href="{{ route('user.tickets.create') }}" class="btn btn-primary btn-sm">ثبت تیکت جدید</a>
         </div>
         <div class="card-body">

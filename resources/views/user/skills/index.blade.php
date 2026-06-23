@@ -9,7 +9,7 @@
 <div class="card">
 
     <div class="card-header d-flex align-items-center justify-content-between">
-        <h5 class="card-title mb-0">مهارت‌های من</h5>
+        <h5 class="card-title mb-0"><i class="ri-star-line text-primary me-2"></i>مهارت‌های من</h5>
         <a href="{{ route('skill.select') }}" class="btn btn-primary btn-sm">
             <i class="ri-add-line me-1"></i>افزودن / ویرایش مهارت‌ها
         </a>

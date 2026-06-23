@@ -7,7 +7,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">درخواست‌های دریافتی</h5>
+                    <h5 class="card-title mb-0"><i class="ri-inbox-line text-primary me-2"></i>درخواست‌های دریافتی</h5>
                 </div>
                 <div class="card-body">
                     @if($requests->isEmpty())

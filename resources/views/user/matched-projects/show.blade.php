@@ -16,7 +16,7 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ $project->title }}</h5>
+                    <h5 class="card-title mb-0"><i class="ri-file-text-line text-primary me-2"></i>{{ $project->title }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
@@ -66,7 +66,7 @@
             <!-- Send Request Section -->
             <div class="card">
                 <div class="card-header">
-                    <h6 class="card-title mb-0">ارسال درخواست همکاری</h6>
+                    <h6 class="card-title mb-0"><i class="ri-send-plane-2-line text-success me-2"></i>ارسال درخواست همکاری</h6>
                 </div>
                 <div class="card-body">
                     @if($sentRequest)

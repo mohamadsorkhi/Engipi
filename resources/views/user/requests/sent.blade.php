@@ -7,7 +7,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">درخواست‌های ارسالی</h5>
+                    <h5 class="card-title mb-0"><i class="ri-send-plane-2-line text-primary me-2"></i>درخواست‌های ارسالی</h5>
                     <a href="{{ route('user.matched-projects.index') }}" class="btn btn-soft-primary btn-sm">
                         <i class="ri-search-line me-1"></i> جستجوی پروژه
                     </a>

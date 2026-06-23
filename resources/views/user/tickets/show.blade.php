@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div>
-                        <div class="fw-semibold">{{ $ticket->subject }}</div>
+                        <div class="fw-semibold"><i class="ri-customer-service-2-line text-primary me-2"></i>{{ $ticket->subject }}</div>
                         <div class="text-muted small">دپارتمان: {{ $ticket->department?->name ?? '-' }}</div>
                     </div>
                     <div class="d-flex gap-2">

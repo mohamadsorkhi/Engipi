@@ -16,7 +16,7 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">{{ $project->title }}</h5>
+                    <h5 class="card-title mb-0"><i class="ri-file-text-line text-primary me-2"></i>{{ $project->title }}</h5>
                     <div class="d-flex gap-2">
                         <a href="{{ route('user.projects.edit', $project) }}" class="btn btn-soft-info btn-sm">
                             <i class="ri-pencil-line me-1"></i> ویرایش
@@ -108,7 +108,7 @@
             <!-- Requests -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">درخواست‌های همکاری</h5>
+                    <h5 class="card-title mb-0"><i class="ri-inbox-line text-primary me-2"></i>درخواست‌های همکاری</h5>
                 </div>
                 <div class="card-body">
                     @if($project->requests->isEmpty())

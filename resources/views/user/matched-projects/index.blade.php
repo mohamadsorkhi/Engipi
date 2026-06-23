@@ -7,7 +7,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">پروژه‌های پیشنهادی</h5>
+                    <h5 class="card-title mb-0"><i class="ri-lightbulb-flash-line text-primary me-2"></i>پروژه‌های پیشنهادی</h5>
                     <a href="{{ route('user.skills.index') }}" class="btn btn-soft-primary btn-sm">
                         <i class="ri-settings-3-line me-1"></i> مدیریت مهارت‌ها
                     </a>

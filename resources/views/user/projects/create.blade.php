@@ -7,7 +7,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">ثبت پروژه مهندسی جدید</h5>
+                    <h5 class="card-title mb-0"><i class="ri-briefcase-line text-primary me-2"></i>ثبت پروژه مهندسی جدید</h5>
                 </div>
                 <div class="card-body">
                     <p class="text-muted mb-4">
