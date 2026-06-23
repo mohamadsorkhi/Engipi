@@ -22,29 +22,27 @@
     <meta content="EngPis" name="author" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ URL::asset('build/images/favicon.ico')}}">
-    <!-- Vazirmatn Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     @include('layouts.head-css')
     <style>
         /* ═══════════════════════════════════════════════════
-           EngPis Custom Theme — Light + Teal
+           EngPis Blueprint Theme — Navy + Blue
         ═══════════════════════════════════════════════════ */
-        * { font-family: 'Vazirmatn', sans-serif !important; }
+        * { font-family: var(--bp-font, 'Vazirmatn', sans-serif) !important; }
 
         :root {
-            --ep-bg:          #f8f9fa;
-            --ep-bg-2:        #f1f5f9;
+            --ep-bg:          var(--bp-surface);
+            --ep-bg-2:        var(--bp-hair);
             --ep-sidebar:     #ffffff;
             --ep-topbar:      #ffffff;
             --ep-card:        #ffffff;
-            --ep-card-2:      #f8fafc;
-            --ep-accent:      #00d4aa;
-            --ep-accent-2:    #00b090;
-            --ep-accent-glow: rgba(0,212,170,0.12);
-            --ep-border:      #e9ecef;
-            --ep-border-2:    #dee2e6;
-            --ep-text:        #1e293b;
-            --ep-muted:       #64748b;
+            --ep-card-2:      var(--bp-surface);
+            --ep-accent:      var(--bp-blue);
+            --ep-accent-2:    var(--bp-blue-d);
+            --ep-accent-glow: var(--bp-tint-blue);
+            --ep-border:      var(--bp-hair);
+            --ep-border-2:    var(--bp-border);
+            --ep-text:        var(--bp-text);
+            --ep-muted:       var(--bp-muted);
         }
 
         /* ─── Body & Layout ─────────────────────────────── */
@@ -97,18 +95,18 @@
         .btn-primary:hover, .btn-primary:focus {
             background: var(--ep-accent-2) !important;
             border-color: var(--ep-accent-2) !important;
-            box-shadow: 0 6px 20px rgba(0,212,170,0.28) !important;
+            box-shadow: 0 6px 20px rgba(31,111,235,0.28) !important;
             color: #ffffff !important;
         }
         .btn-success {
-            background: #059669 !important;
-            border-color: #059669 !important;
+            background: #2E9E5B !important;
+            border-color: #2E9E5B !important;
             color: #ffffff !important;
             font-weight: 700 !important;
         }
         .btn-success:hover {
-            background: #047857 !important;
-            border-color: #047857 !important;
+            background: #247f49 !important;
+            border-color: #247f49 !important;
         }
         .btn-outline-secondary {
             border-color: var(--ep-border-2) !important;
@@ -124,13 +122,13 @@
             color: var(--ep-accent) !important;
             border: none !important;
         }
-        .btn-soft-primary:hover { background: rgba(0,212,170,0.20) !important; color: var(--ep-accent) !important; }
+        .btn-soft-primary:hover { background: rgba(31,111,235,0.20) !important; color: var(--ep-accent) !important; }
         .btn-soft-success {
-            background: rgba(5,150,105,0.10) !important;
-            color: #059669 !important;
+            background: rgba(46,158,91,0.10) !important;
+            color: #2E9E5B !important;
             border: none !important;
         }
-        .btn-soft-success:hover { background: rgba(5,150,105,0.18) !important; color: #047857 !important; }
+        .btn-soft-success:hover { background: rgba(46,158,91,0.18) !important; color: #247f49 !important; }
         .btn-sm { font-size: 0.78rem !important; }
 
         /* ─── Sidebar ───────────────────────────────────── */
@@ -190,7 +188,7 @@
             box-shadow: 0 1px 8px rgba(0,0,0,0.06) !important;
             border-radius: 14px !important;
         }
-        .card:hover { border-color: rgba(0,212,170,0.25) !important; }
+        .card:hover { border-color: rgba(31,111,235,0.25) !important; }
         .card-header {
             background: transparent !important;
             border-bottom: 1px solid var(--ep-border) !important;
@@ -199,10 +197,10 @@
         .card-title { color: var(--ep-text) !important; font-weight: 600 !important; }
         .card-text { color: var(--ep-muted) !important; }
         .card-body { color: var(--ep-text) !important; }
-        .card-animate:hover { box-shadow: 0 8px 24px rgba(0,212,170,0.14) !important; transform: translateY(-2px); }
+        .card-animate:hover { box-shadow: 0 8px 24px rgba(31,111,235,0.14) !important; transform: translateY(-2px); }
         .card.border-dashed {
             border-style: dashed !important;
-            border-color: rgba(0,212,170,0.30) !important;
+            border-color: rgba(31,111,235,0.30) !important;
         }
 
         /* ─── Stat numbers ──────────────────────────────── */
@@ -211,14 +209,14 @@
 
         /* Stat icon avatars */
         .avatar-sm .avatar-title { border-radius: 10px !important; }
-        .bg-primary-subtle { background: rgba(0,212,170,0.10) !important; }
-        .bg-success-subtle { background: rgba(5,150,105,0.10) !important; }
-        .bg-info-subtle    { background: rgba(3,169,244,0.10) !important; }
-        .bg-warning-subtle { background: rgba(245,158,11,0.10) !important; }
+        .bg-primary-subtle { background: rgba(31,111,235,0.10) !important; }
+        .bg-success-subtle { background: rgba(46,158,91,0.10) !important; }
+        .bg-info-subtle    { background: rgba(15,169,219,0.10) !important; }
+        .bg-warning-subtle { background: rgba(224,147,11,0.10) !important; }
         .text-primary { color: var(--ep-accent) !important; }
-        .text-success { color: #059669 !important; }
-        .text-info    { color: #0ea5e9 !important; }
-        .text-warning { color: #d97706 !important; }
+        .text-success { color: #2E9E5B !important; }
+        .text-info    { color: #0FA9DB !important; }
+        .text-warning { color: #E0930B !important; }
 
         /* ─── Tables ────────────────────────────────────── */
         .table { color: var(--ep-text) !important; }
@@ -245,7 +243,7 @@
         .form-control:focus, .form-select:focus {
             background: #ffffff !important;
             border-color: var(--ep-accent) !important;
-            box-shadow: 0 0 0 3px rgba(0,212,170,0.12) !important;
+            box-shadow: 0 0 0 3px rgba(31,111,235,0.12) !important;
             color: var(--ep-text) !important;
         }
         .form-control::placeholder { color: #94a3b8 !important; }
@@ -262,17 +260,17 @@
         }
 
         /* ─── Badges ────────────────────────────────────── */
-        .badge.bg-warning         { background: rgba(245,158,11,0.15) !important; color: #d97706 !important; }
-        .badge.bg-primary-subtle  { background: rgba(0,212,170,0.12) !important; color: var(--ep-accent) !important; }
-        .badge.bg-success-subtle  { background: rgba(5,150,105,0.10) !important; color: #059669 !important; }
+        .badge.bg-warning         { background: rgba(224,147,11,0.15) !important; color: #E0930B !important; }
+        .badge.bg-primary-subtle  { background: rgba(31,111,235,0.12) !important; color: var(--ep-accent) !important; }
+        .badge.bg-success-subtle  { background: rgba(46,158,91,0.10) !important; color: #2E9E5B !important; }
         .badge.bg-primary         { background: var(--ep-accent) !important; color: #ffffff !important; }
-        .badge.bg-success         { background: #059669 !important; }
+        .badge.bg-success         { background: #2E9E5B !important; }
 
         /* ─── Alerts ────────────────────────────────────── */
         .alert-info {
-            background: rgba(3,169,244,0.07) !important;
-            border-color: rgba(3,169,244,0.20) !important;
-            color: #0284c7 !important;
+            background: rgba(15,169,219,0.07) !important;
+            border-color: rgba(15,169,219,0.20) !important;
+            color: #0c87b0 !important;
         }
         .alert-link { color: var(--ep-accent) !important; }
 
@@ -325,11 +323,11 @@
         /* ─── Scrollbar ─────────────────────────────────── */
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,212,170,0.30); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: rgba(31,111,235,0.30); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--ep-accent); }
 
         /* ─── Simplebar ─────────────────────────────────── */
-        .simplebar-scrollbar::before { background: rgba(0,212,170,0.35) !important; }
+        .simplebar-scrollbar::before { background: rgba(31,111,235,0.35) !important; }
 
         /* ─── Vertical overlay (mobile) ─────────────────── */
         .vertical-overlay { background: rgba(0,0,0,0.40) !important; }
@@ -364,8 +362,8 @@
         }
 
         /* ─── Role badge in sidebar ─────────────────────── */
-        .badge.bg-primary-subtle.text-primary { background: rgba(0,212,170,0.12) !important; color: var(--ep-accent) !important; }
-        .badge.bg-success-subtle.text-success { background: rgba(5,150,105,0.10) !important; color: #059669 !important; }
+        .badge.bg-primary-subtle.text-primary { background: rgba(31,111,235,0.12) !important; color: var(--ep-accent) !important; }
+        .badge.bg-success-subtle.text-success { background: rgba(46,158,91,0.10) !important; color: #2E9E5B !important; }
 
         /* ─── Switch/Toggle ─────────────────────────────── */
         .form-check-input:checked {

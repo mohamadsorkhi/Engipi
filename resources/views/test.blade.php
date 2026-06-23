@@ -111,11 +111,11 @@ const domainSubdomainsMap = @json(
     pointer-events: none;
 }
 .ep-select__trigger:hover {
-    border-color: var(--ep-accent, #00d4aa);
+    border-color: var(--ep-accent, #1F6FEB);
 }
 .ep-select--open .ep-select__trigger {
-    border-color: var(--ep-accent, #00d4aa);
-    box-shadow: 0 0 0 3px rgba(0,212,170,.12);
+    border-color: var(--ep-accent, #1F6FEB);
+    box-shadow: 0 0 0 3px rgba(31,111,235,.12);
 }
 .ep-select__chevron {
     flex-shrink: 0;
@@ -153,8 +153,8 @@ const domainSubdomainsMap = @json(
     font-size: .95rem;
 }
 .ep-select__option:hover {
-    background: rgba(0,212,170,.10);
-    color: var(--ep-accent, #00d4aa);
+    background: rgba(31,111,235,.10);
+    color: var(--ep-accent, #1F6FEB);
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────── */
@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             card.innerHTML =
                 '<div style="padding:8px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;">' +
-                    '<div class="skill-icon" style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e7f3ff;color:#405189;flex-shrink:0;">' +
+                    '<div class="skill-icon" style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(31,111,235,.10);color:#1F6FEB;flex-shrink:0;">' +
                         '<i class="ri-code-s-slash-line" style="font-size:0.78rem;"></i>' +
                     '</div>' +
                     '<p style="margin:4px 0 0;font-weight:500;font-size:0.72rem;line-height:1.2;word-break:break-word;">' + skill.name + '</p>' +
@@ -349,10 +349,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     cardRef:     card,
                 });
 
-                card.style.border    = '2.5px solid #00d4aa';
-                card.style.boxShadow = '0 0 0 3px rgba(0,212,170,0.15)';
+                card.style.border    = '2.5px solid #1F6FEB';
+                card.style.boxShadow = '0 0 0 3px rgba(31,111,235,0.15)';
                 const iconDiv = card.querySelector('.skill-icon');
-                if (iconDiv) { iconDiv.style.background = '#00d4aa'; iconDiv.style.color = '#fff'; }
+                if (iconDiv) { iconDiv.style.background = '#1F6FEB'; iconDiv.style.color = '#fff'; }
 
                 renderSelectedSkills();
                 saveBtn.disabled = false;
@@ -406,11 +406,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const card = document.createElement('div');
             card.className = 'card mb-0';
-            card.style.border = '2px solid #00d4aa';
+            card.style.border = '2px solid #1F6FEB';
             card.innerHTML =
                 '<div class="card-body" style="padding:0.5rem;font-size:0.85rem;">' +
                     '<div class="d-flex align-items-center mb-2">' +
-                        '<div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#00d4aa;color:#fff;margin-left:0.4rem;flex-shrink:0;">' +
+                        '<div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#1F6FEB;color:#fff;margin-left:0.4rem;flex-shrink:0;">' +
                             '<i class="ri-code-s-slash-line" style="font-size:0.85rem;"></i>' +
                         '</div>' +
                         '<h6 class="mb-0 fw-semibold" style="font-size:0.85rem;">' + skill.name + '</h6>' +
@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     skill.cardRef.style.border    = '2.5px solid #ced4da';
                     skill.cardRef.style.boxShadow = '';
                     const iconDiv = skill.cardRef.querySelector('.skill-icon');
-                    if (iconDiv) { iconDiv.style.background = '#e7f3ff'; iconDiv.style.color = '#405189'; }
+                    if (iconDiv) { iconDiv.style.background = 'rgba(31,111,235,.10)'; iconDiv.style.color = '#1F6FEB'; }
                 }
                 selectedSkills.splice(index, 1);
                 renderSelectedSkills();

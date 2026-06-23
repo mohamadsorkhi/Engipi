@@ -10,22 +10,22 @@
 
                     <a href="{{ route('root') }}" class="logo logo-dark text-decoration-none">
                         <span class="logo-sm">
-                            <span style="font-size:1.1rem;font-weight:900;color:#00d4aa;font-family:'Vazirmatn',sans-serif;">E</span>
+                            <span style="font-size:1.1rem;font-weight:900;color:#1F6FEB;font-family:'Vazirmatn',sans-serif;">E</span>
                         </span>
                         <span class="logo-lg">
                             <span style="font-size:1.3rem;font-weight:900;font-family:'Vazirmatn',sans-serif;color:white;letter-spacing:-0.5px;">
-                                <span style="color:#00d4aa;">Eng</span>Pis
+                                <span style="color:#1F6FEB;">Eng</span>Pis
                             </span>
                         </span>
                     </a>
 
                     <a href="{{ route('root') }}" class="logo logo-light text-decoration-none">
                         <span class="logo-sm">
-                            <span style="font-size:1.1rem;font-weight:900;color:#00d4aa;font-family:'Vazirmatn',sans-serif;">E</span>
+                            <span style="font-size:1.1rem;font-weight:900;color:#1F6FEB;font-family:'Vazirmatn',sans-serif;">E</span>
                         </span>
                         <span class="logo-lg">
                             <span style="font-size:1.3rem;font-weight:900;font-family:'Vazirmatn',sans-serif;color:white;letter-spacing:-0.5px;">
-                                <span style="color:#00d4aa;">Eng</span>Pis
+                                <span style="color:#1F6FEB;">Eng</span>Pis
                             </span>
                         </span>
                     </a>

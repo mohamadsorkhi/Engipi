@@ -24,7 +24,7 @@ window.showToast = function (message, type) {
         stopOnFocus: true,
         style: {
             background: isSuccess
-                ? 'linear-gradient(to right, #00b09b, #00d4aa)'
+                ? 'linear-gradient(to right, #009789, #00B8A9)'
                 : 'linear-gradient(to right, #ff5f6d, #ef5350)',
             borderRadius: '8px',
             fontSize: '0.88rem',
