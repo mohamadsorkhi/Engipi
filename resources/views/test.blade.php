@@ -52,8 +52,17 @@
 
                 {{-- AVAILABLE SKILLS --}}
                 <div class="mb-4">
-                    <label class="form-label fw-bold">مهارت</label>
-                    <div id="skillsContainer" class="row g-3"></div>
+                    <label class="form-label fw-bold d-flex align-items-center gap-1">
+                        <i class="ri-stack-line text-primary"></i>پردازش‌ها
+                    </label>
+                    <div id="skillsContainerSoftware" class="row g-3"></div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold d-flex align-items-center gap-1">
+                        <i class="ri-tools-line text-primary"></i>مهارت‌های میدانی
+                    </label>
+                    <div id="skillsContainerField" class="row g-3"></div>
                 </div>
 
                 {{-- SELECTED SKILLS --}}
@@ -169,7 +178,9 @@ const domainSubdomainsMap = @json(
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    const skillsContainer             = document.getElementById('skillsContainer');
+    const skillsContainerSoftware     = document.getElementById('skillsContainerSoftware');
+    const skillsContainerField        = document.getElementById('skillsContainerField');
+    const skillContainers             = [skillsContainerSoftware, skillsContainerField];
     const selectedSkillsContainer     = document.getElementById('selected-skills');
     const selectedSubdomainsContainer = document.getElementById('selected-subdomains');
     const saveBtn                     = document.getElementById('saveBtn');
@@ -359,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             col.appendChild(card);
-            skillsContainer.appendChild(col);
+            getSkillsContainer(skill.skill_type).appendChild(col);
         });
     }
 
@@ -381,19 +392,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ─── SKILL SELECTION HELPERS ─────────────────────────────────────────
+    function getSkillsContainer(skillType) {
+        return skillType === 'field' ? skillsContainerField : skillsContainerSoftware;
+    }
+
     function clearSkillSelection() {
         selectedSkills = [];
         renderSelectedSkills();
-        skillsContainer.innerHTML = '';
+        skillContainers.forEach(function (c) { c.innerHTML = ''; });
         saveBtn.disabled = true;
     }
 
     function removeSkillsBySubdomain(subdomainId) {
         selectedSkills = selectedSkills.filter(function (skill) { return skill.subdomainId !== subdomainId; });
-        skillsContainer.querySelectorAll('[data-subdomain-id="' + subdomainId + '"]').forEach(function (el) { el.remove(); });
+        skillContainers.forEach(function (c) {
+            c.querySelectorAll('[data-subdomain-id="' + subdomainId + '"]').forEach(function (el) { el.remove(); });
+        });
         renderSelectedSkills();
         saveBtn.disabled = selectedSkills.length === 0;
-        if (selectedSubdomains.length === 0) skillsContainer.innerHTML = '';
+        if (selectedSubdomains.length === 0) skillContainers.forEach(function (c) { c.innerHTML = ''; });
     }
 
     // ─── SELECTED SKILLS RENDERING ───────────────────────────────────────

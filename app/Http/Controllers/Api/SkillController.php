@@ -11,7 +11,7 @@ class SkillController extends Controller
     {
         return DB::table('skills')
             ->where('subdomain_id', $subdomain)
-            ->select('id', 'name')
+            ->select('id', 'name', 'skill_type')
             ->get();
     }
 }
