@@ -59,7 +59,7 @@
                         <i class="ri-search-line"></i>
                         <input type="text" id="skillSearchSoftware" placeholder="جستجوی مهارت...">
                     </div>
-                    <div id="skillsContainerSoftware" class="row g-3"></div>
+                    <div id="skillsContainerSoftware" class="row g-2"></div>
                     <p class="bp-skillsec-empty d-none" id="skillsEmptySoftware">موردی یافت نشد</p>
                 </div>
 
@@ -73,7 +73,7 @@
                         <i class="ri-search-line"></i>
                         <input type="text" id="skillSearchField" placeholder="جستجوی مهارت...">
                     </div>
-                    <div id="skillsContainerField" class="row g-3"></div>
+                    <div id="skillsContainerField" class="row g-2"></div>
                     <p class="bp-skillsec-empty d-none" id="skillsEmptyField">موردی یافت نشد</p>
                 </div>
 
@@ -228,6 +228,49 @@ const domainSubdomainsMap = @json(
     color: var(--bp-muted);
     font-size: .85rem;
     margin: 0;
+}
+
+/* ── Available-skill cards: depth + hover-lift (mirrors .bp-card / .feature on landing) ── */
+.bp-skill-card {
+    cursor: pointer;
+    border: 2.5px solid #ced4da;
+    border-radius: var(--bp-r-lg);
+    width: 100%;
+    min-height: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bp-bg);
+    box-shadow: var(--bp-sh-sm);
+    transition: transform .2s var(--bp-ease), box-shadow .2s var(--bp-ease), border-color .2s;
+}
+.bp-skill-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--bp-sh-md);
+}
+
+/* ── Selected-skill cards (مهارت‌های انتخاب شده) ─────────────────────────── */
+.bp-selected-skill-card .card-body {
+    padding: .6rem .65rem;
+}
+.bp-selected-skill-card h6 {
+    font-weight: 700;
+    font-size: .92rem;
+    line-height: 1.3;
+    letter-spacing: -.01em;
+    margin: 0;
+}
+.bp-selected-skill-card .form-label {
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--bp-muted);
+    margin-bottom: 3px;
+}
+.bp-selected-skill-card .form-select-sm,
+.bp-selected-skill-card .form-control-sm {
+    font-size: .78rem;
+    padding: .25rem .5rem;
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────── */
@@ -388,30 +431,19 @@ document.addEventListener('DOMContentLoaded', function () {
             const theme = getSkillTypeTheme(skill.skill_type);
 
             const col = document.createElement('div');
-            col.className = 'col-6 col-sm-4 col-md-3 col-lg-2';
+            col.className = 'col-6 col-sm-6 col-md-4 col-lg-3';
             col.dataset.subdomainId = subdomainID;
             col.dataset.skillName   = skill.name;
 
             const card = document.createElement('div');
-            card.className = 'mb-0';
-            card.style.cursor         = 'pointer';
-            card.style.transition     = 'border-color 0.15s, box-shadow 0.15s';
-            card.style.border         = '2.5px solid #ced4da';
-            card.style.borderRadius   = '8px';
-            card.style.height         = '62px';
-            card.style.display        = 'flex';
-            card.style.flexDirection  = 'column';
-            card.style.alignItems     = 'center';
-            card.style.justifyContent = 'center';
-            card.style.background     = '#fff';
-            card.style.overflow       = 'hidden';
+            card.className = 'mb-0 bp-skill-card';
 
             card.innerHTML =
-                '<div style="padding:6px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;">' +
-                    '<div class="skill-icon" style="width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + theme.tint + ';color:' + theme.color + ';flex-shrink:0;">' +
-                        '<i class="' + theme.icon + '" style="font-size:0.68rem;"></i>' +
+                '<div style="padding:8px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;">' +
+                    '<div class="skill-icon" style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + theme.tint + ';color:' + theme.color + ';flex-shrink:0;">' +
+                        '<i class="' + theme.icon + '" style="font-size:0.7rem;"></i>' +
                     '</div>' +
-                    '<p style="margin:3px 0 0;font-weight:500;font-size:0.68rem;line-height:1.15;word-break:break-word;">' + skill.name + '</p>' +
+                    '<p style="margin:5px 0 0;font-weight:700;font-size:0.78rem;line-height:1.25;word-break:break-word;">' + skill.name + '</p>' +
                 '</div>';
 
             card.addEventListener('click', function () {
@@ -532,33 +564,37 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedSkillsContainer.innerHTML = '';
 
         selectedSkills.forEach(function (skill, index) {
+            const theme = getSkillTypeTheme(skill.skillType);
+
             const col = document.createElement('div');
-            col.className = 'col-12 col-md-6 col-lg-4';
+            col.className = 'col-6 col-sm-4 col-md-3 col-lg-3';
 
             const card = document.createElement('div');
-            card.className = 'card mb-0';
-            card.style.border = '2px solid #1F6FEB';
+            card.className = 'card mb-0 bp-selected-skill-card';
+            card.style.border = '2px solid ' + theme.color;
             card.innerHTML =
-                '<div class="card-body" style="padding:0.5rem;font-size:0.85rem;">' +
+                '<div class="card-body">' +
                     '<div class="d-flex align-items-center mb-2">' +
-                        '<div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#1F6FEB;color:#fff;margin-left:0.4rem;flex-shrink:0;">' +
-                            '<i class="ri-code-s-slash-line" style="font-size:0.85rem;"></i>' +
+                        '<div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + theme.color + ';color:#fff;margin-left:0.4rem;flex-shrink:0;">' +
+                            '<i class="' + theme.icon + '" style="font-size:0.74rem;"></i>' +
                         '</div>' +
-                        '<h6 class="mb-0 fw-semibold" style="font-size:0.85rem;">' + skill.name + '</h6>' +
+                        '<h6 class="mb-0">' + skill.name + '</h6>' +
                     '</div>' +
-                    '<div class="mb-2">' +
-                        '<label class="form-label form-label-sm mb-1">سطح</label>' +
-                        '<select class="form-select form-select-sm">' +
-                            '<option value="مبتدی">مبتدی</option>' +
-                            '<option value="متوسط">متوسط</option>' +
-                            '<option value="حرفه ای">حرفه ای</option>' +
-                        '</select>' +
+                    '<div class="d-flex" style="gap:6px;">' +
+                        '<div style="flex:1;min-width:0;">' +
+                            '<label class="form-label form-label-sm mb-1">سطح</label>' +
+                            '<select class="form-select form-select-sm">' +
+                                '<option value="مبتدی">مبتدی</option>' +
+                                '<option value="متوسط">متوسط</option>' +
+                                '<option value="حرفه ای">حرفه ای</option>' +
+                            '</select>' +
+                        '</div>' +
+                        '<div style="flex:1;min-width:0;">' +
+                            '<label class="form-label form-label-sm mb-1">سال‌های تجربه</label>' +
+                            '<input type="number" class="form-control form-control-sm" value="' + skill.years + '" min="0">' +
+                        '</div>' +
                     '</div>' +
-                    '<div class="mb-2">' +
-                        '<label class="form-label form-label-sm mb-1">سال‌های تجربه</label>' +
-                        '<input type="number" class="form-control form-control-sm" value="' + skill.years + '" min="0">' +
-                    '</div>' +
-                    '<button type="button" class="btn btn-soft-danger btn-sm w-100">' +
+                    '<button type="button" class="btn btn-soft-danger btn-sm w-100 mt-2">' +
                         '<i class="ri-delete-bin-line me-1"></i>حذف' +
                     '</button>' +
                 '</div>';
