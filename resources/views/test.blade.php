@@ -51,18 +51,30 @@
                 </div>
 
                 {{-- AVAILABLE SKILLS --}}
-                <div class="mb-4">
-                    <label class="form-label fw-bold d-flex align-items-center gap-1">
-                        <i class="ri-stack-line text-primary"></i>پردازش‌ها
+                <div class="mb-4 bp-skillsec bp-skillsec--blue">
+                    <label class="bp-skillsec-label">
+                        <i class="ri-code-box-line"></i>پردازش‌ها
                     </label>
+                    <div class="bp-skillsec-search">
+                        <i class="ri-search-line"></i>
+                        <input type="text" id="skillSearchSoftware" placeholder="جستجوی مهارت...">
+                    </div>
                     <div id="skillsContainerSoftware" class="row g-3"></div>
+                    <p class="bp-skillsec-empty d-none" id="skillsEmptySoftware">موردی یافت نشد</p>
                 </div>
 
-                <div class="mb-4">
-                    <label class="form-label fw-bold d-flex align-items-center gap-1">
-                        <i class="ri-tools-line text-primary"></i>مهارت‌های میدانی
+                <div class="bp-skillsec-divider"></div>
+
+                <div class="mb-4 bp-skillsec bp-skillsec--teal">
+                    <label class="bp-skillsec-label">
+                        <i class="ri-tools-line"></i>مهارت‌های میدانی
                     </label>
+                    <div class="bp-skillsec-search">
+                        <i class="ri-search-line"></i>
+                        <input type="text" id="skillSearchField" placeholder="جستجوی مهارت...">
+                    </div>
                     <div id="skillsContainerField" class="row g-3"></div>
+                    <p class="bp-skillsec-empty d-none" id="skillsEmptyField">موردی یافت نشد</p>
                 </div>
 
                 {{-- SELECTED SKILLS --}}
@@ -166,6 +178,58 @@ const domainSubdomainsMap = @json(
     color: var(--ep-accent, #1F6FEB);
 }
 
+/* ── Skill-type section headers (پردازش‌ها / مهارت‌های میدانی) ──────────── */
+.bp-skillsec-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: .75rem;
+}
+.bp-skillsec-label i { font-size: 1.3rem; }
+.bp-skillsec--blue .bp-skillsec-label { color: var(--bp-blue); }
+.bp-skillsec--teal .bp-skillsec-label { color: var(--bp-teal); }
+.bp-skillsec-divider {
+    height: 1px;
+    background: var(--bp-hair);
+    margin: 32px 0 28px;
+}
+.bp-skillsec-search {
+    position: relative;
+    margin-bottom: 14px;
+    max-width: 320px;
+}
+.bp-skillsec-search i {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: var(--bp-muted);
+    font-size: 1rem;
+    pointer-events: none;
+}
+.bp-skillsec-search input {
+    width: 100%;
+    border: 1px solid var(--bp-border);
+    border-radius: var(--bp-r);
+    padding: 7px 38px 7px 12px;
+    font-size: .85rem;
+    color: var(--bp-text);
+    background: #fff;
+    transition: border-color .15s, box-shadow .15s;
+}
+.bp-skillsec-search input:focus { outline: none; }
+.bp-skillsec--blue .bp-skillsec-search input:focus { border-color: var(--bp-blue); box-shadow: 0 0 0 3px var(--bp-tint-blue); }
+.bp-skillsec--teal .bp-skillsec-search input:focus { border-color: var(--bp-teal); box-shadow: 0 0 0 3px var(--bp-tint-teal); }
+.bp-skillsec-empty {
+    padding: 14px;
+    text-align: center;
+    color: var(--bp-muted);
+    font-size: .85rem;
+    margin: 0;
+}
+
 /* ── Responsive ──────────────────────────────────────────────────────── */
 @media (max-width: 767.98px) {
     #saveBtn { width: 100%; }
@@ -181,6 +245,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const skillsContainerSoftware     = document.getElementById('skillsContainerSoftware');
     const skillsContainerField        = document.getElementById('skillsContainerField');
     const skillContainers             = [skillsContainerSoftware, skillsContainerField];
+    const skillsEmptySoftware         = document.getElementById('skillsEmptySoftware');
+    const skillsEmptyField            = document.getElementById('skillsEmptyField');
+    const skillSearchSoftware         = document.getElementById('skillSearchSoftware');
+    const skillSearchField            = document.getElementById('skillSearchField');
     const selectedSkillsContainer     = document.getElementById('selected-skills');
     const selectedSubdomainsContainer = document.getElementById('selected-subdomains');
     const saveBtn                     = document.getElementById('saveBtn');
@@ -317,9 +385,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const skills   = await response.json();
 
         skills.forEach(function (skill) {
+            const theme = getSkillTypeTheme(skill.skill_type);
+
             const col = document.createElement('div');
-            col.className = 'col-6 col-md-4 col-lg-3';
+            col.className = 'col-6 col-sm-4 col-md-3 col-lg-2';
             col.dataset.subdomainId = subdomainID;
+            col.dataset.skillName   = skill.name;
 
             const card = document.createElement('div');
             card.className = 'mb-0';
@@ -327,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function () {
             card.style.transition     = 'border-color 0.15s, box-shadow 0.15s';
             card.style.border         = '2.5px solid #ced4da';
             card.style.borderRadius   = '8px';
-            card.style.height         = '70px';
+            card.style.height         = '62px';
             card.style.display        = 'flex';
             card.style.flexDirection  = 'column';
             card.style.alignItems     = 'center';
@@ -336,11 +407,11 @@ document.addEventListener('DOMContentLoaded', function () {
             card.style.overflow       = 'hidden';
 
             card.innerHTML =
-                '<div style="padding:8px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;">' +
-                    '<div class="skill-icon" style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(31,111,235,.10);color:#1F6FEB;flex-shrink:0;">' +
-                        '<i class="ri-code-s-slash-line" style="font-size:0.78rem;"></i>' +
+                '<div style="padding:6px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;">' +
+                    '<div class="skill-icon" style="width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + theme.tint + ';color:' + theme.color + ';flex-shrink:0;">' +
+                        '<i class="' + theme.icon + '" style="font-size:0.68rem;"></i>' +
                     '</div>' +
-                    '<p style="margin:4px 0 0;font-weight:500;font-size:0.72rem;line-height:1.2;word-break:break-word;">' + skill.name + '</p>' +
+                    '<p style="margin:3px 0 0;font-weight:500;font-size:0.68rem;line-height:1.15;word-break:break-word;">' + skill.name + '</p>' +
                 '</div>';
 
             card.addEventListener('click', function () {
@@ -355,15 +426,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     id:          skill.id,
                     name:        skill.name,
                     subdomainId: subdomainID,
+                    skillType:   skill.skill_type,
                     level:       'مبتدی',
                     years:       1,
                     cardRef:     card,
                 });
 
-                card.style.border    = '2.5px solid #1F6FEB';
-                card.style.boxShadow = '0 0 0 3px rgba(31,111,235,0.15)';
+                card.style.border    = '2.5px solid ' + theme.color;
+                card.style.boxShadow = '0 0 0 3px ' + theme.ring;
                 const iconDiv = card.querySelector('.skill-icon');
-                if (iconDiv) { iconDiv.style.background = '#1F6FEB'; iconDiv.style.color = '#fff'; }
+                if (iconDiv) { iconDiv.style.background = theme.color; iconDiv.style.color = '#fff'; }
 
                 renderSelectedSkills();
                 saveBtn.disabled = false;
@@ -372,6 +444,8 @@ document.addEventListener('DOMContentLoaded', function () {
             col.appendChild(card);
             getSkillsContainer(skill.skill_type).appendChild(col);
         });
+
+        refreshSkillFilters();
     }
 
     // ─── SELECTED SUBDOMAINS ─────────────────────────────────────────────
@@ -392,14 +466,53 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ─── SKILL SELECTION HELPERS ─────────────────────────────────────────
+    const SKILL_TYPE_THEME = {
+        software: { icon: 'ri-code-box-line', color: '#1F6FEB', tint: 'rgba(31,111,235,.10)', ring: 'rgba(31,111,235,.15)' },
+        field:    { icon: 'ri-tools-line',     color: '#00B8A9', tint: 'rgba(0,184,169,.10)',  ring: 'rgba(0,184,169,.15)' },
+    };
+
+    function getSkillTypeTheme(skillType) {
+        return SKILL_TYPE_THEME[skillType] || SKILL_TYPE_THEME.software;
+    }
+
     function getSkillsContainer(skillType) {
         return skillType === 'field' ? skillsContainerField : skillsContainerSoftware;
     }
+
+    // ─── SEARCH / FILTER (per section, visual only — never touches selection state) ──
+    function filterSkillsContainer(container, emptyEl, query) {
+        const q = query.trim().toLowerCase();
+        let anyCard    = false;
+        let anyVisible = false;
+
+        Array.prototype.forEach.call(container.children, function (col) {
+            anyCard = true;
+            const name  = (col.dataset.skillName || '').toLowerCase();
+            const match = !q || name.indexOf(q) !== -1;
+            col.style.display = match ? '' : 'none';
+            if (match) anyVisible = true;
+        });
+
+        emptyEl.classList.toggle('d-none', !anyCard || anyVisible);
+    }
+
+    function refreshSkillFilters() {
+        filterSkillsContainer(skillsContainerSoftware, skillsEmptySoftware, skillSearchSoftware.value);
+        filterSkillsContainer(skillsContainerField, skillsEmptyField, skillSearchField.value);
+    }
+
+    skillSearchSoftware.addEventListener('input', function () {
+        filterSkillsContainer(skillsContainerSoftware, skillsEmptySoftware, this.value);
+    });
+    skillSearchField.addEventListener('input', function () {
+        filterSkillsContainer(skillsContainerField, skillsEmptyField, this.value);
+    });
 
     function clearSkillSelection() {
         selectedSkills = [];
         renderSelectedSkills();
         skillContainers.forEach(function (c) { c.innerHTML = ''; });
+        refreshSkillFilters();
         saveBtn.disabled = true;
     }
 
@@ -411,6 +524,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderSelectedSkills();
         saveBtn.disabled = selectedSkills.length === 0;
         if (selectedSubdomains.length === 0) skillContainers.forEach(function (c) { c.innerHTML = ''; });
+        refreshSkillFilters();
     }
 
     // ─── SELECTED SKILLS RENDERING ───────────────────────────────────────
@@ -457,10 +571,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             card.querySelector('button').addEventListener('click', function () {
                 if (skill.cardRef) {
+                    const theme = getSkillTypeTheme(skill.skillType);
                     skill.cardRef.style.border    = '2.5px solid #ced4da';
                     skill.cardRef.style.boxShadow = '';
                     const iconDiv = skill.cardRef.querySelector('.skill-icon');
-                    if (iconDiv) { iconDiv.style.background = 'rgba(31,111,235,.10)'; iconDiv.style.color = '#1F6FEB'; }
+                    if (iconDiv) { iconDiv.style.background = theme.tint; iconDiv.style.color = theme.color; }
                 }
                 selectedSkills.splice(index, 1);
                 renderSelectedSkills();
