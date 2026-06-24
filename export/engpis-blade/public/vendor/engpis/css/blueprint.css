@@ -1,0 +1,120 @@
+/* ============================================================================
+   EngPis — "Blueprint" theme (Direction 1: Engineered / professional · precise)
+   Plain CSS + vanilla JS. RTL. Self-hosted Vazirmatn + Remix Icon (offline).
+   Palette: deep navy ink · electric blue · teal secondary · crisp small radii.
+============================================================================ */
+:root {
+  --bp-navy:        #0E1B2C;   /* hero / footer / sidebar / ink */
+  --bp-navy-2:      #16263c;
+  --bp-blue:        #1F6FEB;   /* primary action */
+  --bp-blue-d:      #1857c4;   /* hover */
+  --bp-blue-l:      #4d97ff;   /* on-dark accent text */
+  --bp-teal:        #00B8A9;   /* secondary accent */
+  --bp-teal-d:      #009789;
+
+  --bp-ink:         #16202E;   /* headings */
+  --bp-text:        #36434F;   /* body */
+  --bp-muted:       #5A6B80;   /* captions */
+  --bp-bg:          #ffffff;
+  --bp-surface:     #F4F7FB;   /* page wash */
+  --bp-border:      #D2DBE6;   /* card / divider */
+  --bp-hair:        #E7EDF4;
+  --bp-tint-blue:   rgba(31,111,235,.10);
+  --bp-tint-teal:   rgba(0,184,169,.10);
+
+  /* domain spectrum — cooler, technical */
+  --bp-c-amber:  #E0930B;  --bp-tint-amber:  rgba(224,147,11,.10);
+  --bp-c-green:  #2E9E5B;  --bp-tint-green:  rgba(46,158,91,.10);
+  --bp-c-red:    #E14B4B;  --bp-tint-red:    rgba(225,75,75,.10);
+  --bp-c-purple: #7C5CDB;  --bp-tint-purple: rgba(124,92,219,.10);
+  --bp-c-sky:    #0FA9DB;  --bp-tint-sky:    rgba(15,169,219,.10);
+  --bp-c-orange: #EE7A2E;  --bp-tint-orange: rgba(238,122,46,.10);
+
+  --bp-r:    6px;
+  --bp-r-lg: 8px;
+  --bp-r-xl: 10px;
+
+  --bp-sh-sm: 0 1px 2px rgba(14,27,44,.06), 0 2px 10px rgba(14,27,44,.05);
+  --bp-sh-md: 0 8px 24px rgba(14,27,44,.10);
+  --bp-sh-lg: 0 16px 40px rgba(14,27,44,.13);
+  --bp-sh-blue: 0 6px 18px rgba(31,111,235,.32);
+
+  --bp-ease: cubic-bezier(.4,0,.2,1);
+  --bp-font: 'Vazirmatn', -apple-system, 'Segoe UI', Tahoma, sans-serif;
+
+  --bp-nav-h: 72px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; font-family: var(--bp-font); color: var(--bp-text);
+  background: var(--bp-bg); line-height: 1.75; font-weight: 400;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+h1,h2,h3,h4,h5,h6 { margin: 0; color: var(--bp-ink); letter-spacing: -.3px; }
+p { margin: 0; }
+a { text-decoration: none; color: inherit; }
+.bp-container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+/* blueprint grid texture (for dark panels) */
+.bp-grid {
+  background-image: linear-gradient(rgba(31,111,235,.13) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(31,111,235,.13) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Eyebrow ─────────────────────────────────────────── */
+.bp-eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 700; letter-spacing: .04em;
+  padding: 6px 14px; border-radius: var(--bp-r);
+  background: var(--bp-tint-blue); color: var(--bp-blue);
+}
+.bp-eyebrow.on-dark { background: rgba(31,111,235,.2); color: var(--bp-blue-l); border: 1px solid rgba(31,111,235,.4); }
+
+/* ── Buttons ─────────────────────────────────────────── */
+.bp-btn {
+  font-family: inherit; font-weight: 700; font-size: 14.5px; line-height: 1;
+  border: 1.5px solid transparent; cursor: pointer; display: inline-flex;
+  align-items: center; gap: 8px; padding: 13px 24px; border-radius: var(--bp-r);
+  transition: transform .2s var(--bp-ease), box-shadow .2s var(--bp-ease), background .2s, color .2s, border-color .2s;
+}
+.bp-btn i { font-size: 1.15em; }
+.bp-btn--primary { background: var(--bp-blue); color: #fff; box-shadow: var(--bp-sh-blue); }
+.bp-btn--primary:hover { background: var(--bp-blue-d); transform: translateY(-2px); box-shadow: 0 10px 26px rgba(31,111,235,.42); }
+.bp-btn--teal { background: var(--bp-teal); color: #fff; box-shadow: 0 6px 18px rgba(0,184,169,.3); }
+.bp-btn--teal:hover { background: var(--bp-teal-d); transform: translateY(-2px); }
+.bp-btn--ghost { background: transparent; color: var(--bp-ink); border-color: var(--bp-border); }
+.bp-btn--ghost:hover { border-color: var(--bp-blue); color: var(--bp-blue); background: var(--bp-tint-blue); }
+.bp-btn--ghost-d { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+.bp-btn--ghost-d:hover { background: rgba(255,255,255,.1); border-color: #fff; }
+.bp-btn--soft { background: var(--bp-tint-blue); color: var(--bp-blue); }
+.bp-btn--soft:hover { background: var(--bp-blue); color: #fff; }
+.bp-btn--sm { padding: 9px 16px; font-size: 13px; }
+.bp-btn--lg { padding: 15px 30px; font-size: 16px; }
+
+/* ── Section scaffolding ─────────────────────────────── */
+.bp-section { padding: 84px 0; }
+.bp-section.wash { background: var(--bp-surface); }
+.bp-sechead { text-align: center; max-width: 640px; margin: 0 auto 52px; }
+.bp-sechead h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 900; margin: 16px 0 10px; line-height: 1.3; }
+.bp-sechead p { color: var(--bp-muted); font-size: 1.05rem; }
+
+/* ── Generic card ────────────────────────────────────── */
+.bp-card {
+  background: var(--bp-bg); border: 1px solid var(--bp-border);
+  border-radius: var(--bp-r-lg); transition: transform .25s var(--bp-ease), box-shadow .25s var(--bp-ease), border-color .25s;
+}
+.bp-icon-tile {
+  width: 52px; height: 52px; border-radius: var(--bp-r); flex: none;
+  display: flex; align-items: center; justify-content: center; font-size: 1.55rem;
+}
+
+/* ── Badges ──────────────────────────────────────────── */
+.bp-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 700; padding: 4px 11px; border-radius: var(--bp-r); }
+.bp-badge--blue { background: var(--bp-blue); color: #fff; }
+.bp-badge--teal { background: var(--bp-teal); color: #fff; }
+.bp-badge--soft { background: var(--bp-tint-blue); color: var(--bp-blue); }
+.bp-badge--soft-teal { background: var(--bp-tint-teal); color: var(--bp-teal-d); }
+.bp-badge--mono { font-family: ui-monospace, 'SFMono-Regular', monospace; background: var(--bp-surface); color: var(--bp-muted); border: 1px solid var(--bp-border); }

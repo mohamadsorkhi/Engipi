@@ -159,8 +159,18 @@
                         <div class="mb-0">
                             <label for="skills" class="form-label">مهارت‌ها</label>
                             <select class="form-select" id="skills" multiple>
-                                @foreach($skills as $skill)
-                                    <option value="{{ $skill->id }}" data-skill-type="{{ $skill->skill_type }}">{{ $skill->name }}</option>
+                                @php $skillsByGroup = $skills->groupBy(fn($s) => ($s->subdomain?->domain?->name ?? 'سایر') . '|' . ($s->subdomain?->name ?? '')); @endphp
+                                @foreach($skillsByGroup as $groupKey => $groupSkills)
+                                    @php
+                                        $groupParts = explode('|', $groupKey, 2);
+                                        $domainName = $groupParts[0] ?? '';
+                                        $subdomainName = $groupParts[1] ?? '';
+                                    @endphp
+                                    <optgroup label="{{ $subdomainName ? $domainName.' › '.$subdomainName : $domainName }}">
+                                        @foreach($groupSkills as $skill)
+                                            <option value="{{ $skill->id }}" data-skill-type="{{ $skill->skill_type }}">{{ $skill->name }}</option>
+                                        @endforeach
+                                    </optgroup>
                                 @endforeach
                             </select>
                             <div class="form-text">مهارت‌های خاص مورد نیاز پروژه را انتخاب کنید</div>
@@ -234,9 +244,20 @@
     </div>
 @endsection
 
+@php
+    $allSkillsArray = $skills->map(function ($s) {
+        return [
+            'id' => $s->id,
+            'name' => $s->name,
+            'skill_type' => $s->skill_type,
+            'domain' => $s->subdomain?->domain?->name ?? 'سایر',
+            'subdomain' => $s->subdomain?->name ?? '',
+        ];
+    });
+@endphp
 @section('script')
 <script>
-const allSkillsData = @json($skills->map(fn($s) => ['id' => $s->id, 'name' => $s->name, 'skill_type' => $s->skill_type]));
+const allSkillsData = @json($allSkillsArray);
 
 document.addEventListener('DOMContentLoaded', function () {
     const form              = document.getElementById('projectForm');
@@ -305,7 +326,19 @@ document.addEventListener('DOMContentLoaded', function () {
             var selected = selectedIds || [];
             if (instance) { instance.destroy(); instance = null; }
             selectEl.innerHTML = '';
+
+            var groupEls = {};
             options.forEach(function (opt) {
+                var container = selectEl;
+                if (opt.group) {
+                    if (!groupEls[opt.group]) {
+                        var og = document.createElement('optgroup');
+                        og.label = opt.group;
+                        selectEl.appendChild(og);
+                        groupEls[opt.group] = og;
+                    }
+                    container = groupEls[opt.group];
+                }
                 var el = document.createElement('option');
                 el.value = opt.id;
                 el.textContent = opt.name;
@@ -313,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     Object.keys(opt.dataset).forEach(function (k) { el.dataset[k] = opt.dataset[k]; });
                 }
                 if (selected.indexOf(opt.id) !== -1) { el.selected = true; }
-                selectEl.appendChild(el);
+                container.appendChild(el);
             });
             buildInstance();
         }
@@ -335,12 +368,18 @@ document.addEventListener('DOMContentLoaded', function () {
         if (skillsCards.querySelector('[data-skill-card-id="' + skillId + '"]')) return;
         if (!selectedSkillsState[skillId]) selectedSkillsState[skillId] = { level: SKILL_LEVELS[1], years: '' };
         const saved = selectedSkillsState[skillId];
+        const skillInfo = allSkillsData.find(function (s) { return s.id === skillId; });
+        const groupLabel = skillInfo
+            ? (skillInfo.subdomain ? (skillInfo.domain + ' › ' + skillInfo.subdomain) : skillInfo.domain)
+            : '';
 
         const html = '<div class="col-md-6 col-lg-4" data-skill-card-id="' + skillId + '">' +
             '<div class="card skill-card" data-skill-id="' + skillId + '">' +
             '<div class="card-body">' +
             '<div class="d-flex justify-content-between align-items-start mb-2">' +
-            '<span class="fw-medium">' + skillName + '</span>' +
+            '<div><span class="fw-medium">' + skillName + '</span>' +
+            (groupLabel ? '<div class="small text-muted">' + groupLabel + '</div>' : '') +
+            '</div>' +
             '<button type="button" class="btn btn-sm btn-link text-danger p-0 remove-skill-card" data-skill-id="' + skillId + '"><i class="ri-close-line"></i></button>' +
             '</div>' +
             '<div class="row g-2">' +
@@ -402,7 +441,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         skillsSelector.setOptions(
-            visible.map(function (s) { return { id: s.id, name: s.name, dataset: { skillType: s.skill_type } }; }),
+            visible.map(function (s) {
+                return {
+                    id: s.id,
+                    name: s.name,
+                    dataset: { skillType: s.skill_type },
+                    group: s.subdomain ? (s.domain + ' › ' + s.subdomain) : s.domain,
+                };
+            }),
             stillValid
         );
 
@@ -832,5 +878,17 @@ document.addEventListener('DOMContentLoaded', function () {
     gap: 6px;
 }
 .bp-form-note i { color: var(--bp-teal); }
+
+/* ── Choices.js domain ›  subdomain group headings on the skills selector ── */
+.choices__list--dropdown .choices__heading {
+    color: var(--bp-muted) !important;
+    font-size: .68rem !important;
+    font-weight: 700 !important;
+    letter-spacing: .06em !important;
+    text-transform: uppercase !important;
+    background: var(--bp-surface) !important;
+    border-bottom: 1px solid var(--bp-hair) !important;
+    padding: 6px 10px !important;
+}
 </style>
 @endsection
