@@ -6,8 +6,7 @@
                 <div class="text-center">
                     <p class="mb-0 text-muted dir-ltr">&copy;
                         <script>document.write(new Date().getFullYear())</script>
-                        {{ config('app.name') }}. Designed with <i class="mdi mdi-heart text-danger"></i> by <a
-                            href="https://atlaspio.ir">Atlaspio</a>
+                        {{ config('app.name') }}
                     </p>
                 </div>
             </div>

@@ -6,7 +6,6 @@
                     <img src="{{ URL::asset('build/images/logo-light.png')}}" alt="" height="30">
                 </a>
             </div>
-            <p class="mt-1 fs-15 fw-medium">Your Website Description</p>
         </div>
     </div>
 </div>

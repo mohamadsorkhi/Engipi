@@ -118,3 +118,25 @@ a { text-decoration: none; color: inherit; }
 .bp-badge--soft { background: var(--bp-tint-blue); color: var(--bp-blue); }
 .bp-badge--soft-teal { background: var(--bp-tint-teal); color: var(--bp-teal-d); }
 .bp-badge--mono { font-family: ui-monospace, 'SFMono-Regular', monospace; background: var(--bp-surface); color: var(--bp-muted); border: 1px solid var(--bp-border); }
+
+/* ── Footer link ─────────────────────────────────────── */
+.bp-footer-link { color: var(--bp-muted) !important; text-decoration: none; }
+.bp-footer-link:hover { color: var(--bp-blue) !important; text-decoration: underline; }
+
+/* ── Password show/hide toggle ──────────────────────────
+   Default (no surrounding .btn classes): floating icon button
+   layered over an input, e.g. inside a `position:relative` field wrapper. */
+.bp-pwd-toggle {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; padding: 0; border: none; background: transparent;
+  color: var(--bp-muted); font-size: 18px; line-height: 1; cursor: pointer; z-index: 10;
+  border-radius: var(--bp-r); transition: color .2s var(--bp-ease);
+}
+.bp-pwd-toggle:hover { color: var(--bp-blue); }
+.bp-pwd-toggle:focus-visible { outline: 2px solid var(--bp-blue); outline-offset: 2px; }
+/* Inside a Bootstrap .input-group, the button already participates in normal
+   flow — drop the floating/absolute positioning so it sits inline beside the input. */
+.input-group > .bp-pwd-toggle {
+  position: static; transform: none; width: auto; height: auto;
+}

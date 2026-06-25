@@ -291,8 +291,9 @@ html, body {
                            class="bp-auth-inp @error('password') is-invalid @enderror"
                            placeholder="حداقل ۸ کاراکتر" required minlength="8" autocomplete="new-password"
                            style="padding-left:45px;">
-                    <span onclick="document.getElementById('password').type=document.getElementById('password').type==='password'?'text':'password'; this.innerHTML=document.getElementById('password').type==='password'?'👁':'🙈';"
-                          style="position:absolute;left:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;z-index:10;">👁</span>
+                    <button type="button" class="bp-pwd-toggle toggle-password" data-target="#password" aria-label="نمایش رمز عبور" aria-pressed="false">
+                        <i class="ri-eye-line"></i>
+                    </button>
                 </div>
                 <div class="invalid-feedback @error('password') d-block @enderror">
                     <span>@error('password'){{ $message }}@enderror</span>
@@ -307,8 +308,9 @@ html, body {
                            class="bp-auth-inp @error('password_confirmation') is-invalid @enderror"
                            placeholder="••••••••" required minlength="8" autocomplete="new-password"
                            style="padding-left:45px;">
-                    <span onclick="document.getElementById('password_confirmation').type=document.getElementById('password_confirmation').type==='password'?'text':'password'; this.innerHTML=document.getElementById('password_confirmation').type==='password'?'👁':'🙈';"
-                          style="position:absolute;left:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;z-index:10;">👁</span>
+                    <button type="button" class="bp-pwd-toggle toggle-password" data-target="#password_confirmation" aria-label="نمایش رمز عبور" aria-pressed="false">
+                        <i class="ri-eye-line"></i>
+                    </button>
                 </div>
                 <div class="invalid-feedback @error('password_confirmation') d-block @enderror">
                     <span>@error('password_confirmation'){{ $message }}@enderror</span>
@@ -413,4 +415,20 @@ html, body {
     </div>{{-- /bp-auth-showcase --}}
 
 </div>{{-- /bp-auth-wrap --}}
+@endsection
+@section('script')
+    <script>
+    document.querySelectorAll('.toggle-password').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var input = document.querySelector(btn.getAttribute('data-target'));
+            var icon = btn.querySelector('i');
+            var isHidden = input.type === 'password';
+            input.type = isHidden ? 'text' : 'password';
+            icon.classList.toggle('ri-eye-line', !isHidden);
+            icon.classList.toggle('ri-eye-off-line', isHidden);
+            btn.setAttribute('aria-pressed', isHidden ? 'true' : 'false');
+            btn.setAttribute('aria-label', isHidden ? 'پنهان کردن رمز عبور' : 'نمایش رمز عبور');
+        });
+    });
+    </script>
 @endsection

@@ -8,7 +8,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="text-sm-end d-none d-sm-block">
-                    <a href="https://engpis.ir" style="color:rgba(220,232,245,0.4) !important;">engpis.ir</a>
+                    <a href="https://engpis.ir" class="bp-footer-link">engpis.ir</a>
                 </div>
             </div>
         </div>

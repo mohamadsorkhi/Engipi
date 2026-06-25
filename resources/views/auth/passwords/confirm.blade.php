@@ -38,8 +38,8 @@
                                             <label for="password" class="form-label">رمز عبور</label>
                                             <div class="input-group">
                                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="رمز عبور را وارد کنید">
-                                                <button type="button" class="btn btn-light border toggle-password" data-target="#password" title="نمایش رمز">
-                                                    <i class="fa fa-eye"></i>
+                                                <button type="button" class="btn btn-light border bp-pwd-toggle toggle-password" data-target="#password" aria-label="نمایش رمز عبور" aria-pressed="false">
+                                                    <i class="ri-eye-line"></i>
                                                 </button>
                                             </div>
                                             <div class="invalid-feedback">
@@ -88,17 +88,16 @@
     <script src="{{ URL::asset('build/libs/particles.js/particles.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/particles.app.js') }}"></script>
     <script>
-    document.querySelectorAll('.toggle-password').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+    document.querySelectorAll('.toggle-password').forEach(function (btn) {
+        btn.addEventListener('click', function () {
             var input = document.querySelector(btn.getAttribute('data-target'));
             var icon = btn.querySelector('i');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
+            var isHidden = input.type === 'password';
+            input.type = isHidden ? 'text' : 'password';
+            icon.classList.toggle('ri-eye-line', !isHidden);
+            icon.classList.toggle('ri-eye-off-line', isHidden);
+            btn.setAttribute('aria-pressed', isHidden ? 'true' : 'false');
+            btn.setAttribute('aria-label', isHidden ? 'پنهان کردن رمز عبور' : 'نمایش رمز عبور');
         });
     });
     </script>
