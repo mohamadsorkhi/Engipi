@@ -8,7 +8,7 @@
             <div class="bp-panel2">
                 <div class="bp-ph">
                     <h5 class="mb-0"><i class="ri-briefcase-line text-primary me-2"></i>پروژه‌های من</h5>
-                    <a href="{{ route('employer.projects.create') }}" class="btn btn-primary btn-sm">
+                    <a href="{{ route('user.projects.create') }}" class="btn btn-primary btn-sm">
                         <i class="ri-add-line align-bottom me-1"></i> ثبت پروژه جدید
                     </a>
                 </div>

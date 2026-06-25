@@ -200,8 +200,8 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link menu-link {{ request()->routeIs('employer.projects.*') ? 'active' : '' }}"
-                                   href="{{ route('employer.projects.create') }}">
+                                <a class="nav-link menu-link {{ request()->routeIs('user.projects.create') ? 'active' : '' }}"
+                                   href="{{ route('user.projects.create') }}">
                                     <i class="ri-add-circle-line"></i>
                                     <span>ثبت پروژه جدید</span>
                                 </a>
