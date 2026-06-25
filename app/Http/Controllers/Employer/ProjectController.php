@@ -122,7 +122,19 @@ class ProjectController extends Controller
 
     public function storeSimple(SimpleStoreProjectRequest $request, CreateProjectAction $action)
     {
-        $action->execute(Auth::user(), $request->validated());
+        $data = $request->validated();
+
+        // The simple form only collects skill IDs (no level/years); adapt to the
+        // {id, level, years_of_experience} shape CreateProjectAction expects.
+        $data['skills'] = collect($data['skills'] ?? [])
+            ->map(fn ($skillId) => [
+                'id' => $skillId,
+                'level' => null,
+                'years_of_experience' => null,
+            ])
+            ->all();
+
+        $action->execute(Auth::user(), $data);
 
         return redirect()
             ->route('user.projects.index')
