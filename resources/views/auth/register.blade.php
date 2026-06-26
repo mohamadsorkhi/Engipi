@@ -195,11 +195,11 @@ html, body {
                 <span class="bp-auth-role-name">کارفرما</span>
                 <span class="bp-auth-role-desc">اول پروژه‌ام را ثبت می‌کنم</span>
             </a>
-            <div class="bp-auth-role-card specialist">
+            <a href="{{ route('register') }}" class="bp-auth-role-card specialist">
                 <div class="bp-auth-role-icon"><i class="ri-user-star-line" style="color:var(--bp-teal);"></i></div>
                 <span class="bp-auth-role-name">فریلنسر</span>
                 <span class="bp-auth-role-desc">فرم زیر را تکمیل می‌کنم</span>
-            </div>
+            </a>
         </div>
 
         <div class="bp-auth-divider-sm"><span>اطلاعات حساب</span></div>
