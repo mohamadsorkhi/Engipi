@@ -292,7 +292,7 @@
                                 href="javascript:void();"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                             >
-                                <i class="bx bx-power-off text-muted fs-16 align-middle me-1"></i>
+                                <i class="ri-shut-down-line text-muted fs-16 align-middle me-1"></i>
 
                                 <span class="align-middle">
                                     خروج
