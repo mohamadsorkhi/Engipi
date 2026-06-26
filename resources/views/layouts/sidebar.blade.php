@@ -187,6 +187,14 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link menu-link {{ request()->routeIs('user.tickets.*') ? 'active' : '' }}"
+                               href="{{ route('user.tickets.index') }}">
+                                <i class="ri-coupon-3-line"></i>
+                                <span>تیکت‌ها</span>
+                            </a>
+                        </li>
+
                         @if($showEmployer)
 
                             <li class="menu-title"><span>کارفرما</span></li>
@@ -204,6 +212,14 @@
                                    href="{{ route('user.projects.create') }}">
                                     <i class="ri-add-circle-line"></i>
                                     <span>ثبت پروژه جدید</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link menu-link {{ request()->routeIs('user.requests.received') ? 'active' : '' }}"
+                                   href="{{ route('user.requests.received') }}">
+                                    <i class="ri-inbox-archive-line"></i>
+                                    <span>درخواست‌های دریافتی</span>
                                 </a>
                             </li>
 
@@ -226,6 +242,22 @@
                                    href="{{ route('user.skills.index') }}">
                                     <i class="ri-star-line"></i>
                                     <span>مهارت‌های من</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link menu-link {{ request()->routeIs('user.requests.sent') ? 'active' : '' }}"
+                                   href="{{ route('user.requests.sent') }}">
+                                    <i class="ri-send-plane-line"></i>
+                                    <span>درخواست‌های ارسالی</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link menu-link {{ request()->routeIs('user.matched-projects.*') ? 'active' : '' }}"
+                                   href="{{ route('user.matched-projects.index') }}">
+                                    <i class="ri-links-line"></i>
+                                    <span>پروژه‌های متناسب</span>
                                 </a>
                             </li>
 
