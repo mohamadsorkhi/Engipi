@@ -76,6 +76,10 @@
                             <label class="form-label">حوزه‌های تخصصی <span class="text-danger">*</span>
                                 <small class="text-muted">(حداقل ۱ و حداکثر ۳ حوزه انتخاب کنید)</small>
                             </label>
+                            <div class="bp-search-wrap">
+                                <i class="ri-search-line"></i>
+                                <input type="text" id="domain-search-input" class="bp-search-input" placeholder="جستجو در حوزه‌ها...">
+                            </div>
                             @php
                                 $selectedDomainIds = $project->domains->pluck('id')->toArray();
                             @endphp
@@ -138,6 +142,10 @@
                     <div class="bp-fb">
                         <div class="mb-0">
                             <label for="skills" class="form-label">مهارت‌ها</label>
+                            <div class="bp-search-wrap">
+                                <i class="ri-search-line"></i>
+                                <input type="text" id="skills-search-input" class="bp-search-input" placeholder="جستجو در مهارت‌ها...">
+                            </div>
                             @php $selectedSkillIds = $project->skills->pluck('id')->toArray(); @endphp
                             <select class="form-select" id="skills" name="skills[]" multiple>
                                 @foreach($skills as $skill)
@@ -204,6 +212,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let allProcessesMap = new Map();
     // Copy server data to state object for tracking user changes
     let selectedProcessesState = JSON.parse(JSON.stringify(selectedProcesses || {}));
+
+    // Capture all skill options BEFORE Choices.js transforms the element
+    var skillsSelectEl = document.getElementById('skills');
+    var allSkillOptionsData = skillsSelectEl
+        ? Array.from(skillsSelectEl.options).map(function (opt) {
+            return { value: opt.value, label: opt.text };
+          })
+        : [];
 
     let skillsChoices;
     if (typeof Choices !== 'undefined') {
@@ -498,6 +514,50 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // ── Domain search filter ──────────────────────────────────────────────
+    var domainSearchInput = document.getElementById('domain-search-input');
+    if (domainSearchInput) {
+        domainSearchInput.addEventListener('input', function () {
+            var q = this.value.trim().toLowerCase();
+            document.querySelectorAll('#domains-list .bp-domain').forEach(function (card) {
+                var label = card.querySelector('.form-check-label');
+                var text  = label ? label.textContent.trim().toLowerCase() : '';
+                card.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
+            });
+        });
+    }
+
+    // ── Skills search filter ──────────────────────────────────────────────
+    var skillsSearchInput = document.getElementById('skills-search-input');
+    if (skillsSearchInput && skillsChoices) {
+        skillsSearchInput.addEventListener('input', function () {
+            var q = this.value.trim().toLowerCase();
+            var selectedVals = skillsChoices.getValue(true).map(function (v) {
+                return typeof v === 'object' ? v.value : v;
+            });
+            var selectedSet = new Set(selectedVals);
+            var filtered = q
+                ? allSkillOptionsData.filter(function (opt) {
+                    return selectedSet.has(opt.value) || opt.label.toLowerCase().indexOf(q) !== -1;
+                  })
+                : allSkillOptionsData;
+            skillsChoices.destroy();
+            skillsSelectEl.innerHTML = '';
+            filtered.forEach(function (opt) {
+                var el = document.createElement('option');
+                el.value = opt.value;
+                el.textContent = opt.label;
+                el.selected = selectedSet.has(opt.value);
+                skillsSelectEl.appendChild(el);
+            });
+            skillsChoices = new Choices(skillsSelectEl, {
+                removeItemButton: true,
+                placeholder: true,
+                placeholderValue: 'انتخاب کنید...',
+            });
+        });
+    }
 });
 </script>
 
@@ -545,9 +605,9 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 .bp-wt.sel .bp-wt-check { opacity: 1; }
 
-.bp-domain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-@media (max-width: 860px) { .bp-domain-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .bp-domain-grid { grid-template-columns: 1fr; } }
+.bp-domain-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+@media (max-width: 860px) { .bp-domain-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .bp-domain-grid { grid-template-columns: repeat(2, 1fr); } }
 .bp-domain {
     background: #fff;
     border: 1px solid var(--bp-border);
@@ -563,5 +623,11 @@ document.addEventListener('DOMContentLoaded', function() {
     background-color: var(--bp-tint-blue) !important;
     border-left: 3px solid var(--bp-blue) !important;
 }
+
+/* ── Search/filter inputs ────────────────────────────────────────────── */
+.bp-search-wrap { position: relative; max-width: 320px; margin-bottom: 12px; }
+.bp-search-wrap i { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); color: var(--bp-muted); font-size: 1rem; pointer-events: none; }
+.bp-search-input { width: 100%; border: 1px solid var(--bp-border); border-radius: var(--bp-r); padding: 7px 38px 7px 12px; font-size: .85rem; color: var(--bp-text, #1a1a2e); background: #fff; font-family: inherit; transition: border-color .15s, box-shadow .15s; }
+.bp-search-input:focus { outline: none; border-color: var(--bp-blue); box-shadow: 0 0 0 3px var(--bp-tint-blue); }
 </style>
 @endsection

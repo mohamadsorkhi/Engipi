@@ -111,6 +111,10 @@
                             <label class="form-label">حوزه‌های تخصصی <span class="text-danger">*</span>
                                 <small class="text-muted">(حداقل ۱ و حداکثر ۳ حوزه انتخاب کنید)</small>
                             </label>
+                            <div class="bp-search-wrap">
+                                <i class="ri-search-line"></i>
+                                <input type="text" id="domain-search-input" class="bp-search-input" placeholder="جستجو در حوزه‌ها...">
+                            </div>
                             <div class="bp-domain-grid" id="domains-list">
                                 @foreach($domains as $domain)
                                 <div class="bp-domain" data-domain-id="{{ $domain->id }}">
@@ -158,6 +162,10 @@
                     <div class="bp-fb">
                         <div class="mb-0">
                             <label for="skills" class="form-label">مهارت‌ها</label>
+                            <div class="bp-search-wrap">
+                                <i class="ri-search-line"></i>
+                                <input type="text" id="skills-search-input" class="bp-search-input" placeholder="جستجو در مهارت‌ها...">
+                            </div>
                             <select class="form-select" id="skills" multiple>
                                 @php $skillsByGroup = $skills->groupBy(fn($s) => ($s->subdomain?->domain?->name ?? 'سایر') . '|' . ($s->subdomain?->name ?? '')); @endphp
                                 @foreach($skillsByGroup as $groupKey => $groupSkills)
@@ -419,6 +427,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const skillsSelector = createChipCardSelector(document.getElementById('skills'), renderSkillCard, removeSkillCard);
     skillsSelector.init();
+
+    // ── Domain search filter ──────────────────────────────────────────────
+    var domainSearchInput = document.getElementById('domain-search-input');
+    if (domainSearchInput) {
+        domainSearchInput.addEventListener('input', function () {
+            var q = this.value.trim().toLowerCase();
+            document.querySelectorAll('#domains-list .bp-domain').forEach(function (card) {
+                var label = card.querySelector('.form-check-label');
+                var text  = label ? label.textContent.trim().toLowerCase() : '';
+                card.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
+            });
+        });
+    }
+
+    // ── Skills search filter ──────────────────────────────────────────────
+    var skillsSearchInput = document.getElementById('skills-search-input');
+    if (skillsSearchInput) {
+        skillsSearchInput.addEventListener('input', function () {
+            var q           = this.value.trim().toLowerCase();
+            var selectedIds = skillsSelector.getSelectedIds();
+            var selectedSet = new Set(selectedIds);
+            // Respect whatever work-type filter is currently active
+            var activeWorkType = null;
+            workTypeRadios.forEach(function (r) { if (r.checked) activeWorkType = r.value; });
+            var base = activeWorkType === 'onsite'
+                ? allSkillsData.filter(function (s) { return s.skill_type === 'field'; })
+                : activeWorkType === 'remote'
+                    ? allSkillsData.filter(function (s) { return s.skill_type === 'software'; })
+                    : allSkillsData;
+            var filtered = q
+                ? base.filter(function (s) {
+                    return selectedSet.has(s.id) || s.name.toLowerCase().indexOf(q) !== -1;
+                  })
+                : base;
+            skillsSelector.setOptions(
+                filtered.map(function (s) {
+                    return {
+                        id: s.id, name: s.name,
+                        dataset: { skillType: s.skill_type },
+                        group: s.subdomain ? (s.domain + ' › ' + s.subdomain) : s.domain,
+                    };
+                }),
+                selectedIds
+            );
+        });
+    }
 
     function filterSkillsByWorkType(workType) {
         const selected = skillsSelector.getSelectedIds();
@@ -838,9 +892,9 @@ document.addEventListener('DOMContentLoaded', function () {
 .bp-wt.sel .bp-wt-check { opacity: 1; }
 
 /* ── Domain checkbox cards ──────────────────────────────────────────────── */
-.bp-domain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-@media (max-width: 860px) { .bp-domain-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .bp-domain-grid { grid-template-columns: 1fr; } }
+.bp-domain-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+@media (max-width: 860px) { .bp-domain-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .bp-domain-grid { grid-template-columns: repeat(2, 1fr); } }
 .bp-domain {
     background: #fff;
     border: 1px solid var(--bp-border);
@@ -878,6 +932,12 @@ document.addEventListener('DOMContentLoaded', function () {
     gap: 6px;
 }
 .bp-form-note i { color: var(--bp-teal); }
+
+/* ── Search/filter inputs ────────────────────────────────────────────── */
+.bp-search-wrap { position: relative; max-width: 320px; margin-bottom: 12px; }
+.bp-search-wrap i { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); color: var(--bp-muted); font-size: 1rem; pointer-events: none; }
+.bp-search-input { width: 100%; border: 1px solid var(--bp-border); border-radius: var(--bp-r); padding: 7px 38px 7px 12px; font-size: .85rem; color: var(--bp-text, #1a1a2e); background: #fff; font-family: inherit; transition: border-color .15s, box-shadow .15s; }
+.bp-search-input:focus { outline: none; border-color: var(--bp-blue); box-shadow: 0 0 0 3px var(--bp-tint-blue); }
 
 /* ── Choices.js domain ›  subdomain group headings on the skills selector ── */
 .choices__list--dropdown .choices__heading {
