@@ -441,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function () {
             card.innerHTML =
                 '<div style="padding:8px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;">' +
                     '<div class="skill-icon" style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + theme.tint + ';color:' + theme.color + ';flex-shrink:0;">' +
-                        '<i class="' + theme.icon + '" style="font-size:0.7rem;"></i>' +
+                        '<i class="' + getSkillIcon(skill) + '" style="font-size:0.7rem;"></i>' +
                     '</div>' +
                     '<p style="margin:5px 0 0;font-weight:700;font-size:0.78rem;line-height:1.25;word-break:break-word;">' + skill.name + '</p>' +
                 '</div>';
@@ -505,6 +505,58 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function getSkillTypeTheme(skillType) {
         return SKILL_TYPE_THEME[skillType] || SKILL_TYPE_THEME.software;
+    }
+
+    const SKILL_ICON_MAP = [
+        [["جوش","جوشکاری"], "ri-fire-line"],
+        [["خوردگی","زنگ"], "ri-shield-flash-line"],
+        [["آب‌بند","آب‌بندی","آبیاری","هیدرو","رودخانه","سیلاب"], "ri-drop-line"],
+        [["خاک","ژئوتکنیک","حفاری","گمانه"], "ri-landscape-line"],
+        [["بتن","سیمان"], "ri-building-2-line"],
+        [["لوله","مخزن"], "ri-test-tube-line"],
+        [["برق","الکتر","کابل","ترانسفورماتور","ولتاژ","جریان"], "ri-flashlight-line"],
+        [["پلیمر","پلاستیک","لاستیک"], "ri-flask-line"],
+        [["فلز","فولاد","ریخته","آلیاژ"], "ri-box-3-line"],
+        [["نقشه‌بردار","ژئودز","توتال","نقشه‌برداری"], "ri-map-pin-line"],
+        [["هواپیما","پرواز","ایرفویل"], "ri-flight-takeoff-line"],
+        [["کشتی","شناور","دریا","لنگر"], "ri-ship-line"],
+        [["جاده","آسفالت","روسازی"], "ri-route-line"],
+        [["موتور","توربین","پمپ"], "ri-settings-3-line"],
+        [["خورشید","فتوولتائیک","پنل"], "ri-sun-line"],
+        [["نیروگاه","ژنراتور"], "ri-building-4-line"],
+        [["بدن","خون","سلول","عضله","قلب","عصب"], "ri-heart-pulse-line"],
+        [["گیاه","کشاورزی","محصول","کشت"], "ri-plant-line"],
+        [["معدن","سنگ","کانی"], "ri-hammer-line"],
+        [["لرزه","زلزله","ژئوفیزیک"], "ri-pulse-line"],
+        [["دما","حرارت","گرمایش","سرمایش"], "ri-temp-hot-line"],
+        [["صدا","آکوستیک","نویز"], "ri-volume-up-line"],
+        [["نور","لیزر","نوری"], "ri-lightbulb-line"],
+        [["دوربین","تصویر","عکس"], "ri-camera-line"],
+        [["سنسور","حسگر","رادار"], "ri-radar-line"],
+        [["باتری","شارژ"], "ri-battery-2-charge-line"],
+        [["بازرسی","بررسی"], "ri-search-eye-line"],
+        [["نصب","راه‌اندازی","مونتاژ","سیم‌کشی"], "ri-tools-line"],
+        [["اجرای","انجام"], "ri-play-circle-line"],
+        [["اندازه‌گیری","کالیبر","کالیبراسیون"], "ri-ruler-line"],
+        [["نظارت","پایش"], "ri-eye-line"],
+        [["ارزیابی","تحلیل","آنالیز"], "ri-line-chart-line"],
+        [["کنترل"], "ri-equalizer-line"],
+        [["آزمون","تست","آزمایش"], "ri-test-tube-line"],
+        [["نمونه","برداشت","جمع‌آوری"], "ri-flask-line"],
+        [["مستند","ثبت","گزارش"], "ri-file-text-line"],
+        [["عیب‌یابی","تعمیر","نگهداری"], "ri-wrench-line"],
+        [["آموزش","تدریس"], "ri-graduation-cap-line"],
+    ];
+
+    function getSkillIcon(skill) {
+        if (skill.skill_type === 'software') return 'ri-code-s-slash-line';
+        for (var i = 0; i < SKILL_ICON_MAP.length; i++) {
+            var kws = SKILL_ICON_MAP[i][0];
+            for (var j = 0; j < kws.length; j++) {
+                if (skill.name && skill.name.indexOf(kws[j]) !== -1) return SKILL_ICON_MAP[i][1];
+            }
+        }
+        return 'ri-briefcase-line';
     }
 
     function getSkillsContainer(skillType) {
