@@ -278,7 +278,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitBtn         = document.getElementById('submitBtn');
     const spinner           = submitBtn.querySelector('.spinner-border');
     const domainCheckboxes  = document.querySelectorAll('.domain-checkbox');
-    const processesContainer= document.getElementById('processes-container');
+    const processesContainer   = document.getElementById('processes-container');
+    const processesInner       = document.getElementById('processes-inner');
+    const processesPlaceholder = document.getElementById('processes-placeholder');
     const processesCards    = document.getElementById('processes-cards');
     const skillsCards       = document.getElementById('skills-cards');
     const workTypeRadios    = document.querySelectorAll('input[name="work_type"]');
@@ -664,7 +666,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 } catch (_) {}
             });
 
-            processesContainer.style.display = allProcessesMap.size > 0 ? 'block' : 'none';
+            processesContainer.style.display  = allProcessesMap.size > 0 ? 'block' : 'none';
+            processesInner.style.display       = allProcessesMap.size > 0 ? 'block' : 'none';
+            processesPlaceholder.style.display = allProcessesMap.size > 0 ? 'none'  : 'block';
             updateProcessesOptions();
         });
     });

@@ -209,7 +209,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('projectForm');
     const domainCheckboxes = document.querySelectorAll('.domain-checkbox');
-    const processesContainer = document.getElementById('processes-container');
+    const processesContainer   = document.getElementById('processes-container');
+    const processesInner       = document.getElementById('processes-inner');
+    const processesPlaceholder = document.getElementById('processes-placeholder');
     const processesList = document.getElementById('processes-list');
     const submitBtn = document.getElementById('submitBtn');
     const workTypeRadios = document.querySelectorAll('input[name="work_type"]');
@@ -374,10 +376,14 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             if (allProcessesMap.size > 0) {
-                processesContainer.style.display = 'block';
+                processesContainer.style.display  = 'block';
+                processesInner.style.display       = 'block';
+                processesPlaceholder.style.display = 'none';
                 renderProcesses(Array.from(allProcessesMap.values()));
             } else {
-                processesContainer.style.display = 'none';
+                processesContainer.style.display  = 'none';
+                processesInner.style.display       = 'none';
+                processesPlaceholder.style.display = 'block';
                 processesList.innerHTML = '';
             }
         });
@@ -399,7 +405,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         if (allProcessesMap.size > 0) {
-            processesContainer.style.display = 'block';
+            processesContainer.style.display  = 'block';
+            processesInner.style.display       = 'block';
+            processesPlaceholder.style.display = 'none';
             renderProcesses(Array.from(allProcessesMap.values()));
         }
     }
