@@ -108,11 +108,17 @@
                                     پردازش‌های مورد نیاز <span class="text-danger">*</span>
                                     <small class="text-muted">(حداقل ۱ پردازش انتخاب کنید)</small>
                                 </label>
-                                <div class="alert alert-info small mb-3">
-                                    <i class="ri-information-line me-1"></i>
-                                    برای هر پردازش انتخاب شده، سطح(های) مورد نیاز را مشخص کنید.
+                                <p id="processes-placeholder" class="bp-processes-hint">
+                                    <i class="ri-arrow-up-line me-1"></i>
+                                    ابتدا یک حوزه تخصصی انتخاب کنید تا مهارت‌های پردازشی مرتبط نمایش داده شوند.
+                                </p>
+                                <div id="processes-inner" style="display: none;">
+                                    <div class="alert alert-info small mb-3">
+                                        <i class="ri-information-line me-1"></i>
+                                        برای هر پردازش انتخاب شده، سطح(های) مورد نیاز را مشخص کنید.
+                                    </div>
+                                    <div id="processes-list" class="row g-3"></div>
                                 </div>
-                                <div id="processes-list" class="row g-3"></div>
                                 <div class="invalid-feedback d-block" id="processes-error"><span></span></div>
                             </div>
                             @php
@@ -243,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const isSelected = selectedLevels.length > 0;
 
             const processHtml = `
-                <div class="col-md-6 col-lg-4">
+                <div class="col-6 col-md-4 col-lg-2">
                     <div class="card border ${isSelected ? 'border-primary' : ''} process-card" data-process-id="${process.id}">
                         <div class="card-body">
                             <div class="form-check mb-3">

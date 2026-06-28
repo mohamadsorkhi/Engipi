@@ -133,7 +133,7 @@
                             <div class="invalid-feedback d-block" id="domains-error"><span></span></div>
                         </div>
                         <div class="mb-0">
-                            <div id="processes-container" style="display: none;">
+                            <div id="processes-container">
                                 <label for="processes" class="form-label d-flex align-items-center justify-content-between">
                                     <span>
                                         مهارت‌های پردازشی <span class="text-danger">*</span>
@@ -141,12 +141,18 @@
                                     </span>
                                     <small class="text-muted fw-medium" id="processes-counter">۰ از ۳</small>
                                 </label>
-                                <select class="form-select" id="processes" multiple></select>
-                                <div class="alert alert-info small mb-3 mt-2">
-                                    <i class="ri-information-line me-1"></i>
-                                    برای هر پردازش انتخاب شده، سطح مهارت مورد نیاز را مشخص کنید.
+                                <p id="processes-placeholder" class="bp-processes-hint">
+                                    <i class="ri-arrow-up-line me-1"></i>
+                                    ابتدا یک حوزه تخصصی انتخاب کنید تا مهارت‌های پردازشی مرتبط نمایش داده شوند.
+                                </p>
+                                <div id="processes-inner" style="display: none;">
+                                    <select class="form-select" id="processes" multiple></select>
+                                    <div class="alert alert-info small mb-3 mt-2">
+                                        <i class="ri-information-line me-1"></i>
+                                        برای هر پردازش انتخاب شده، سطح مهارت مورد نیاز را مشخص کنید.
+                                    </div>
+                                    <div id="processes-cards" class="row g-3"></div>
                                 </div>
-                                <div id="processes-cards" class="row g-3"></div>
                                 <div class="invalid-feedback d-block" id="processes-error"><span></span></div>
                             </div>
                         </div>
@@ -523,7 +529,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const savedLevels = selectedProcessesState[processId];
         const labels = { practical: 'عملی', proficient: 'مسلط', advanced: 'پیشرفته' };
 
-        const html = '<div class="col-md-6 col-lg-4" data-process-card-id="' + processId + '">' +
+        const html = '<div class="col-6 col-md-4 col-lg-2" data-process-card-id="' + processId + '">' +
             '<div class="card process-card" data-process-id="' + processId + '">' +
             '<div class="card-body">' +
             '<div class="d-flex justify-content-between align-items-start mb-2">' +

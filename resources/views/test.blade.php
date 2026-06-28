@@ -431,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const theme = getSkillTypeTheme(skill.skill_type);
 
             const col = document.createElement('div');
-            col.className = 'col-6 col-sm-6 col-md-4 col-lg-3';
+            col.className = 'col-6 col-sm-6 col-md-4 col-lg-2';
             col.dataset.subdomainId = subdomainID;
             col.dataset.skillName   = skill.name;
 

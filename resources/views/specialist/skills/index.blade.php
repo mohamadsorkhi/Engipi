@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const selectedLevel = isSelected ? selectedProcesses[process.id].pivot.level : 'practical';
             
             const processHtml = `
-                <div class="col-md-6 col-lg-4">
+                <div class="col-6 col-md-4 col-lg-2">
                     <div class="card border ${isSelected ? 'border-primary' : ''} process-card" data-process-id="${process.id}">
                         <div class="card-body">
                             <div class="form-check mb-3">
