@@ -32,6 +32,8 @@
                     </div>
                 </div>
 
+                <div id="selected-domains" class="mb-2 d-flex flex-wrap"></div>
+
                 {{-- SUBDOMAIN — custom dropdown (native <select> cannot be styled cross-browser) --}}
                 <div class="mb-4">
                     <label class="form-label fw-bold">زیرشاخه</label>
@@ -362,6 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 selectedSubdomains = selectedSubdomains.filter(function (s) { return !removedIds.has(s.id); });
                 renderSelectedSubdomains();
+                renderSelectedDomains();
 
                 const remaining = Object.values(loadedSubdomainsByDomain).flat();
                 if (remaining.length === 0) {
@@ -382,6 +385,7 @@ document.addEventListener('DOMContentLoaded', function () {
             selectedDomains.push(domainId);
             btn.classList.remove('btn-outline-primary');
             btn.classList.add('btn-primary');
+            renderSelectedDomains();
 
             const subdomains = domainSubdomainsMap[domainId] || [];
             loadedSubdomainsByDomain[domainId] = subdomains;
@@ -500,6 +504,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 renderSelectedSubdomains();
             });
             selectedSubdomainsContainer.appendChild(btn);
+        });
+    }
+
+    // ─── SELECTED DOMAINS ───────────────────────────────────────────────────
+    const selectedDomainsContainer = document.getElementById('selected-domains');
+    function renderSelectedDomains() {
+        selectedDomainsContainer.innerHTML = '';
+        selectedDomains.forEach(function (domainId) {
+            const domainBtn = document.querySelector('.domain-card[data-id="' + domainId + '"]');
+            const domainName = domainBtn ? domainBtn.textContent.trim() : domainId;
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'btn btn-primary m-1';
+            chip.innerHTML = domainName + ' &times;';
+            chip.addEventListener('click', function () {
+                if (domainBtn) domainBtn.click();
+            });
+            selectedDomainsContainer.appendChild(chip);
         });
     }
 
