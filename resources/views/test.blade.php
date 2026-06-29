@@ -19,16 +19,12 @@
                 {{-- DOMAIN --}}
                 <div class="mb-4">
                     <label class="form-label fw-bold">حوزه (حداکثر ۲)</label>
-                    <div id="domainContainer" class="d-flex flex-wrap gap-2">
-                        @foreach($domains as $item)
-                        <button
-                            type="button"
-                            class="btn btn-outline-primary domain-card"
-                            data-id="{{ $item->id }}"
-                        >
-                            {{ $item->name }}
-                        </button>
-                        @endforeach
+                    <div class="ep-select" id="dd-wrap">
+                        <div class="ep-select__trigger" id="dd-trigger">
+                            <span id="dd-label">انتخاب حوزه</span>
+                            <i class="ri-arrow-down-s-line ep-select__chevron"></i>
+                        </div>
+                        <ul class="ep-select__menu" id="dd-menu"></ul>
                     </div>
                 </div>
 
@@ -297,7 +293,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectedSkillsContainer     = document.getElementById('selected-skills');
     const selectedSubdomainsContainer = document.getElementById('selected-subdomains');
     const saveBtn                     = document.getElementById('saveBtn');
-    const domainButtons               = document.querySelectorAll('.domain-card');
+    // ─── CUSTOM DOMAIN DROPDOWN ─────────────────────────────────────────
+    const ddWrap    = document.getElementById('dd-wrap');
+    const ddTrigger = document.getElementById('dd-trigger');
+    const ddLabel   = document.getElementById('dd-label');
+    const ddMenu    = document.getElementById('dd-menu');
+
+    function ddClose()            { ddWrap.classList.remove('ep-select--open'); }
+    function ddReset(placeholder) { ddMenu.innerHTML = ''; ddLabel.textContent = placeholder; }
+    function ddPopulate(items) {
+        ddMenu.innerHTML = '';
+        items.forEach(function (item) {
+            const li = document.createElement('li');
+            li.className = 'ep-select__option';
+            li.textContent = item.name;
+            li.addEventListener('click', function () { onDomainPick(item.id, item.name); });
+            ddMenu.appendChild(li);
+        });
+    }
+
+    ddTrigger.addEventListener('click', function () { ddWrap.classList.toggle('ep-select--open'); });
+    document.addEventListener('click', function (e) { if (!ddWrap.contains(e.target)) ddClose(); });
 
     // ─── CUSTOM SUBDOMAIN DROPDOWN ──────────────────────────────────────
     const sdWrap    = document.getElementById('sd-wrap');
@@ -347,61 +363,53 @@ document.addEventListener('DOMContentLoaded', function () {
     saveBtn.disabled = true;
 
     // ─── DOMAIN SELECTION ───────────────────────────────────────────────
-    domainButtons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            const domainId = btn.dataset.id;
+    const domainsData = @json($domains->map(fn($d) => ['id' => $d->id, 'name' => $d->name])->values());
+    ddPopulate(domainsData);
 
-            if (selectedDomains.includes(domainId)) {
-                // Deselect
-                selectedDomains = selectedDomains.filter(function (id) { return id !== domainId; });
-                btn.classList.remove('btn-primary');
-                btn.classList.add('btn-outline-primary');
+    function deselectDomain(domainId) {
+        selectedDomains = selectedDomains.filter(function (id) { return id !== domainId; });
+        const removedIds = new Set(
+            (loadedSubdomainsByDomain[domainId] || []).map(function (s) { return s.id; })
+        );
+        delete loadedSubdomainsByDomain[domainId];
+        selectedSubdomains = selectedSubdomains.filter(function (s) { return !removedIds.has(s.id); });
+        renderSelectedSubdomains();
+        const remaining = Object.values(loadedSubdomainsByDomain).flat();
+        if (remaining.length === 0) {
+            sdDisable();
+            sdReset('اول حوزه را انتخاب کنید');
+        } else {
+            sdPopulate(remaining);
+        }
+        Array.from(removedIds).forEach(function (subId) { removeSkillsBySubdomain(subId); });
+        renderSelectedDomains();
+    }
 
-                const removedIds = new Set(
-                    (loadedSubdomainsByDomain[domainId] || []).map(function (s) { return s.id; })
-                );
-                delete loadedSubdomainsByDomain[domainId];
-
-                selectedSubdomains = selectedSubdomains.filter(function (s) { return !removedIds.has(s.id); });
-                renderSelectedSubdomains();
-                renderSelectedDomains();
-
-                const remaining = Object.values(loadedSubdomainsByDomain).flat();
-                if (remaining.length === 0) {
-                    sdDisable();
-                    sdReset('اول حوزه را انتخاب کنید');
-                } else {
-                    sdPopulate(remaining);
-                }
-                Array.from(removedIds).forEach(function (subId) { removeSkillsBySubdomain(subId); });
-                return;
-            }
-
-            if (selectedDomains.length >= 2) {
-                alert('حداکثر دو حوزه قابل انتخاب است');
-                return;
-            }
-
-            selectedDomains.push(domainId);
-            btn.classList.remove('btn-outline-primary');
-            btn.classList.add('btn-primary');
-            renderSelectedDomains();
-
-            const subdomains = domainSubdomainsMap[domainId] || [];
-            loadedSubdomainsByDomain[domainId] = subdomains;
-
-            const allFlat = Object.values(loadedSubdomainsByDomain).flat();
-            if (allFlat.length > 0) {
-                sdReset('انتخاب زیررشته');
-                sdPopulate(allFlat);
-                sdEnable();
-            } else {
-                sdDisable();
-                sdReset('زیرشاخه‌ای برای این حوزه تعریف نشده');
-            }
-            clearSkillSelection();
-        });
-    });
+    function onDomainPick(domainId, domainName) {
+        ddClose();
+        if (selectedDomains.includes(domainId)) {
+            alert('این حوزه قبلا انتخاب شده');
+            return;
+        }
+        if (selectedDomains.length >= 2) {
+            alert('حداکثر دو حوزه قابل انتخاب است');
+            return;
+        }
+        selectedDomains.push(domainId);
+        renderSelectedDomains();
+        const subdomains = domainSubdomainsMap[domainId] || [];
+        loadedSubdomainsByDomain[domainId] = subdomains;
+        const allFlat = Object.values(loadedSubdomainsByDomain).flat();
+        if (allFlat.length > 0) {
+            sdReset('انتخاب زیررشته');
+            sdPopulate(allFlat);
+            sdEnable();
+        } else {
+            sdDisable();
+            sdReset('زیرشاخه‌ای برای این حوزه تعریف نشده');
+        }
+        clearSkillSelection();
+    }
 
     // ─── SUBDOMAIN PICK (replaces native <select> change handler) ───────
     async function onSubdomainPick(subdomainID, subdomainName) {
@@ -512,14 +520,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderSelectedDomains() {
         selectedDomainsContainer.innerHTML = '';
         selectedDomains.forEach(function (domainId) {
-            const domainBtn = document.querySelector('.domain-card[data-id="' + domainId + '"]');
-            const domainName = domainBtn ? domainBtn.textContent.trim() : domainId;
+            const domainName = (domainsData.find(function (d) { return d.id === domainId; }) || {}).name || domainId;
             const chip = document.createElement('button');
             chip.type = 'button';
             chip.className = 'btn btn-primary m-1';
             chip.innerHTML = domainName + ' &times;';
             chip.addEventListener('click', function () {
-                if (domainBtn) domainBtn.click();
+                deselectDomain(domainId);
             });
             selectedDomainsContainer.appendChild(chip);
         });
