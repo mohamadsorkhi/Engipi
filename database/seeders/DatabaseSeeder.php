@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             SkillDomainSeeder::class,
             SubdomainSeeder::class,
             SkillSeeder::class,
+            FieldSkillsSeeder::class,
         ]);
     }
 }

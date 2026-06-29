@@ -439,7 +439,10 @@ document.addEventListener('DOMContentLoaded', function () {
             card.className = 'mb-0 bp-skill-card';
 
             card.innerHTML =
-                '<div style="padding:8px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;">' +
+                '<div style="position:relative;padding:8px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;">' +
+                    '<span class="bp-skill-check" style="position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;background:#2563eb;display:none;align-items:center;justify-content:center;z-index:2;">' +
+                        '<i class="ri ri-check-line" style="font-size:13px;color:#fff;"></i>' +
+                    '</span>' +
                     '<div class="skill-icon" style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + theme.tint + ';color:' + theme.color + ';flex-shrink:0;">' +
                         '<i class="' + getSkillIcon(skill) + '" style="font-size:0.7rem;"></i>' +
                     '</div>' +
@@ -468,6 +471,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 card.style.boxShadow = '0 0 0 3px ' + theme.ring;
                 const iconDiv = card.querySelector('.skill-icon');
                 if (iconDiv) { iconDiv.style.background = theme.color; iconDiv.style.color = '#fff'; }
+
+                const checkEl = card.querySelector('.bp-skill-check');
+                if (checkEl) { checkEl.style.display = 'flex'; }
 
                 renderSelectedSkills();
                 saveBtn.disabled = false;
@@ -664,6 +670,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     skill.cardRef.style.boxShadow = '';
                     const iconDiv = skill.cardRef.querySelector('.skill-icon');
                     if (iconDiv) { iconDiv.style.background = theme.tint; iconDiv.style.color = theme.color; }
+                    const checkEl = skill.cardRef.querySelector('.bp-skill-check');
+                    if (checkEl) { checkEl.style.display = 'none'; }
                 }
                 selectedSkills.splice(index, 1);
                 renderSelectedSkills();
