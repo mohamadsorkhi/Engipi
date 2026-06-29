@@ -336,10 +336,10 @@ html, body {
 
 
     {{-- ════════════ SHOWCASE PANEL — left in RTL ════════════ --}}
-    <div class="bp-auth-showcase">
-        <div class="grid-bg bp-grid"></div>
-        <div class="glow g1"></div>
-        <div class="glow g2"></div>
+    <div class="bp-auth-showcase" style="background-image: linear-gradient(rgba(10,20,40,0.72), rgba(10,20,40,0.72)), url('{{ asset('images/register-bg.jpg') }}'); background-size: cover; background-position: center;">
+        <div class="grid-bg bp-grid" style="display:none;"></div>
+        <div class="glow g1" style="display:none;"></div>
+        <div class="glow g2" style="display:none;"></div>
 
         <div class="bp-auth-showcase-inner">
 
