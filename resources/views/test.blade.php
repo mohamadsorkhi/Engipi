@@ -185,7 +185,7 @@ const domainSubdomainsMap = @json(
     gap: 8px;
     font-size: 1.05rem;
     font-weight: 700;
-    margin-bottom: .75rem;
+    margin-bottom: 1.1rem;
 }
 .bp-skillsec-label i { font-size: 1.3rem; }
 .bp-skillsec--blue .bp-skillsec-label { color: var(--bp-blue); }
@@ -193,7 +193,7 @@ const domainSubdomainsMap = @json(
 .bp-skillsec-divider {
     height: 1px;
     background: var(--bp-hair);
-    margin: 32px 0 28px;
+    margin: 44px 0 40px;
 }
 .bp-skillsec-search {
     position: relative;
@@ -233,10 +233,10 @@ const domainSubdomainsMap = @json(
 /* ── Available-skill cards: depth + hover-lift (mirrors .bp-card / .feature on landing) ── */
 .bp-skill-card {
     cursor: pointer;
-    border: 2.5px solid #ced4da;
+    border: 1px solid var(--bp-border);
     border-radius: var(--bp-r-lg);
     width: 100%;
-    min-height: 72px;
+    min-height: 84px;
     display: flex;
     flex-direction: column;
     align-items: center;
