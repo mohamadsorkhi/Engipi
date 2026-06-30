@@ -249,6 +249,77 @@ const domainSubdomainsMap = @json(
     box-shadow: var(--bp-sh-md);
 }
 
+/* ── Skill card expandable panel ─────────────────────────────────────── */
+.bp-skill-card__face {
+    position: relative;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}
+.bp-skill-card__controls {
+    display: none;
+    width: 100%;
+    padding: 8px 10px 10px;
+    border-top: 1px solid var(--bp-border);
+    direction: rtl;
+}
+.bp-skill-card--expanded { justify-content: flex-start; }
+.bp-skill-card--expanded .bp-skill-card__controls { display: block; }
+.bp-skill-card--added:hover { transform: none !important; box-shadow: var(--bp-sh-sm) !important; }
+.bp-card-chips { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 6px; justify-content: center; }
+.bp-card-years {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: .75rem;
+    color: var(--bp-muted);
+    direction: rtl;
+    justify-content: center;
+}
+.bp-card-years input {
+    width: 52px;
+    border: 1px solid var(--bp-border);
+    border-radius: var(--bp-r);
+    padding: 3px 5px;
+    font-size: .78rem;
+    text-align: center;
+    color: var(--bp-text);
+    background: #fff;
+}
+.bp-card-years input:focus { outline: none; border-color: var(--bp-blue); }
+.bp-card-add-btn {
+    width: 100%;
+    padding: 5px 0;
+    border: none;
+    border-radius: var(--bp-r);
+    font-size: .74rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .15s;
+    color: #fff;
+}
+.bp-card-add-btn:hover { opacity: .85; }
+.bp-card-level-sel {
+    width: 100%;
+    border: 1px solid var(--bp-border);
+    border-radius: var(--bp-r);
+    padding: 4px 6px;
+    font-size: .78rem;
+    color: var(--bp-text);
+    background: #fff;
+    margin-bottom: 6px;
+    direction: rtl;
+    cursor: pointer;
+}
+.bp-card-level-sel:focus { outline: none; border-color: var(--bp-blue); }
+.bp-skill-card--teal .bp-level-chip--active { background: var(--bp-teal); border-color: var(--bp-teal); }
+.bp-skill-card--teal .bp-level-chip:hover   { border-color: var(--bp-teal); color: var(--bp-teal); }
+
 /* ── Selected-skills section card ───────────────────────────────────── */
 .bp-selected-section {
     background: #f8f9fb;
@@ -257,73 +328,101 @@ const domainSubdomainsMap = @json(
     padding: 1.25rem;
 }
 
-/* ── Selected-skill rows ─────────────────────────────────────────────── */
-.bp-skill-row {
+/* ── Selected-skill ID cards ────────────────────────────────────────── */
+#selected-skills {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    border: 1px solid var(--bp-border);
-    border-radius: var(--bp-r);
-    background: var(--bp-bg);
+    flex-wrap: wrap;
+    gap: 14px;
     direction: rtl;
 }
-.bp-skill-row + .bp-skill-row { margin-top: 6px; }
-.bp-skill-row__info {
+.bp-sid-card {
+    width: 250px;
+    aspect-ratio: 1.6 / 1;
+    border: 2px solid var(--bp-border);
+    border-radius: var(--bp-r-lg);
+    background: var(--bp-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 12px 8px;
+    text-align: center;
+    box-shadow: var(--bp-sh-sm);
+    overflow: hidden;
+}
+.bp-sid-card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+}
+.bp-sid-card__icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 7px;
-    flex: 1;
-    min-width: 0;
-}
-.bp-skill-row__name {
-    font-weight: 700;
-    font-size: .88rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.bp-skill-row__levels { display: flex; gap: 4px; flex-shrink: 0; }
-.bp-level-chip {
-    padding: 3px 9px;
-    border-radius: 999px;
-    border: 1px solid var(--bp-border);
-    background: transparent;
-    font-size: .74rem;
-    font-weight: 600;
-    color: var(--bp-muted);
-    cursor: pointer;
-    transition: background .15s, color .15s, border-color .15s;
-    white-space: nowrap;
-}
-.bp-level-chip:hover { border-color: var(--bp-blue); color: var(--bp-blue); }
-.bp-level-chip--active { background: var(--bp-blue); border-color: var(--bp-blue); color: #fff; }
-.bp-skill-row--teal .bp-level-chip--active { background: var(--bp-teal); border-color: var(--bp-teal); }
-.bp-skill-row__del {
-    background: transparent;
-    border: none;
-    color: var(--bp-muted);
-    font-size: 1.15rem;
-    line-height: 1;
-    cursor: pointer;
-    padding: 2px 6px;
-    border-radius: 4px;
+    justify-content: center;
     flex-shrink: 0;
-    transition: color .15s, background .15s;
 }
-.bp-skill-row__del:hover { color: #dc3545; background: rgba(220,53,69,.08); }
+.bp-sid-card__icon i { font-size: 0.8rem; color: #fff; }
+.bp-sid-card__name {
+    font-weight: 700;
+    font-size: .8rem;
+    line-height: 1.25;
+    color: var(--bp-text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    width: 100%;
+}
+.bp-sid-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+.bp-sid-card__level {
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: .67rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.bp-sid-card__years { font-size: .7rem; color: var(--bp-muted); white-space: nowrap; }
+.bp-sid-card__del {
+    width: 100%;
+    padding: 4px 0;
+    border: 1px solid #dc3545;
+    border-radius: var(--bp-r);
+    background: transparent;
+    font-size: .72rem;
+    font-weight: 600;
+    color: #dc3545;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background .15s, color .15s;
+}
+.bp-sid-card__del:hover { background: #dc3545; color: #fff; }
 
-/* ── Selected-skill rows — mobile stack ─────────────────────────────── */
+/* ── Selected-skill ID cards — mobile ───────────────────────────────── */
 @media (max-width: 576px) {
-    .bp-skill-row { flex-wrap: wrap; align-items: flex-start; }
-    .bp-skill-row__info { flex-basis: 100%; }
-    .bp-skill-row__name { white-space: normal; overflow: visible; text-overflow: unset; }
-}
-
-/* ── Selected-skill rows — desktop separation ───────────────────────── */
-@media (min-width: 577px) {
-    .bp-skill-row + .bp-skill-row { margin-top: 22px; }
-    .bp-skill-row { border-width: 2px; border-color: #495057; }
+    #selected-skills { gap: 10px; }
+    .bp-sid-card {
+        width: 100%;                /* one per row; aspect-ratio still enforces 1.6:1 height */
+        padding: 10px 10px 7px;
+    }
+    .bp-sid-card__icon   { width: 24px; height: 24px; }
+    .bp-sid-card__icon i { font-size: .68rem; }
+    .bp-sid-card__name   { font-size: .74rem; }
+    .bp-sid-card__level  { font-size: .61rem; }
+    .bp-sid-card__years  { font-size: .63rem; }
+    .bp-sid-card__del    { font-size: .67rem; padding: 3px 0; }
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────── */
@@ -503,47 +602,100 @@ document.addEventListener('DOMContentLoaded', function () {
             col.dataset.skillName   = skill.name;
 
             const card = document.createElement('div');
-            card.className = 'mb-0 bp-skill-card';
+            card.className = 'mb-0 bp-skill-card' + (skill.skill_type === 'field' ? ' bp-skill-card--teal' : '');
 
-            card.innerHTML =
-                '<div style="position:relative;padding:8px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;">' +
-                    '<span class="bp-skill-check" style="position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;background:#2563eb;display:none;align-items:center;justify-content:center;z-index:2;">' +
-                        '<i class="ri ri-check-line" style="font-size:13px;color:#fff;"></i>' +
-                    '</span>' +
-                    '<div class="skill-icon" style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + theme.tint + ';color:' + theme.color + ';flex-shrink:0;">' +
-                        '<i class="' + getSkillIcon(skill) + '" style="font-size:0.7rem;"></i>' +
-                    '</div>' +
-                    '<p style="margin:5px 0 0;font-weight:700;font-size:0.78rem;line-height:1.25;word-break:break-word;">' + skill.name + '</p>' +
-                '</div>';
+            // ── face (always visible) ──────────────────────────────────
+            const face = document.createElement('div');
+            face.className = 'bp-skill-card__face';
+            face.innerHTML =
+                '<span class="bp-skill-check" style="position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;background:#2563eb;display:none;align-items:center;justify-content:center;z-index:2;">' +
+                    '<i class="ri ri-check-line" style="font-size:13px;color:#fff;"></i>' +
+                '</span>' +
+                '<div class="skill-icon" style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + theme.tint + ';color:' + theme.color + ';flex-shrink:0;">' +
+                    '<i class="' + getSkillIcon(skill) + '" style="font-size:0.7rem;"></i>' +
+                '</div>' +
+                '<p style="margin:5px 0 0;font-weight:700;font-size:0.78rem;line-height:1.25;word-break:break-word;">' + skill.name + '</p>';
 
-            card.addEventListener('click', function () {
-                if (selectedSkills.some(function (s) { return s.id === skill.id; })) return;
+            // ── controls (revealed on expand) ──────────────────────────
+            const controls = document.createElement('div');
+            controls.className = 'bp-skill-card__controls';
+            controls.addEventListener('click', function (e) { e.stopPropagation(); });
 
-                if (selectedSkills.length >= 5) {
-                    alert('حداکثر ۵ مهارت قابل انتخاب است');
-                    return;
-                }
+            const levelSel = document.createElement('select');
+            levelSel.className = 'bp-card-level-sel';
+            ['مبتدی', 'متوسط', 'حرفه‌ای'].forEach(function (lvl) {
+                const opt = document.createElement('option');
+                opt.value = lvl;
+                opt.textContent = lvl;
+                levelSel.appendChild(opt);
+            });
+
+            const yearsWrap = document.createElement('div');
+            yearsWrap.className = 'bp-card-years';
+            const yearsInput = document.createElement('input');
+            yearsInput.type = 'number';
+            yearsInput.min  = '0';
+            yearsInput.value = '1';
+            yearsWrap.innerHTML = '<span>سال تجربه:</span>';
+            yearsWrap.appendChild(yearsInput);
+
+            const addBtn = document.createElement('button');
+            addBtn.type = 'button';
+            addBtn.className = 'bp-card-add-btn';
+            addBtn.textContent = 'افزودن به مهارت‌ها';
+            addBtn.style.background = theme.color;
+            addBtn.addEventListener('click', function () {
+                const level = levelSel.value;
+                const years = parseInt(yearsInput.value, 10) || 0;
 
                 selectedSkills.push({
                     id:          skill.id,
                     name:        skill.name,
                     subdomainId: subdomainID,
                     skillType:   skill.skill_type,
-                    level:       'مبتدی',
-                    years:       1,
+                    level:       level,
+                    years:       years,
                     cardRef:     card,
                 });
 
+                card.classList.remove('bp-skill-card--expanded');
+                card.classList.add('bp-skill-card--added');
                 card.style.border    = '2.5px solid ' + theme.color;
                 card.style.boxShadow = '0 0 0 3px ' + theme.ring;
                 const iconDiv = card.querySelector('.skill-icon');
                 if (iconDiv) { iconDiv.style.background = theme.color; iconDiv.style.color = '#fff'; }
-
                 const checkEl = card.querySelector('.bp-skill-check');
                 if (checkEl) { checkEl.style.display = 'flex'; }
 
                 renderSelectedSkills();
                 saveBtn.disabled = false;
+            });
+
+            controls.appendChild(levelSel);
+            controls.appendChild(yearsWrap);
+            controls.appendChild(addBtn);
+
+            card.appendChild(face);
+            card.appendChild(controls);
+
+            // ── card click: expand / collapse face ─────────────────────
+            card.addEventListener('click', function () {
+                if (card.classList.contains('bp-skill-card--added')) return;
+
+                if (card.classList.contains('bp-skill-card--expanded')) {
+                    card.classList.remove('bp-skill-card--expanded');
+                    return;
+                }
+                if (selectedSkills.length >= 5) {
+                    alert('حداکثر ۵ مهارت قابل انتخاب است');
+                    return;
+                }
+                skillContainers.forEach(function (c) {
+                    c.querySelectorAll('.bp-skill-card--expanded').forEach(function (other) {
+                        if (other !== card) other.classList.remove('bp-skill-card--expanded');
+                    });
+                });
+                card.classList.add('bp-skill-card--expanded');
             });
 
             col.appendChild(card);
@@ -706,58 +858,54 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedSkillsContainer.innerHTML = '';
 
         selectedSkills.forEach(function (skill, index) {
-            const theme  = getSkillTypeTheme(skill.skillType);
-            const isTeal = skill.skillType === 'field';
-            const levels = ['مبتدی', 'متوسط', 'حرفه‌ای'];
+            const theme = getSkillTypeTheme(skill.skillType);
 
-            const row = document.createElement('div');
-            row.className = 'bp-skill-row' + (isTeal ? ' bp-skill-row--teal' : '');
-            row.style.borderColor = theme.color;
+            const card = document.createElement('div');
+            card.className = 'bp-sid-card';
+            card.style.borderColor = theme.color;
 
-            // ── right: icon + name ──────────────────────────────────────
-            const info = document.createElement('div');
-            info.className = 'bp-skill-row__info';
+            // ── body: icon + name + meta ────────────────────────────────
+            const body = document.createElement('div');
+            body.className = 'bp-sid-card__body';
 
             const iconEl = document.createElement('div');
-            iconEl.style.cssText =
-                'width:22px;height:22px;border-radius:50%;display:flex;align-items:center;' +
-                'justify-content:center;background:' + theme.color + ';color:#fff;flex-shrink:0;';
-            iconEl.innerHTML = '<i class="' + getSkillIcon({ name: skill.name, skill_type: skill.skillType }) + '" style="font-size:0.7rem;"></i>';
+            iconEl.className = 'bp-sid-card__icon';
+            iconEl.style.background = theme.color;
+            iconEl.innerHTML = '<i class="' + getSkillIcon({ name: skill.name, skill_type: skill.skillType }) + '"></i>';
 
-            const nameEl = document.createElement('span');
-            nameEl.className = 'bp-skill-row__name';
+            const nameEl = document.createElement('div');
+            nameEl.className = 'bp-sid-card__name';
             nameEl.textContent = skill.name;
 
-            info.appendChild(iconEl);
-            info.appendChild(nameEl);
+            const metaEl = document.createElement('div');
+            metaEl.className = 'bp-sid-card__meta';
 
-            // ── middle: level chips ─────────────────────────────────────
-            const levelsEl = document.createElement('div');
-            levelsEl.className = 'bp-skill-row__levels';
+            const levelSpan = document.createElement('span');
+            levelSpan.className = 'bp-sid-card__level';
+            levelSpan.style.background = theme.tint;
+            levelSpan.style.color      = theme.color;
+            levelSpan.textContent = skill.level;
 
-            levels.forEach(function (lvl) {
-                const chip = document.createElement('button');
-                chip.type = 'button';
-                chip.className = 'bp-level-chip' + (skill.level === lvl ? ' bp-level-chip--active' : '');
-                chip.textContent = lvl;
-                chip.addEventListener('click', function () {
-                    skill.level = lvl;
-                    levelsEl.querySelectorAll('.bp-level-chip').forEach(function (c) {
-                        c.classList.toggle('bp-level-chip--active', c.textContent === lvl);
-                    });
-                });
-                levelsEl.appendChild(chip);
-            });
+            const yearsSpan = document.createElement('span');
+            yearsSpan.className = 'bp-sid-card__years';
+            yearsSpan.textContent = skill.years + ' سال';
 
-            // ── left: delete ────────────────────────────────────────────
+            metaEl.appendChild(levelSpan);
+            metaEl.appendChild(yearsSpan);
+            body.appendChild(iconEl);
+            body.appendChild(nameEl);
+            body.appendChild(metaEl);
+
+            // ── delete button ───────────────────────────────────────────
             const delBtn = document.createElement('button');
             delBtn.type = 'button';
-            delBtn.className = 'bp-skill-row__del';
-            delBtn.innerHTML = '&times;';
+            delBtn.className = 'bp-sid-card__del';
+            delBtn.textContent = 'حذف مهارت';
             delBtn.addEventListener('click', function () {
                 if (skill.cardRef) {
                     const t = getSkillTypeTheme(skill.skillType);
-                    skill.cardRef.style.border    = '2.5px solid #ced4da';
+                    skill.cardRef.classList.remove('bp-skill-card--added', 'bp-skill-card--expanded');
+                    skill.cardRef.style.border    = '';
                     skill.cardRef.style.boxShadow = '';
                     const iconDiv = skill.cardRef.querySelector('.skill-icon');
                     if (iconDiv) { iconDiv.style.background = t.tint; iconDiv.style.color = t.color; }
@@ -769,10 +917,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 saveBtn.disabled = selectedSkills.length === 0;
             });
 
-            row.appendChild(info);
-            row.appendChild(levelsEl);
-            row.appendChild(delBtn);
-            selectedSkillsContainer.appendChild(row);
+            card.appendChild(body);
+            card.appendChild(delBtn);
+            selectedSkillsContainer.appendChild(card);
         });
     }
 
