@@ -76,9 +76,9 @@
                 </div>
 
                 {{-- SELECTED SKILLS --}}
-                <div class="mb-4">
+                <div class="mb-4 bp-selected-section">
                     <label class="form-label fw-bold">مهارت‌های انتخاب شده (حداکثر ۵)</label>
-                    <div id="selected-skills" class="row g-3"></div>
+                    <div id="selected-skills"></div>
                 </div>
 
                 {{-- SAVE BUTTON --}}
@@ -188,6 +188,7 @@ const domainSubdomainsMap = @json(
 .bp-skillsec-label i { font-size: 1.3rem; }
 .bp-skillsec--blue .bp-skillsec-label { color: var(--bp-blue); }
 .bp-skillsec--teal .bp-skillsec-label { color: var(--bp-teal); }
+.bp-skillsec--teal { padding-bottom: 2.5rem; }
 .bp-skillsec-divider {
     height: 1px;
     background: var(--bp-hair);
@@ -248,27 +249,81 @@ const domainSubdomainsMap = @json(
     box-shadow: var(--bp-sh-md);
 }
 
-/* ── Selected-skill cards (مهارت‌های انتخاب شده) ─────────────────────────── */
-.bp-selected-skill-card .card-body {
-    padding: .6rem .65rem;
+/* ── Selected-skills section card ───────────────────────────────────── */
+.bp-selected-section {
+    background: #f8f9fb;
+    border: 1px solid var(--bp-border);
+    border-radius: var(--bp-r-lg);
+    padding: 1.25rem;
 }
-.bp-selected-skill-card h6 {
+
+/* ── Selected-skill rows ─────────────────────────────────────────────── */
+.bp-skill-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border: 1px solid var(--bp-border);
+    border-radius: var(--bp-r);
+    background: var(--bp-bg);
+    direction: rtl;
+}
+.bp-skill-row + .bp-skill-row { margin-top: 6px; }
+.bp-skill-row__info {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex: 1;
+    min-width: 0;
+}
+.bp-skill-row__name {
     font-weight: 700;
-    font-size: .92rem;
-    line-height: 1.3;
-    letter-spacing: -.01em;
-    margin: 0;
+    font-size: .88rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-.bp-selected-skill-card .form-label {
-    font-size: .7rem;
+.bp-skill-row__levels { display: flex; gap: 4px; flex-shrink: 0; }
+.bp-level-chip {
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--bp-border);
+    background: transparent;
+    font-size: .74rem;
     font-weight: 600;
     color: var(--bp-muted);
-    margin-bottom: 3px;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+    white-space: nowrap;
 }
-.bp-selected-skill-card .form-select-sm,
-.bp-selected-skill-card .form-control-sm {
-    font-size: .78rem;
-    padding: .25rem .5rem;
+.bp-level-chip:hover { border-color: var(--bp-blue); color: var(--bp-blue); }
+.bp-level-chip--active { background: var(--bp-blue); border-color: var(--bp-blue); color: #fff; }
+.bp-skill-row--teal .bp-level-chip--active { background: var(--bp-teal); border-color: var(--bp-teal); }
+.bp-skill-row__del {
+    background: transparent;
+    border: none;
+    color: var(--bp-muted);
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    transition: color .15s, background .15s;
+}
+.bp-skill-row__del:hover { color: #dc3545; background: rgba(220,53,69,.08); }
+
+/* ── Selected-skill rows — mobile stack ─────────────────────────────── */
+@media (max-width: 576px) {
+    .bp-skill-row { flex-wrap: wrap; align-items: flex-start; }
+    .bp-skill-row__info { flex-basis: 100%; }
+    .bp-skill-row__name { white-space: normal; overflow: visible; text-overflow: unset; }
+}
+
+/* ── Selected-skill rows — desktop separation ───────────────────────── */
+@media (min-width: 577px) {
+    .bp-skill-row + .bp-skill-row { margin-top: 22px; }
+    .bp-skill-row { border-width: 2px; border-color: #495057; }
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────── */
@@ -651,54 +706,61 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedSkillsContainer.innerHTML = '';
 
         selectedSkills.forEach(function (skill, index) {
-            const theme = getSkillTypeTheme(skill.skillType);
+            const theme  = getSkillTypeTheme(skill.skillType);
+            const isTeal = skill.skillType === 'field';
+            const levels = ['مبتدی', 'متوسط', 'حرفه‌ای'];
 
-            const col = document.createElement('div');
-            col.className = 'col-6 col-sm-4 col-md-3 col-lg-3';
+            const row = document.createElement('div');
+            row.className = 'bp-skill-row' + (isTeal ? ' bp-skill-row--teal' : '');
+            row.style.borderColor = theme.color;
 
-            const card = document.createElement('div');
-            card.className = 'card mb-0 bp-selected-skill-card';
-            card.style.border = '2px solid ' + theme.color;
-            card.innerHTML =
-                '<div class="card-body">' +
-                    '<div class="d-flex align-items-center mb-2">' +
-                        '<div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + theme.color + ';color:#fff;margin-left:0.4rem;flex-shrink:0;">' +
-                            '<i class="' + theme.icon + '" style="font-size:0.74rem;"></i>' +
-                        '</div>' +
-                        '<h6 class="mb-0">' + skill.name + '</h6>' +
-                    '</div>' +
-                    '<div class="d-flex" style="gap:6px;">' +
-                        '<div style="flex:1;min-width:0;">' +
-                            '<label class="form-label form-label-sm mb-1">سطح</label>' +
-                            '<select class="form-select form-select-sm">' +
-                                '<option value="مبتدی">مبتدی</option>' +
-                                '<option value="متوسط">متوسط</option>' +
-                                '<option value="حرفه ای">حرفه ای</option>' +
-                            '</select>' +
-                        '</div>' +
-                        '<div style="flex:1;min-width:0;">' +
-                            '<label class="form-label form-label-sm mb-1">سال‌های تجربه</label>' +
-                            '<input type="number" class="form-control form-control-sm" value="' + skill.years + '" min="0">' +
-                        '</div>' +
-                    '</div>' +
-                    '<button type="button" class="btn btn-soft-danger btn-sm w-100 mt-2">' +
-                        '<i class="ri-delete-bin-line me-1"></i>حذف' +
-                    '</button>' +
-                '</div>';
+            // ── right: icon + name ──────────────────────────────────────
+            const info = document.createElement('div');
+            info.className = 'bp-skill-row__info';
 
-            const sel = card.querySelector('select');
-            sel.value = skill.level;
-            sel.addEventListener('change', function () { skill.level = this.value; });
+            const iconEl = document.createElement('div');
+            iconEl.style.cssText =
+                'width:22px;height:22px;border-radius:50%;display:flex;align-items:center;' +
+                'justify-content:center;background:' + theme.color + ';color:#fff;flex-shrink:0;';
+            iconEl.innerHTML = '<i class="' + getSkillIcon({ name: skill.name, skill_type: skill.skillType }) + '" style="font-size:0.7rem;"></i>';
 
-            card.querySelector('input').addEventListener('input', function () { skill.years = parseInt(this.value, 10) || 0; });
+            const nameEl = document.createElement('span');
+            nameEl.className = 'bp-skill-row__name';
+            nameEl.textContent = skill.name;
 
-            card.querySelector('button').addEventListener('click', function () {
+            info.appendChild(iconEl);
+            info.appendChild(nameEl);
+
+            // ── middle: level chips ─────────────────────────────────────
+            const levelsEl = document.createElement('div');
+            levelsEl.className = 'bp-skill-row__levels';
+
+            levels.forEach(function (lvl) {
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = 'bp-level-chip' + (skill.level === lvl ? ' bp-level-chip--active' : '');
+                chip.textContent = lvl;
+                chip.addEventListener('click', function () {
+                    skill.level = lvl;
+                    levelsEl.querySelectorAll('.bp-level-chip').forEach(function (c) {
+                        c.classList.toggle('bp-level-chip--active', c.textContent === lvl);
+                    });
+                });
+                levelsEl.appendChild(chip);
+            });
+
+            // ── left: delete ────────────────────────────────────────────
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'bp-skill-row__del';
+            delBtn.innerHTML = '&times;';
+            delBtn.addEventListener('click', function () {
                 if (skill.cardRef) {
-                    const theme = getSkillTypeTheme(skill.skillType);
+                    const t = getSkillTypeTheme(skill.skillType);
                     skill.cardRef.style.border    = '2.5px solid #ced4da';
                     skill.cardRef.style.boxShadow = '';
                     const iconDiv = skill.cardRef.querySelector('.skill-icon');
-                    if (iconDiv) { iconDiv.style.background = theme.tint; iconDiv.style.color = theme.color; }
+                    if (iconDiv) { iconDiv.style.background = t.tint; iconDiv.style.color = t.color; }
                     const checkEl = skill.cardRef.querySelector('.bp-skill-check');
                     if (checkEl) { checkEl.style.display = 'none'; }
                 }
@@ -707,8 +769,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 saveBtn.disabled = selectedSkills.length === 0;
             });
 
-            col.appendChild(card);
-            selectedSkillsContainer.appendChild(col);
+            row.appendChild(info);
+            row.appendChild(levelsEl);
+            row.appendChild(delBtn);
+            selectedSkillsContainer.appendChild(row);
         });
     }
 
