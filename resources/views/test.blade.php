@@ -188,11 +188,11 @@ const domainSubdomainsMap = @json(
 .bp-skillsec-label i { font-size: 1.3rem; }
 .bp-skillsec--blue .bp-skillsec-label { color: var(--bp-blue); }
 .bp-skillsec--teal .bp-skillsec-label { color: var(--bp-teal); }
-.bp-skillsec--teal { padding-bottom: 2.5rem; }
+.bp-skillsec--teal { padding-bottom: 4rem; }
 .bp-skillsec-divider {
     height: 1px;
     background: var(--bp-hair);
-    margin: 44px 0 40px;
+    margin: 20px 0 16px;
 }
 .bp-skillsec-search {
     position: relative;
@@ -271,27 +271,25 @@ const domainSubdomainsMap = @json(
 .bp-skill-card--expanded .bp-skill-card__controls { display: block; }
 .bp-skill-card--added:hover { transform: none !important; box-shadow: var(--bp-sh-sm) !important; }
 .bp-card-chips { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 6px; justify-content: center; }
-.bp-card-years {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 8px;
-    font-size: .75rem;
+.bp-card-years { margin-bottom: 8px; direction: rtl; }
+.bp-card-years span {
+    display: block;
+    font-size: .7rem;
     color: var(--bp-muted);
-    direction: rtl;
-    justify-content: center;
+    margin-bottom: 3px;
 }
-.bp-card-years input {
-    width: 52px;
+.bp-card-years select {
+    width: 100%;
     border: 1px solid var(--bp-border);
     border-radius: var(--bp-r);
-    padding: 3px 5px;
+    padding: 4px 6px;
     font-size: .78rem;
-    text-align: center;
     color: var(--bp-text);
     background: #fff;
+    direction: rtl;
+    cursor: pointer;
 }
-.bp-card-years input:focus { outline: none; border-color: var(--bp-blue); }
+.bp-card-years select:focus { outline: none; border-color: var(--bp-blue); }
 .bp-card-add-btn {
     width: 100%;
     padding: 5px 0;
@@ -608,7 +606,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const face = document.createElement('div');
             face.className = 'bp-skill-card__face';
             face.innerHTML =
-                '<span class="bp-skill-check" style="position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;background:#2563eb;display:none;align-items:center;justify-content:center;z-index:2;">' +
+                '<span class="bp-skill-check" style="position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;background:#7c3aed;display:none;align-items:center;justify-content:center;z-index:2;">' +
                     '<i class="ri ri-check-line" style="font-size:13px;color:#fff;"></i>' +
                 '</span>' +
                 '<div class="skill-icon" style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + theme.tint + ';color:' + theme.color + ';flex-shrink:0;">' +
@@ -632,11 +630,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const yearsWrap = document.createElement('div');
             yearsWrap.className = 'bp-card-years';
-            const yearsInput = document.createElement('input');
-            yearsInput.type = 'number';
-            yearsInput.min  = '0';
-            yearsInput.value = '1';
+            const yearsInput = document.createElement('select');
             yearsWrap.innerHTML = '<span>سال تجربه:</span>';
+            for (var y = 1; y <= 30; y++) {
+                var yOpt = document.createElement('option');
+                yOpt.value = y;
+                yOpt.textContent = y;
+                yearsInput.appendChild(yOpt);
+            }
             yearsWrap.appendChild(yearsInput);
 
             const addBtn = document.createElement('button');
