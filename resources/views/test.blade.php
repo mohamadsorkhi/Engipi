@@ -751,6 +751,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const SKILL_ICON_MAP = [
+        [["شبیه‌سازی","ANSYS","COMSOL","Abaqus","Fluent"], "ri-flow-chart"],
+        [["CAD","SolidWorks","AutoCAD","طراحی"], "ri-pencil-ruler-2-line"],
+        [["DICOM","ImageJ","Slicer","تصویربرداری","MRI"], "ri-image-line"],
+        [["MATLAB","Python","برنامه‌نویسی","کدنویسی","پایتون"], "ri-terminal-box-line"],
+        [["SCADA","LabVIEW","اسکادا","لب‌ویو","HMI"], "ri-dashboard-line"],
+        [["بافت","هیستولوژی","سلول","سلولی","کشت سلول","بیوراکتور","ایمپلنت","زیست‌سازگاری","زنده‌مانی"], "ri-microscope-line"],
         [["جوش","جوشکاری"], "ri-fire-line"],
         [["خوردگی","زنگ"], "ri-shield-flash-line"],
         [["آب‌بند","آب‌بندی","آبیاری","هیدرو","رودخانه","سیلاب"], "ri-drop-line"],
@@ -792,14 +798,13 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     function getSkillIcon(skill) {
-        if (skill.skill_type === 'software') return 'ri-code-s-slash-line';
         for (var i = 0; i < SKILL_ICON_MAP.length; i++) {
             var kws = SKILL_ICON_MAP[i][0];
             for (var j = 0; j < kws.length; j++) {
                 if (skill.name && skill.name.indexOf(kws[j]) !== -1) return SKILL_ICON_MAP[i][1];
             }
         }
-        return 'ri-briefcase-line';
+        return skill.skill_type === 'software' ? 'ri-code-s-slash-line' : 'ri-briefcase-line';
     }
 
     function getSkillsContainer(skillType) {
