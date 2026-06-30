@@ -358,65 +358,6 @@ class SkillSeeder extends Seeder
                 ],
             ],
 
-            'مهندسی تاسیسات' => [
-                'تاسیسات مکانیکی' => [
-                    'AutoCAD MEP', 'Revit MEP', 'HAP (HVAC)', 'EnergyPlus',
-                ],
-                'تاسیسات برقی' => [
-                    'DIALux', 'AutoCAD Electrical', 'EPLAN Electric P8',
-                    'Revit MEP', 'ETAP', 'Ecodial',
-                ],
-                'HVAC' => [
-                    'Carrier HAP', 'EnergyPlus', 'TRACE 700',
-                    'IES-VE', 'eQUEST', 'Revit MEP', 'OpenStudio',
-                ],
-            ],
-
-            'مهندسی دریا' => [
-                'کشتی‌سازی' => [
-                    'CATIA', 'Rhinoceros', 'NAPA',
-                    'ShipConstructor', 'AVEVA Marine', 'AutoCAD',
-                ],
-                'هیدرودینامیک' => [
-                    'ANSYS Fluent', 'OpenFOAM', 'WAMIT',
-                    'ORCA3D', 'MAXSURF', 'Star-CCM+',
-                ],
-                'سازه‌های دریایی' => [
-                    'ANSYS AQWA', 'OrcaFlex', 'SACS',
-                    'ANSYS Mechanical', 'Abaqus', 'StruCad',
-                ],
-            ],
-
-            'مهندسی هسته‌ای' => [
-                'راکتور' => [
-                    'MCNP', 'RELAP', 'TRACE',
-                    'PARCS', 'HELIOS', 'SERPENT',
-                ],
-                'پرتوپزشکی' => [
-                    'MATLAB', '3D Slicer', 'DICOM Tools',
-                    'ISODOSE', 'Pinnacle', 'Eclipse TPS',
-                ],
-                'حفاظت در برابر پرتو' => [
-                    'MCNP', 'FLUKA', 'ORIGEN',
-                    'SCALE', 'EGSnrc', 'MATLAB',
-                ],
-            ],
-
-            'مهندسی کشاورزی و منابع طبیعی' => [
-                'آبیاری' => [
-                    'CROPWAT', 'WaterCAD', 'ArcGIS',
-                    'MATLAB', 'AutoCAD',
-                ],
-                'ماشین‌آلات کشاورزی' => [
-                    'AutoCAD', 'EDEM', 'RecurDyn',
-                    'MATLAB', 'LabVIEW', 'Python',
-                ],
-                'منابع آب' => [
-                    'SWAT', 'HEC-HMS', 'HYDRUS',
-                    'SoilVision', 'ArcGIS', 'MATLAB', 'ENVI',
-                ],
-            ],
-
             'میان‌رشته‌ای' => [
                 'مکاترونیک' => [
                     'MATLAB/Simulink', 'ROS', 'Arduino',
