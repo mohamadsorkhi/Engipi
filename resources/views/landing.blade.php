@@ -240,11 +240,7 @@
             'مهندسی محیط زیست' => ['ri-leaf-line', '--bp-c-green', '--bp-tint-green'],
             'مهندسی پزشکی (بیومدیکال)' => ['ri-heart-pulse-line', '--bp-c-red', '--bp-tint-red'],
             'مهندسی متالورژی و مواد' => ['ri-magnet-line', '--bp-c-purple', '--bp-tint-purple'],
-            'مهندسی هسته‌ای' => ['ri-radioactive-line', '--bp-c-sky', '--bp-tint-sky'],
-            'مهندسی دریا' => ['ri-anchor-line', '--bp-c-orange', '--bp-tint-orange'],
-            'مهندسی تاسیسات' => ['ri-tools-line', '--bp-blue', '--bp-tint-blue'],
             'مهندسی نقشه‌برداری' => ['ri-map-2-line', '--bp-teal', '--bp-tint-teal'],
-            'مهندسی کشاورزی و منابع طبیعی' => ['ri-seedling-line', '--bp-c-amber', '--bp-tint-amber'],
             'میان‌رشته‌ای' => ['ri-shapes-line', '--bp-c-green', '--bp-tint-green'],
         ];
         $domainColorCycle = ['--bp-blue|--bp-tint-blue', '--bp-teal|--bp-tint-teal', '--bp-c-amber|--bp-tint-amber', '--bp-c-green|--bp-tint-green', '--bp-c-red|--bp-tint-red', '--bp-c-purple|--bp-tint-purple', '--bp-c-sky|--bp-tint-sky', '--bp-c-orange|--bp-tint-orange'];
