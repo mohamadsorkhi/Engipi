@@ -9,10 +9,10 @@
 
 <link rel="stylesheet" href="{{ URL::asset('build/css/mgh/mgh.css') }}">
 
-<!-- EngPis Blueprint design package -->
-<link rel="stylesheet" href="{{ asset('vendor/engpis/fonts/remixicon.css') }}">
-<link rel="stylesheet" href="{{ asset('vendor/engpis/fonts/vazirmatn.css') }}">
-<link rel="stylesheet" href="{{ asset('vendor/engpis/css/blueprint.css') }}">
-<link rel="stylesheet" href="{{ asset('vendor/engpis/css/app-shell.css') }}">
+<!-- Engipi Blueprint design package -->
+<link rel="stylesheet" href="{{ asset('vendor/engipi/fonts/remixicon.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/engipi/fonts/vazirmatn.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/engipi/css/blueprint.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/engipi/css/app-shell.css') }}">
 
 @yield('css')

@@ -16,16 +16,16 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>@yield('title') | EngPis</title>
+    <title>@yield('title') | Engipi</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="مارکت‌پلیس تخصصی پروژه‌های مهندسی" name="description" />
-    <meta content="EngPis" name="author" />
+    <meta content="Engipi" name="author" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ URL::asset('build/images/favicon.ico')}}">
     @include('layouts.head-css')
     <style>
         /* ═══════════════════════════════════════════════════
-           EngPis Blueprint Theme — Navy + Blue
+           Engipi Blueprint Theme — Navy + Blue
         ═══════════════════════════════════════════════════ */
         * { font-family: var(--bp-font, 'Vazirmatn', sans-serif) !important; }
 
@@ -460,7 +460,7 @@
     </div>
     <!-- END layout-wrapper -->
 
-    {{-- Customizer disabled: EngPis uses a fixed light theme --}}
+    {{-- Customizer disabled: Engipi uses a fixed light theme --}}
 
     <!-- JAVASCRIPT -->
     @include('layouts.vendor-scripts')

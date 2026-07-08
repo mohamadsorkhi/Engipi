@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Engipi — مارکت‌پلیس تخصصی پروژه‌های مهندسی</title>
-  <link rel="stylesheet" href="{{ asset('vendor/engipi/fonts/remixicon.css') }}">
-  <link rel="stylesheet" href="{{ asset('vendor/engipi/fonts/vazirmatn.css') }}">
-  <link rel="stylesheet" href="{{ asset('vendor/engipi/css/blueprint.css') }}">
-  <style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engipi — مارکت‌پلیس تخصصی پروژه‌های مهندسی</title>
+<link rel="stylesheet" href="fonts/remixicon.css">
+<link rel="stylesheet" href="fonts/vazirmatn.css">
+<link rel="stylesheet" href="blueprint.css">
+<style>
   /* ── Navbar ── */
   .nav { position: fixed; inset-inline: 0; top: 0; z-index: 100; transition: background .3s, box-shadow .3s, border-color .3s; border-bottom: 1px solid transparent; }
   .nav .row { height: var(--bp-nav-h); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
@@ -132,12 +131,13 @@
   .socials a { width: 38px; height: 38px; border-radius: var(--bp-r); background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.7); transition: all .2s; }
   .socials a:hover { background: var(--bp-blue); color: #fff; }
   .fbottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding-top: 22px; margin-top: 36px; border-top: 1px solid rgba(255,255,255,.1); font-size: .84rem; }
-  </style>
+</style>
 </head>
 <body>
+
 <nav class="nav" id="nav">
   <div class="bp-container row">
-    <a class="brand" href="{{ route('root') }}"><span class="a">Eng</span>Pis</a>
+    <a class="brand" href="#"><span class="a">Eng</span>Pis</a>
     <ul class="nav-links">
       <li><a href="#how">چگونه کار می‌کند</a></li>
       <li><a href="#domains">حوزه‌ها</a></li>
@@ -145,8 +145,8 @@
       <li><a href="#testi">نظرات</a></li>
     </ul>
     <div class="nav-act">
-      <a class="nav-login" href="{{ route('login') }}">ورود</a>
-      <a class="bp-btn bp-btn--primary bp-btn--sm" href="{{ route('register') }}">ثبت‌نام رایگان</a>
+      <span class="nav-login">ورود</span>
+      <button class="bp-btn bp-btn--primary bp-btn--sm">ثبت‌نام رایگان</button>
     </div>
   </div>
 </nav>
@@ -161,8 +161,8 @@
       <h1>پروژه مهندسی‌ات را به<br><span class="hl">متخصص واقعی</span> بسپار</h1>
       <p class="lead">اتصال دقیق کارفرما و متخصص بر پایه مهارت، ابزار و سطح تجربه — در حوزه‌های برق، مکانیک، عمران، کامپیوتر و بیشتر.</p>
       <div class="hero-cta">
-        <a class="bp-btn bp-btn--primary bp-btn--lg" href="{{ route('guest.project') }}"><i class="ri-add-circle-line"></i>ثبت پروژه</a>
-        <a class="bp-btn bp-btn--ghost-d bp-btn--lg" href="{{ route('register') }}"><i class="ri-search-line"></i>جستجوی متخصص</a>
+        <button class="bp-btn bp-btn--primary bp-btn--lg"><i class="ri-add-circle-line"></i>ثبت پروژه</button>
+        <button class="bp-btn bp-btn--ghost-d bp-btn--lg"><i class="ri-search-line"></i>جستجوی متخصص</button>
       </div>
       <div class="trust">
         <span><i class="ri-shield-check-line" style="color:var(--bp-teal)"></i>پرداخت امن</span>
@@ -198,10 +198,10 @@
 
 <section class="stats">
   <div class="bp-container stats-grid">
-    <div class="statbox"><div class="n">{{ $projectsCount }}+</div><div class="l">پروژه ثبت شده</div></div>
-    <div class="statbox"><div class="n">{{ $specialistsCount }}+</div><div class="l">متخصص فعال</div></div>
-    <div class="statbox"><div class="n">{{ $employersCount }}+</div><div class="l">کارفرمای راضی</div></div>
-    <div class="statbox"><div class="n">{{ $domainsCount }}+</div><div class="l">حوزه تخصصی</div></div>
+    <div class="statbox"><div class="n">+۵۰۰</div><div class="l">پروژه ثبت شده</div></div>
+    <div class="statbox"><div class="n">+۱۲۰۰</div><div class="l">متخصص فعال</div></div>
+    <div class="statbox"><div class="n">+۳۵۰</div><div class="l">کارفرمای راضی</div></div>
+    <div class="statbox"><div class="n">۱۵+</div><div class="l">حوزه تخصصی</div></div>
   </div>
 </section>
 
@@ -212,56 +212,13 @@
       <h2>چگونه Engipi کار می‌کند؟</h2>
       <p>فرآیند ساده و شفاف — برای هر دو طرف</p>
     </div>
-    @php
-        $steps = [
-            'employer' => [
-                ['ri-file-add-line', '--bp-blue', '--bp-tint-blue', 'پروژه خود را ثبت کنید', 'توضیحات فنی، حوزه تخصصی، بودجه و زمان‌بندی پروژه‌تان را وارد کنید.'],
-                ['ri-user-search-line', '--bp-teal', '--bp-tint-teal', 'متخصصان پیشنهادی را ببینید', 'سیستم هوشمند، متخصصانی که با پروژه‌تان مطابقت دارند را معرفی می‌کند.'],
-                ['ri-shake-hands-line', '--bp-c-amber', '--bp-tint-amber', 'همکاری را آغاز کنید', 'بهترین متخصص را انتخاب کنید و پروژه‌تان را به سرانجام برسانید.'],
-            ],
-            'specialist' => [
-                ['ri-profile-line', '--bp-blue', '--bp-tint-blue', 'پروفایل تخصصی بسازید', 'مهارت‌ها، حوزه‌ها و سطح توانایی خود را وارد کنید تا پروژه‌های متناسب پیدا شوند.'],
-                ['ri-search-eye-line', '--bp-teal', '--bp-tint-teal', 'پروژه‌های مناسب بیابید', 'الگوریتم ما پروژه‌های منطبق با مهارت‌هایتان را خودکار نمایش می‌دهد.'],
-                ['ri-send-plane-2-line', '--bp-c-amber', '--bp-tint-amber', 'درخواست همکاری بدهید', 'روی پروژه مورد نظر درخواست ارسال کنید و منتظر تأیید کارفرما باشید.'],
-            ],
-        ];
-        $domainStyles = [
-            'مهندسی برق' => ['ri-flashlight-line', '--bp-c-amber', '--bp-tint-amber'],
-            'مهندسی مکانیک' => ['ri-settings-4-line', '--bp-blue', '--bp-tint-blue'],
-            'مهندسی عمران' => ['ri-building-2-line', '--bp-teal', '--bp-tint-teal'],
-            'مهندسی کامپیوتر' => ['ri-code-s-slash-line', '--bp-c-green', '--bp-tint-green'],
-            'مهندسی شیمی' => ['ri-flask-line', '--bp-c-red', '--bp-tint-red'],
-            'مهندسی صنایع' => ['ri-bar-chart-grouped-line', '--bp-c-purple', '--bp-tint-purple'],
-            'مهندسی هوافضا' => ['ri-flight-takeoff-line', '--bp-c-sky', '--bp-tint-sky'],
-            'مهندسی معدن' => ['ri-hammer-line', '--bp-c-orange', '--bp-tint-orange'],
-            'مهندسی معماری' => ['ri-artboard-2-line', '--bp-blue', '--bp-tint-blue'],
-            'مهندسی شهرسازی' => ['ri-community-line', '--bp-teal', '--bp-tint-teal'],
-            'مهندسی نفت' => ['ri-drop-line', '--bp-c-amber', '--bp-tint-amber'],
-            'مهندسی محیط زیست' => ['ri-leaf-line', '--bp-c-green', '--bp-tint-green'],
-            'مهندسی پزشکی (بیومدیکال)' => ['ri-heart-pulse-line', '--bp-c-red', '--bp-tint-red'],
-            'مهندسی متالورژی و مواد' => ['ri-magnet-line', '--bp-c-purple', '--bp-tint-purple'],
-            'مهندسی نقشه‌برداری' => ['ri-map-2-line', '--bp-teal', '--bp-tint-teal'],
-            'میان‌رشته‌ای' => ['ri-shapes-line', '--bp-c-green', '--bp-tint-green'],
-        ];
-        $domainColorCycle = ['--bp-blue|--bp-tint-blue', '--bp-teal|--bp-tint-teal', '--bp-c-amber|--bp-tint-amber', '--bp-c-green|--bp-tint-green', '--bp-c-red|--bp-tint-red', '--bp-c-purple|--bp-tint-purple', '--bp-c-sky|--bp-tint-sky', '--bp-c-orange|--bp-tint-orange'];
-    @endphp
     <div class="tabs">
       <div class="tabnav">
         <button class="tabbtn active" data-tab="employer"><i class="ri-building-4-line"></i>کارفرمایان</button>
         <button class="tabbtn" data-tab="specialist"><i class="ri-user-star-line"></i>متخصصان</button>
       </div>
     </div>
-    @foreach ($steps as $tab => $tabSteps)
-      <div class="steps" id="steps-{{ $tab }}" @if ($tab !== 'employer') style="display:none" @endif>
-        @foreach ($tabSteps as $i => $s)
-          <div class="bp-card step">
-            <span class="num">۰{{ $i + 1 }}</span>
-            <div class="bp-icon-tile" style="background:var({{ $s[2] }});color:var({{ $s[1] }})"><i class="{{ $s[0] }}"></i></div>
-            <h4>{{ $s[3] }}</h4><p>{{ $s[4] }}</p>
-          </div>
-        @endforeach
-      </div>
-    @endforeach
+    <div class="steps" id="steps"></div>
   </div>
 </section>
 
@@ -272,18 +229,7 @@
       <h2>در کدام رشته مهندسی فعالیت دارید؟</h2>
       <p>Engipi طیف گسترده‌ای از رشته‌های مهندسی را پوشش می‌دهد</p>
     </div>
-    <div class="dgrid" id="dgrid">
-      @foreach ($domains as $i => $domain)
-        @php
-            [$icon, $color, $tint] = $domainStyles[$domain->name] ?? array_merge(['ri-tools-line'], explode('|', $domainColorCycle[$i % count($domainColorCycle)]));
-        @endphp
-        <div class="bp-card domain">
-          <div class="bp-icon-tile" style="background:var({{ $tint }});color:var({{ $color }})"><i class="{{ $icon }}"></i></div>
-          <h5>{{ $domain->name }}</h5>
-          <small>{{ $domain->subdomains_count }} زیررشته</small>
-        </div>
-      @endforeach
-    </div>
+    <div class="dgrid" id="dgrid"></div>
   </div>
 </section>
 
@@ -293,21 +239,7 @@
       <span class="bp-eyebrow"><i class="ri-shield-star-line"></i>چرا Engipi؟</span>
       <h2>مزایایی که Engipi را متمایز می‌کند</h2>
     </div>
-    <div class="fgrid" id="fgrid">
-      @foreach ([
-          ['ri-cpu-line', '--bp-blue', '--bp-tint-blue', 'تطابق هوشمند', 'الگوریتم ما پروژه‌ها را بر اساس مهارت، سطح تجربه و حوزه تخصصی با دقت بالا تطبیق می‌دهد.'],
-          ['ri-shield-keyhole-line', '--bp-teal', '--bp-tint-teal', 'پرداخت امن', 'وجه پروژه تا تأیید نهایی نزد Engipi نگه‌داری می‌شود. بدون ریسک برای هیچ طرفی.'],
-          ['ri-user-follow-line', '--bp-c-amber', '--bp-tint-amber', 'متخصصان تأیید شده', 'هویت، مدارک تحصیلی و سابقه کاری متخصصان پیش از فعالیت احراز می‌شود.'],
-          ['ri-line-chart-line', '--bp-c-green', '--bp-tint-green', 'رشد مستمر', 'با هر پروژه موفق، پروفایل و اعتبار شما رشد می‌کند و فرصت‌های بهتری باز می‌شود.'],
-          ['ri-customer-service-2-line', '--bp-c-red', '--bp-tint-red', 'پشتیبانی تخصصی', 'تیم پشتیبانی از آغاز تا پایان پروژه همراه شماست و در حل اختلافات میانجی است.'],
-          ['ri-flashlight-line', '--bp-c-purple', '--bp-tint-purple', 'سرعت و سادگی', 'ثبت پروژه تنها چند دقیقه طول می‌کشد. بدون بروکراسی، بدون پیچیدگی.'],
-      ] as $f)
-        <div class="bp-card feature">
-          <div class="bp-icon-tile" style="background:var({{ $f[2] }});color:var({{ $f[1] }})"><i class="{{ $f[0] }}"></i></div>
-          <h5>{{ $f[3] }}</h5><p>{{ $f[4] }}</p>
-        </div>
-      @endforeach
-    </div>
+    <div class="fgrid" id="fgrid"></div>
   </div>
 </section>
 
@@ -317,21 +249,7 @@
       <span class="bp-eyebrow"><i class="ri-chat-quote-line"></i>نظرات کاربران</span>
       <h2>آنچه کاربران درباره Engipi می‌گویند</h2>
     </div>
-    <div class="tgrid" id="tgrid">
-      @foreach ([
-          ['--bp-blue', '«از طریق Engipi یک متخصص MATLAB عالی برای شبیه‌سازی سیستم کنترل پیدا کردم. فرآیند ساده بود و نتیجه فوق‌العاده.»', 'علی محمدی', 'کارفرما · مهندسی مکانیک', 'ع'],
-          ['--bp-teal', '«به عنوان متخصص ANSYS چندین پروژه موفق انجام داده‌ام. سیستم تطابق خیلی دقیق کار می‌کند و پروژه‌های مناسب پیشنهاد می‌دهد.»', 'سارا احمدی', 'متخصص · مهندسی عمران', 'س'],
-          ['--bp-c-amber', '«پروژه پایان‌نامه‌ام را با یک متخصص Python تکمیل کردم. سریع، حرفه‌ای و قیمت منصفانه. قطعاً دوباره استفاده می‌کنم.»', 'رضا کریمی', 'کارفرما · دانشجوی دکترا', 'ر'],
-      ] as $t)
-        <div class="bp-card testi">
-          <div class="stars">★★★★★</div><p>{{ $t[1] }}</p>
-          <div class="person">
-            <div class="av" style="background:var({{ $t[0] }})">{{ $t[4] }}</div>
-            <div><div class="nm">{{ $t[2] }}</div><div class="rl">{{ $t[3] }}</div></div>
-          </div>
-        </div>
-      @endforeach
-    </div>
+    <div class="tgrid" id="tgrid"></div>
   </div>
 </section>
 
@@ -342,8 +260,8 @@
       <h2>آماده شروع هستید؟</h2>
       <p>همین حالا رایگان ثبت‌نام کنید و اولین قدم را بردارید</p>
       <div class="cta-row">
-        <a class="bp-btn bp-btn--primary bp-btn--lg" href="{{ route('guest.project') }}"><i class="ri-add-circle-line"></i>ثبت پروژه مهندسی</a>
-        <a class="bp-btn bp-btn--ghost-d bp-btn--lg" href="{{ route('register') }}"><i class="ri-briefcase-4-line"></i>جستجوی کار مهندسی</a>
+        <button class="bp-btn bp-btn--primary bp-btn--lg"><i class="ri-add-circle-line"></i>ثبت پروژه مهندسی</button>
+        <button class="bp-btn bp-btn--ghost-d bp-btn--lg"><i class="ri-briefcase-4-line"></i>جستجوی کار مهندسی</button>
       </div>
     </div>
   </div>
@@ -362,9 +280,9 @@
           <a href="#"><i class="ri-twitter-x-line"></i></a>
         </div>
       </div>
-      <div><h6>Engipi</h6><ul><li><a href="{{ route('about') }}">درباره ما</a></li><li><a href="{{ route('terms') }}">قوانین</a></li><li><a href="#">تماس</a></li><li><a href="#">وبلاگ</a></li></ul></div>
-      <div><h6>کارفرمایان</h6><ul><li><a href="{{ route('guest.project') }}">ثبت پروژه</a></li><li><a href="#how">نحوه کار</a></li><li><a href="#">تعرفه‌ها</a></li><li><a href="#">سوالات</a></li></ul></div>
-      <div><h6>متخصصان</h6><ul><li><a href="{{ route('register') }}">ثبت‌نام</a></li><li><a href="{{ route('register') }}">یافتن پروژه</a></li><li><a href="#">راهنما</a></li><li><a href="#">سوالات</a></li></ul></div>
+      <div><h6>Engipi</h6><ul><li><a href="#">درباره ما</a></li><li><a href="#">قوانین</a></li><li><a href="#">تماس</a></li><li><a href="#">وبلاگ</a></li></ul></div>
+      <div><h6>کارفرمایان</h6><ul><li><a href="#">ثبت پروژه</a></li><li><a href="#">نحوه کار</a></li><li><a href="#">تعرفه‌ها</a></li><li><a href="#">سوالات</a></li></ul></div>
+      <div><h6>متخصصان</h6><ul><li><a href="#">ثبت‌نام</a></li><li><a href="#">یافتن پروژه</a></li><li><a href="#">راهنما</a></li><li><a href="#">سوالات</a></li></ul></div>
     </div>
     <div class="fbottom">
       <span>© ۱۴۰۴ Engipi. تمامی حقوق محفوظ است.</span>
@@ -374,15 +292,72 @@
 </footer>
 
 <script>
+  // navbar scroll state
   const nav = document.getElementById('nav');
   const onScroll = () => nav.classList.toggle('pinned', window.scrollY > 50);
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
+  // data
+  const STEPS = {
+    employer: [
+      ['ri-file-add-line','--bp-blue','--bp-tint-blue','پروژه خود را ثبت کنید','توضیحات فنی، حوزه تخصصی، بودجه و زمان‌بندی پروژه‌تان را وارد کنید.'],
+      ['ri-user-search-line','--bp-teal','--bp-tint-teal','متخصصان پیشنهادی را ببینید','سیستم هوشمند، متخصصانی که با پروژه‌تان مطابقت دارند را معرفی می‌کند.'],
+      ['ri-shake-hands-line','--bp-c-amber','--bp-tint-amber','همکاری را آغاز کنید','بهترین متخصص را انتخاب کنید و پروژه‌تان را به سرانجام برسانید.'],
+    ],
+    specialist: [
+      ['ri-profile-line','--bp-blue','--bp-tint-blue','پروفایل تخصصی بسازید','مهارت‌ها، حوزه‌ها و سطح توانایی خود را وارد کنید تا پروژه‌های متناسب پیدا شوند.'],
+      ['ri-search-eye-line','--bp-teal','--bp-tint-teal','پروژه‌های مناسب بیابید','الگوریتم ما پروژه‌های منطبق با مهارت‌هایتان را خودکار نمایش می‌دهد.'],
+      ['ri-send-plane-2-line','--bp-c-amber','--bp-tint-amber','درخواست همکاری بدهید','روی پروژه مورد نظر درخواست ارسال کنید و منتظر تأیید کارفرما باشید.'],
+    ],
+  };
+  const DOMAINS = [
+    ['ri-flashlight-line','--bp-c-amber','--bp-tint-amber','مهندسی برق','مدار، قدرت، الکترونیک'],
+    ['ri-settings-4-line','--bp-blue','--bp-tint-blue','مهندسی مکانیک','طراحی، ساخت، دینامیک'],
+    ['ri-building-2-line','--bp-teal','--bp-tint-teal','مهندسی عمران','سازه، ژئوتکنیک، راه'],
+    ['ri-code-s-slash-line','--bp-c-green','--bp-tint-green','مهندسی کامپیوتر','نرم‌افزار، هوش مصنوعی'],
+    ['ri-flask-line','--bp-c-red','--bp-tint-red','مهندسی شیمی','فرآیند، پلیمر، پتروشیمی'],
+    ['ri-bar-chart-grouped-line','--bp-c-purple','--bp-tint-purple','مهندسی صنایع','بهینه‌سازی، لجستیک'],
+    ['ri-flight-takeoff-line','--bp-c-sky','--bp-tint-sky','مهندسی هوافضا','آیرودینامیک، پیشرانش'],
+    ['ri-microscope-line','--bp-c-orange','--bp-tint-orange','سایر رشته‌ها','معدن، متالورژی، محیط زیست'],
+  ];
+  const FEATURES = [
+    ['ri-cpu-line','--bp-blue','--bp-tint-blue','تطابق هوشمند','الگوریتم ما پروژه‌ها را بر اساس مهارت، سطح تجربه و حوزه تخصصی با دقت بالا تطبیق می‌دهد.'],
+    ['ri-shield-keyhole-line','--bp-teal','--bp-tint-teal','پرداخت امن','وجه پروژه تا تأیید نهایی نزد Engipi نگه‌داری می‌شود. بدون ریسک برای هیچ طرفی.'],
+    ['ri-user-follow-line','--bp-c-amber','--bp-tint-amber','متخصصان تأیید شده','هویت، مدارک تحصیلی و سابقه کاری متخصصان پیش از فعالیت احراز می‌شود.'],
+    ['ri-line-chart-line','--bp-c-green','--bp-tint-green','رشد مستمر','با هر پروژه موفق، پروفایل و اعتبار شما رشد می‌کند و فرصت‌های بهتری باز می‌شود.'],
+    ['ri-customer-service-2-line','--bp-c-red','--bp-tint-red','پشتیبانی تخصصی','تیم پشتیبانی از آغاز تا پایان پروژه همراه شماست و در حل اختلافات میانجی است.'],
+    ['ri-flashlight-line','--bp-c-purple','--bp-tint-purple','سرعت و سادگی','ثبت پروژه تنها چند دقیقه طول می‌کشد. بدون بروکراسی، بدون پیچیدگی.'],
+  ];
+  const TESTI = [
+    ['--bp-blue','«از طریق Engipi یک متخصص MATLAB عالی برای شبیه‌سازی سیستم کنترل پیدا کردم. فرآیند ساده بود و نتیجه فوق‌العاده.»','علی محمدی','کارفرما · مهندسی مکانیک','ع'],
+    ['--bp-teal','«به عنوان متخصص ANSYS چندین پروژه موفق انجام داده‌ام. سیستم تطابق خیلی دقیق کار می‌کند و پروژه‌های مناسب پیشنهاد می‌دهد.»','سارا احمدی','متخصص · مهندسی عمران','س'],
+    ['--bp-c-amber','«پروژه پایان‌نامه‌ام را با یک متخصص Python تکمیل کردم. سریع، حرفه‌ای و قیمت منصفانه. قطعاً دوباره استفاده می‌کنم.»','رضا کریمی','کارفرما · دانشجوی دکترا','ر'],
+  ];
+
+  const tile = (ic,c,t) => `<div class="bp-icon-tile" style="background:var(${t});color:var(${c})"><i class="${ic}"></i></div>`;
+
+  function renderSteps(tab) {
+    document.getElementById('steps').innerHTML = STEPS[tab].map((s,i) => `
+      <div class="bp-card step">
+        <span class="num">۰${i+1}</span>
+        ${tile(s[0],s[1],s[2])}
+        <h4>${s[3]}</h4><p>${s[4]}</p>
+      </div>`).join('');
+  }
+  document.getElementById('dgrid').innerHTML = DOMAINS.map(d => `
+    <div class="bp-card domain">${tile(d[0],d[1],d[2])}<h5>${d[3]}</h5><small>${d[4]}</small></div>`).join('');
+  document.getElementById('fgrid').innerHTML = FEATURES.map(f => `
+    <div class="bp-card feature">${tile(f[0],f[1],f[2])}<h5>${f[3]}</h5><p>${f[4]}</p></div>`).join('');
+  document.getElementById('tgrid').innerHTML = TESTI.map(t => `
+    <div class="bp-card testi"><div class="stars">★★★★★</div><p>${t[1]}</p>
+      <div class="person"><div class="av" style="background:var(${t[0]})">${t[4]}</div>
+        <div><div class="nm">${t[2]}</div><div class="rl">${t[3]}</div></div></div></div>`).join('');
+
   document.querySelectorAll('.tabbtn').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('.tabbtn').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    document.querySelectorAll('.steps').forEach(el => el.style.display = (el.id === 'steps-' + b.dataset.tab) ? '' : 'none');
+    b.classList.add('active'); renderSteps(b.dataset.tab);
   }));
+  renderSteps('employer');
 </script>
 </body>
 </html>

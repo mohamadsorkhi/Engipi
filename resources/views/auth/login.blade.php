@@ -15,7 +15,7 @@
 @section('css')
 <style>
 /* ══════════════════════════════════════════════════════
-   EngPis Login Page — Blueprint Split Layout
+   Engipi Login Page — Blueprint Split Layout
    Light theme, RTL, Vazirmatn
 ══════════════════════════════════════════════════════ */
 html, body {
@@ -329,7 +329,7 @@ html, body {
                         <span style="background:#E0930B;"></span>
                         <span style="background:#00B8A9;"></span>
                     </div>
-                    <div class="bp-auth-url-bar">&#x1F512;&nbsp; engpis.ir/dashboard</div>
+                    <div class="bp-auth-url-bar">&#x1F512;&nbsp; engipi.ir/dashboard</div>
                 </div>
 
                 {{-- Browser content --}}
