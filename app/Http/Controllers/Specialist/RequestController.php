@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Specialist;
 use App\Actions\Specialist\StoreCollaborationRequestAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Specialist\StoreCollaborationRequestRequest;
-use App\Models\Request as ProjectRequest;
+use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class RequestController extends Controller
 {
@@ -30,6 +31,16 @@ class RequestController extends Controller
     {
         $validated = $request->validated();
         $user = Auth::user();
+        $project = Project::query()->findOrFail($validated['project_id']);
+
+        $authorization = Gate::inspect('requestCollaboration', $project);
+
+        if ($authorization->denied()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'این پروژه برای ارسال درخواست همکاری در دسترس شما نیست.',
+            ], 422);
+        }
 
         // Check if already requested
         $existingRequest = $user->requests()

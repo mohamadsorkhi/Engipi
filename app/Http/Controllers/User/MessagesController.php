@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\StoreMessageRequest;
 use App\Models\Message;
+use App\Models\Project;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class MessagesController extends Controller
 {
@@ -23,16 +25,18 @@ class MessagesController extends Controller
             ->get()
             ->groupBy(function (Message $msg) use ($userId) {
                 $other = $msg->sender_id === $userId ? $msg->receiver_id : $msg->sender_id;
+
                 return $other;
             })
             ->map(function ($msgs) use ($userId) {
                 $latest = $msgs->first();
-                $other  = $latest->sender_id === $userId ? $latest->receiver : $latest->sender;
+                $other = $latest->sender_id === $userId ? $latest->receiver : $latest->sender;
                 $unread = $msgs->where('receiver_id', $userId)->whereNull('read_at')->count();
+
                 return (object) [
-                    'other'   => $other,
-                    'latest'  => $latest,
-                    'unread'  => $unread,
+                    'other' => $other,
+                    'latest' => $latest,
+                    'unread' => $unread,
                 ];
             })
             ->values();
@@ -42,11 +46,9 @@ class MessagesController extends Controller
 
     public function show(User $user)
     {
-        $authId = Auth::id();
+        $this->authorize('viewConversation', [Message::class, $user]);
 
-        if ($authId === $user->id) {
-            abort(403, 'نمی‌توانید با خودتان پیام تبادل کنید.');
-        }
+        $authId = Auth::id();
 
         $messages = Message::query()
             ->where(function ($q) use ($authId, $user) {
@@ -69,33 +71,27 @@ class MessagesController extends Controller
         return view('user.messages.show', compact('messages', 'user'));
     }
 
-    public function store(Request $request)
+    public function store(StoreMessageRequest $request)
     {
-        $data = $request->validate([
-            'receiver_id' => ['required', 'uuid', 'exists:users,id'],
-            'body'        => ['required', 'string', 'min:1', 'max:5000'],
-            'project_id'  => ['nullable', 'uuid', 'exists:projects,id'],
-        ], [
-            'receiver_id.required' => 'گیرنده الزامی است.',
-            'receiver_id.exists'   => 'کاربر گیرنده یافت نشد.',
-            'body.required'        => 'متن پیام الزامی است.',
-            'body.max'             => 'پیام نمی‌تواند بیش از ۵۰۰۰ کاراکتر باشد.',
-        ]);
+        $data = $request->validated();
+        $sender = Auth::user();
+        $receiver = User::query()->findOrFail($data['receiver_id']);
+        $project = isset($data['project_id'])
+            ? Project::query()->findOrFail($data['project_id'])
+            : null;
 
-        $authId = Auth::id();
+        $authorization = Gate::inspect('sendMessage', [Message::class, $receiver, $project]);
 
-        if ($authId === $data['receiver_id']) {
-            return back()->withErrors(['body' => 'نمی‌توانید به خودتان پیام بفرستید.']);
+        if ($authorization->denied()) {
+            return back()->withErrors(['body' => $authorization->message()]);
         }
 
         Message::create([
-            'sender_id'   => $authId,
+            'sender_id' => $sender->id,
             'receiver_id' => $data['receiver_id'],
-            'project_id'  => $data['project_id'] ?? null,
-            'body'        => $data['body'],
+            'project_id' => $data['project_id'] ?? null,
+            'body' => $data['body'],
         ]);
-
-        $receiver = User::findOrFail($data['receiver_id']);
 
         return redirect()
             ->route('user.messages.show', $receiver)

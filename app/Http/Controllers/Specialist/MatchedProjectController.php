@@ -27,15 +27,17 @@ class MatchedProjectController extends Controller
      */
     public function show(Project $project)
     {
+        $this->authorize('viewMatchedProject', $project);
+
         $user = Auth::user();
         $project->load(['employer', 'skills', 'domains', 'processes', 'files', 'employerProfile']);
-        
+
         // Check if user already sent a request
         $sentRequest = $project->requests()->where('user_id', $user->id)->first();
-        
+
         // Increment view count
         $project->increment('view_count');
-        
+
         return view('user.matched-projects.show', compact('project', 'sentRequest'));
     }
 }
