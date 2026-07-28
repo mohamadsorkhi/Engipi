@@ -195,13 +195,13 @@ html, body {
 /* ─── Responsive ───────────────────────────────── */
 @media (max-width: 900px) {
     .bp-auth-form { width: 100%; padding: 2rem 1.6rem; }
-    .bp-auth-showcase { display: none; }
 }
 @media (max-width: 480px) {
     .bp-auth-form { padding: 1.8rem 1.2rem; }
     .bp-auth-heading { font-size: 1.3rem; }
 }
 </style>
+@include('auth.partials.mobile-visual-panel')
 @endsection
 
 

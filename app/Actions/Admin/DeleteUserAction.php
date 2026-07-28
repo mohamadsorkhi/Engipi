@@ -27,7 +27,7 @@ class DeleteUserAction
             foreach ($user->projects as $project) {
                 // Delete project files from storage
                 foreach ($project->files as $file) {
-                    Storage::disk('public')->delete($file->path);
+                    Storage::disk($file->storageDisk())->delete($file->path);
                     $file->delete();
                 }
                 $project->skills()->detach();

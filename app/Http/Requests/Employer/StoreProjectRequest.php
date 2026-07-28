@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests\Employer;
 
+use App\Contracts\ProjectDocumentInspector;
+use App\Rules\AllowedProjectDocument;
+use App\Rules\InspectedProjectDocument;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -13,7 +16,7 @@ class StoreProjectRequest extends FormRequest
         return Auth::check();
     }
 
-    public function rules(): array
+    public function rules(ProjectDocumentInspector $inspector): array
     {
         return [
             'title' => ['required', 'string', 'max:191'],
@@ -33,7 +36,13 @@ class StoreProjectRequest extends FormRequest
             'budget_min' => ['nullable', 'numeric', 'min:0'],
             'budget_max' => ['nullable', 'numeric', 'min:0', 'gte:budget_min'],
             'files' => ['nullable', 'array'],
-            'files.*' => ['file', 'max:10240'], // 10MB max per file
+            'files.*' => [
+                'bail',
+                'file',
+                'max:10240',
+                new AllowedProjectDocument,
+                new InspectedProjectDocument($inspector),
+            ], // 10MB max per file
         ];
     }
 
@@ -90,10 +99,10 @@ class StoreProjectRequest extends FormRequest
             $domainIds = $this->input('domains', []);
             $processes = $this->input('processes', []);
 
-            if (!empty($domainIds) && !empty($processes)) {
+            if (! empty($domainIds) && ! empty($processes)) {
                 // Verify all processes belong to one of the selected domains
                 $processIds = collect($processes)->pluck('id')->filter()->unique();
-                
+
                 $validCount = \App\Models\Process::whereIn('skill_domain_id', $domainIds)
                     ->whereIn('id', $processIds)
                     ->count();

@@ -134,7 +134,7 @@
                         <h5 class="mb-3"><i class="ri-attachment-2"></i>فایل‌های پیوست</h5>
                         <div class="d-flex flex-column gap-2">
                             @foreach($project->files as $file)
-                                <a href="{{ Storage::url($file->path) }}" class="bp-file-row" target="_blank">
+                                <a href="{{ route('user.project-files.download', $file) }}" class="bp-file-row">
                                     <i class="ri-file-line"></i>
                                     <span class="flex-grow-1">{{ $file->original_name }}</span>
                                     <span class="badge" style="background:var(--bp-surface);color:var(--bp-muted);">{{ number_format($file->size / 1024, 1) }} KB</span>

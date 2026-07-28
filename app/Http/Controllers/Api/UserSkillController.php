@@ -2,38 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\Api\AddUserSkillAction;
 use App\Http\Controllers\Controller;
-use App\Models\UserSkill;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Api\StoreUserSkillRequest;
 
 class UserSkillController extends Controller
 {
-    public function store(Request $request)
+    public function store(StoreUserSkillRequest $request, AddUserSkillAction $action)
     {
-        $request->validate([
-            'skill_id' => 'required|exists:skills,id'
-        ]);
-
-        $exists =
-            UserSkill::where('user_id', Auth::id())
-                ->where('skill_id', $request->skill_id)
-                ->exists();
-
-        if ($exists) {
+        if (! $action->execute($request->user(), $request->validated('skill_id'))) {
 
             return response()->json([
-                'message' => 'این مهارت قبلا ثبت شده'
+                'message' => 'این مهارت قبلا ثبت شده',
             ], 409);
         }
 
-        UserSkill::create([
-            'user_id' => Auth::id(),
-            'skill_id' => $request->skill_id
-        ]);
-
         return response()->json([
-            'message' => 'مهارت ذخیره شد'
+            'message' => 'مهارت ذخیره شد',
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\ProjectFileController;
 use App\Http\Controllers\Employer\ProjectController;
 use App\Http\Controllers\Employer\RequestController as EmployerRequestController;
 use App\Http\Controllers\Specialist\SkillController;
@@ -20,6 +21,9 @@ use App\Http\Controllers\User\MessagesController;
 Route::middleware('active_role')
     ->get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
+
+Route::get('/project-files/{projectFile}/download', [ProjectFileController::class, 'download'])
+    ->name('project-files.download');
 
 // ── Employer-only routes ──────────────────────────────────────────────────
 Route::middleware('active_role:employer')->group(function () {

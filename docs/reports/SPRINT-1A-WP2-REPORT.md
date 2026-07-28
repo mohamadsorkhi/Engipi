@@ -1,9 +1,9 @@
-# Sprint 1A WP-2 — Canonical Project Visibility and Matched-Detail Authorization Report
+﻿# Sprint 1A WP-2 â€” Canonical Project Visibility and Matched-Detail Authorization Report
 
-> **Completion date:** 2026-07-15  
-> **Work package:** Sprint 1A — WP-2 only  
-> **Database schema changes:** None  
-> **Dependency changes:** None  
+> **Completion date:** 2026-07-15
+> **Work package:** Sprint 1A â€” WP-2 only
+> **Database schema changes:** None
+> **Dependency changes:** None
 > **Route changes:** None
 
 ## Objective
@@ -129,9 +129,9 @@ One combined parallel verification invocation returned a nonzero aggregate resul
 
 ## Remaining Sprint 1A Items
 
-1. **WP-3 — Collaboration-request target authorization:** limit request creation to eligible projects, deny own/unmatched/excluded targets, preserve the existing successful JSON contract, and invert the current unsafe WP-1 characterization test.
-2. **WP-4 — Messaging authorization:** approve the participant/status compatibility rule, block arbitrary thread access and recipients, and validate project association without stranding legitimate legacy threads.
-3. **WP-5 — Initial policy/regression completion:** reconcile policy and HTTP matrix coverage, run the final Sprint 1A regression and review, and complete sprint-level documentation.
+1. **WP-3 â€” Collaboration-request target authorization:** limit request creation to eligible projects, deny own/unmatched/excluded targets, preserve the existing successful JSON contract, and invert the current unsafe WP-1 characterization test.
+2. **WP-4 â€” Messaging authorization:** approve the participant/status compatibility rule, block arbitrary thread access and recipients, and validate project association without stranding legitimate legacy threads.
+3. **WP-5 â€” Initial policy/regression completion:** reconcile policy and HTTP matrix coverage, run the final Sprint 1A regression and review, and complete sprint-level documentation.
 4. Sprint 1B API/upload work and Sprint 1C dependency/operational work remain outside Sprint 1A WP-2.
 
 ## Rollback

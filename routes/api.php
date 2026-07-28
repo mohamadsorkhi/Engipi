@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\SubdomainController;
 use App\Http\Controllers\Api\SkillController;
+use App\Http\Controllers\Api\SubdomainController;
+use App\Http\Controllers\Api\UserSkillController;
+use Illuminate\Support\Facades\Route;
 
 Route::get(
     '/subdomains/{domainId}',
@@ -16,5 +17,5 @@ Route::get(
 
 Route::post(
     '/user-skill',
-    [SkillController::class, 'store']
-);
+    [UserSkillController::class, 'store']
+)->middleware('auth:sanctum');

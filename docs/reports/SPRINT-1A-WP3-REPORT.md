@@ -1,9 +1,9 @@
-# Sprint 1A WP-3 — Collaboration Request Target Authorization Report
+﻿# Sprint 1A WP-3 â€” Collaboration Request Target Authorization Report
 
-> **Completion date:** 2026-07-15  
-> **Work package:** Sprint 1A — WP-3 only  
-> **Database schema changes:** None  
-> **Dependency changes:** None  
+> **Completion date:** 2026-07-15
+> **Work package:** Sprint 1A â€” WP-3 only
+> **Database schema changes:** None
+> **Dependency changes:** None
 > **Route or view changes:** None
 
 ## Objective
@@ -127,8 +127,8 @@ One combined parallel verification invocation returned a nonzero aggregate resul
 
 ## Remaining Sprint 1A Items
 
-1. **WP-4 — Messaging authorization and project association:** approve the participant/status compatibility rule, prevent unrelated thread access and account enumeration, restrict recipients, and validate project context while preserving approved legacy-thread behavior.
-2. **WP-5 — Initial policy registration and regression completion:** confirm the final policy/HTTP access matrix, run the complete Sprint 1A regression and review, and finish sprint-level documentation.
+1. **WP-4 â€” Messaging authorization and project association:** approve the participant/status compatibility rule, prevent unrelated thread access and account enumeration, restrict recipients, and validate project context while preserving approved legacy-thread behavior.
+2. **WP-5 â€” Initial policy registration and regression completion:** confirm the final policy/HTTP access matrix, run the complete Sprint 1A regression and review, and finish sprint-level documentation.
 3. Sprint 1B API/upload work and Sprint 1C dependency/operational work remain outside WP-3.
 
 ## Rollback

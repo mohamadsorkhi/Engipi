@@ -28,3 +28,4 @@ yarn-error.log
 # فایل‌های public مخصوص محیط
 /public/index.php
 /public/.htaccess
+local-status.txt

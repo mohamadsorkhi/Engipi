@@ -13,7 +13,7 @@ class DeleteProjectAction
         return DB::transaction(function () use ($project) {
             // Delete associated files from storage
             foreach ($project->files as $file) {
-                Storage::disk('public')->delete($file->path);
+                Storage::disk($file->storageDisk())->delete($file->path);
             }
 
             // Delete the project (cascades to related records via foreign keys)

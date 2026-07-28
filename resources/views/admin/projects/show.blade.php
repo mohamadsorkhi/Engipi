@@ -89,7 +89,7 @@
                             <h6 class="text-muted mb-2">فایل‌های پیوست</h6>
                             <div class="list-group">
                                 @foreach($project->files as $file)
-                                    <a href="{{ Storage::url($file->path) }}" class="list-group-item list-group-item-action d-flex align-items-center" target="_blank">
+                                    <a href="{{ route('user.project-files.download', $file) }}" class="list-group-item list-group-item-action d-flex align-items-center">
                                         <i class="ri-file-line me-2"></i>
                                         {{ $file->original_name }}
                                         <span class="badge bg-secondary ms-auto">{{ number_format($file->size / 1024, 1) }} KB</span>

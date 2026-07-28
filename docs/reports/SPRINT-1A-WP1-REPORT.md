@@ -1,9 +1,9 @@
-# Sprint 1A WP-1 — Isolated Test Foundation and Characterization Report
+﻿# Sprint 1A WP-1 â€” Isolated Test Foundation and Characterization Report
 
-> **Completion date:** 2026-07-15  
-> **Work package:** Sprint 1A — WP-1 only  
-> **Application authorization fixes:** None  
-> **Database schema changes:** None  
+> **Completion date:** 2026-07-15
+> **Work package:** Sprint 1A â€” WP-1 only
+> **Application authorization fixes:** None
+> **Database schema changes:** None
 > **Dependency changes:** None
 
 ## Objective

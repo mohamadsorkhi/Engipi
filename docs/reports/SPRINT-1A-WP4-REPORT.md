@@ -1,9 +1,9 @@
-# Sprint 1A WP-4 — Messaging Authorization and Project Association Report
+﻿# Sprint 1A WP-4 â€” Messaging Authorization and Project Association Report
 
-> **Completion date:** 2026-07-15  
-> **Work package:** Sprint 1A — WP-4 only  
-> **Database schema changes:** None  
-> **Dependency changes:** None  
+> **Completion date:** 2026-07-15
+> **Work package:** Sprint 1A â€” WP-4 only
+> **Database schema changes:** None
+> **Dependency changes:** None
 > **Route or frontend changes:** None
 
 ## Objective
@@ -156,7 +156,7 @@ Full WP-1 through WP-4 feature result after the final handoff run: **28 tests pa
 
 ## Remaining Sprint 1A Items
 
-1. **WP-5 — Initial policy registration and regression completion:** review final policy/HTTP matrix consistency, run the complete Sprint 1A regression and scoped quality checks, inspect the cumulative diff, and complete sprint-level handoff documentation.
+1. **WP-5 â€” Initial policy registration and regression completion:** review final policy/HTTP matrix consistency, run the complete Sprint 1A regression and scoped quality checks, inspect the cumulative diff, and complete sprint-level handoff documentation.
 2. Active-role/admin hardening and rate limiting listed in the broader Sprint 1 roadmap remain outside the approved WP-4 implementation unless assigned to a later bounded work package.
 3. Sprint 1B API/upload work and Sprint 1C dependency/operational work remain outside Sprint 1A WP-4.
 

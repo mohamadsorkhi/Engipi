@@ -18,6 +18,15 @@ File: Main Js File
     var default_lang = "en"; // set Default Language
     var language = localStorage.getItem("language");
 
+    // Feather icons are optional. Keep icon enhancement isolated so a missing
+    // or partially loaded icon library cannot interrupt the rest of the UI.
+    function replaceFeatherIcons() {
+        var featherIcons = window.feather;
+        if (featherIcons && typeof featherIcons.replace === "function") {
+            featherIcons.replace();
+        }
+    }
+
     function initLanguage() {
         // Set new language
         (language === null) ? setLanguage(default_lang): setLanguage(language);
@@ -647,7 +656,7 @@ File: Main Js File
     }
 
     function windowResizeHover() {
-        if (typeof feather !== 'undefined') { feather.replace(); }
+        replaceFeatherIcons();
         var windowSize = document.documentElement.clientWidth;
         if (windowSize < 1025 && windowSize > 767) {
             document.body.classList.remove("twocolumn-panel");
@@ -827,7 +836,7 @@ File: Main Js File
                     }
                 });
             });
-            if (typeof feather !== 'undefined') { feather.replace(); }
+            replaceFeatherIcons();
         });
 
         window.addEventListener("resize", windowResizeHover);
@@ -875,7 +884,7 @@ File: Main Js File
 
     // Two-column menu activation
     function initTwoColumnActiveMenu() {
-        if (typeof feather !== 'undefined') { feather.replace(); }
+        replaceFeatherIcons();
         // two column sidebar active js
         var currentPath = location.pathname == "/" ? "index" : location.pathname.substring(1);
         currentPath = currentPath.substring(currentPath.lastIndexOf("/") + 1);
@@ -1849,13 +1858,13 @@ File: Main Js File
                     if (x.value == "vertical") {
                         hideShowLayoutOptions("vertical");
                         isCollapseMenu();
-                        if (typeof feather !== 'undefined') { feather.replace(); }
+                        replaceFeatherIcons();
                     } else if (x.value == "horizontal") {
                         if (document.getElementById("sidebarimg-none")) {
                             document.getElementById("sidebarimg-none").click();
                         }
                         hideShowLayoutOptions("horizontal");
-                        if (typeof feather !== 'undefined') { feather.replace(); }
+                        replaceFeatherIcons();
                     } else if (x.value == "twocolumn") {
                         hideShowLayoutOptions("twocolumn");
                         document.documentElement.setAttribute("data-layout-width", "fluid");
@@ -1863,7 +1872,7 @@ File: Main Js File
                         twoColumnMenuGenerate();
                         initTwoColumnActiveMenu();
                         isCollapseMenu();
-                        if (typeof feather !== 'undefined') { feather.replace(); }
+                        replaceFeatherIcons();
                     } else if (x.value == "semibox") {
                         hideShowLayoutOptions("semibox");
                         document.documentElement.setAttribute("data-layout-width", "fluid");
@@ -1871,7 +1880,7 @@ File: Main Js File
                         document.documentElement.setAttribute("data-layout-style", "default");
                         document.getElementById("sidebar-view-default").click();
                         isCollapseMenu();
-                        if (typeof feather !== 'undefined') { feather.replace(); }
+                        replaceFeatherIcons();
                     }
                 }
 

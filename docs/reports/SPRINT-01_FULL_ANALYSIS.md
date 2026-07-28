@@ -1,10 +1,10 @@
-# SPRINT-01 — Full Project Analysis
+﻿# SPRINT-01 â€” Full Project Analysis
 
-> **Project:** Engineering Marketplace  
-> **Analysis date:** 2026-07-14  
-> **Analysis type:** Read-only repository review  
-> **Application changes:** None  
-> **Database changes:** None  
+> **Project:** Engineering Marketplace
+> **Analysis date:** 2026-07-14
+> **Analysis type:** Read-only repository review
+> **Application changes:** None
+> **Database changes:** None
 > **Dependency changes:** None
 
 ## Objective
@@ -363,57 +363,57 @@ Multiple seeders truncate taxonomy and pivot tables. `SkillDomainSeeder`, `Skill
 
 ## Critical/high findings
 
-### SEC-01 — Matched-project detail IDOR
+### SEC-01 â€” Matched-project detail IDOR
 
 `Specialist\MatchedProjectController::show()` accepts any bound project, loads employer and attachment data, increments its view count, and renders it without checking `Project::forWorkerMatches($user)`. An authenticated specialist with a project UUID can read an unmatched project and alter its analytics.
 
-### SEC-02 — Public project attachments
+### SEC-02 â€” Public project attachments
 
 Project uploads use the public disk and views emit direct `Storage::url()` links. Static delivery bypasses Laravel authentication and authorization. Anyone who obtains a URL can download the file regardless of project access.
 
-### SEC-03 — Arbitrary file types on a public disk
+### SEC-03 â€” Arbitrary file types on a public disk
 
 Project files are validated only as files under 10 MB. HTML, SVG, or other active content may be hosted publicly, creating phishing, stored-content, malware, or XSS risk depending on browser and server behavior.
 
-### SEC-04 — Broken unauthenticated state-changing API
+### SEC-04 â€” Broken unauthenticated state-changing API
 
 `POST /api/user-skill` maps to `Api\SkillController::store()`, which does not exist. The intended `UserSkillController` derives identity from `Auth::id()` but the API group has no authentication middleware. Correcting only the route would create an unsafe write path.
 
-### SEC-05 — Vulnerable locked dependencies
+### SEC-05 â€” Vulnerable locked dependencies
 
 The prior Composer audit for the current lockfile reported 24 advisories affecting 14 packages. Dependency remediation must be performed separately with full regression testing; this analysis did not update or reinstall packages.
 
 ## Medium findings
 
-### SEC-06 — Unrestricted messaging recipients
+### SEC-06 â€” Unrestricted messaging recipients
 
 Any authenticated active-role user can message any existing user UUID. There is no collaboration, project, block, privacy, or prior-conversation authorization rule.
 
-### SEC-07 — Unrelated project association in messages
+### SEC-07 â€” Unrelated project association in messages
 
 `project_id` validation checks only existence. A sender can associate another employer's project with an unrelated conversation.
 
-### SEC-08 — Arbitrary collaboration request targets
+### SEC-08 â€” Arbitrary collaboration request targets
 
 Specialists may submit requests to any existing project UUID, regardless of matching visibility, ownership, or whether it is their own employer project under a dual-profile account.
 
-### SEC-09 — No policies
+### SEC-09 â€” No policies
 
 Authorization is distributed across route middleware, controller comparisons, FormRequest `authorize()`, roles, profiles, and `is_admin`. The absence of a canonical policy layer makes omissions likely.
 
-### SEC-10 — Admin request defense-in-depth gaps
+### SEC-10 â€” Admin request defense-in-depth gaps
 
 Several admin FormRequests authorize any authenticated user and rely on the outer admin route group. Current routes remain protected, but reuse or middleware regression could expose mutations.
 
-### SEC-11 — Host-header protection disabled
+### SEC-11 â€” Host-header protection disabled
 
 `TrustHosts` is commented out in the global middleware stack.
 
-### SEC-12 — Role state can become stale
+### SEC-12 â€” Role state can become stale
 
 `active_role` is not consistently revalidated against current profile ownership on every request. Administrators bypass active-role checks entirely.
 
-### SEC-13 — User enumeration through conversation route
+### SEC-13 â€” User enumeration through conversation route
 
 An authenticated user can open `/user/messages/{user}` for an arbitrary valid UUID and learn that account's name even without a prior relationship.
 
@@ -714,43 +714,43 @@ There is no public search, favorites, saved searches, portfolio, notification ce
 
 These refactors should not begin until tests protect current behavior.
 
-## R1 — Characterization test foundation
+## R1 â€” Characterization test foundation
 
 Add route, authentication, role, project ownership, matching, request, message, ticket, profile, API, and upload tests using an isolated database.
 
-## R2 — Incremental policy layer
+## R2 â€” Incremental policy layer
 
 Add Project, CollaborationRequest, Message, Ticket, and UserProfile policies. Initially keep existing checks as defense in depth; remove duplication only after equivalence is proven.
 
-## R3 — Canonical role model
+## R3 â€” Canonical role model
 
 Document which of `role`, `is_admin`, profile types, active role, and Spatie permissions is authoritative. Introduce a phased compatibility plan rather than changing all roles at once.
 
-## R4 — Canonical panel implementation
+## R4 â€” Canonical panel implementation
 
 Confirm unified `/user` routes as canonical, then deprecate inactive Worker/Employer/Specialist implementations one bounded area at a time.
 
-## R5 — Message query and authorization service
+## R5 â€” Message query and authorization service
 
 Separate messaging authorization from transport/query concerns. Replace in-memory conversation aggregation with database-side latest/unread queries.
 
-## R6 — Project matching query object/service
+## R6 â€” Project matching query object/service
 
 Preserve the three current matching paths but move them into a focused, testable query abstraction. Optimize only after result equivalence is established.
 
-## R7 — Private file delivery
+## R7 â€” Private file delivery
 
 Create an authorized download controller and storage abstraction. Support existing public records during a phased migration; never edit production file records manually.
 
-## R8 — Project form frontend modules
+## R8 â€” Project form frontend modules
 
 Extract duplicated project create/edit taxonomy state into Vite modules and shared Blade components without changing request contracts.
 
-## R9 — Taxonomy model cleanup
+## R9 â€” Taxonomy model cleanup
 
 Document current versus legacy relations before deprecating `process_id`, direct `subdomain_id`, or the many-to-many alternatives. Do not remove columns until production usage is measured.
 
-## R10 — Deterministic asset and deployment pipeline
+## R10 â€” Deterministic asset and deployment pipeline
 
 Build a clean artifact in CI with locked dependencies, tests, Vite output, health checks, and rollback. Retain FTPS only as transport if hosting constraints require it.
 
@@ -758,7 +758,7 @@ Build a clean artifact in CI with locked dependencies, tests, Vite output, healt
 
 # 15. Sprint Roadmap
 
-## Sprint 1A — Tests and access control
+## Sprint 1A â€” Tests and access control
 
 - Build isolated characterization tests.
 - Fix matched-project authorization.
@@ -766,7 +766,7 @@ Build a clean artifact in CI with locked dependencies, tests, Vite output, healt
 - Define messaging permissions.
 - Add initial policies without removing working checks.
 
-## Sprint 1B — API and uploads
+## Sprint 1B â€” API and uploads
 
 - Correct/authenticate user-skill API as one change.
 - Add API response and validation tests.
@@ -774,14 +774,14 @@ Build a clean artifact in CI with locked dependencies, tests, Vite output, healt
 - Introduce authorized download endpoint design.
 - Plan backward-compatible file migration.
 
-## Sprint 1C — Operational stability
+## Sprint 1C â€” Operational stability
 
 - Address dependency advisories in controlled batches.
 - Add reproducible CI build and tests.
 - Validate Vite artifacts and deployment exclusions.
 - Add staging health check and rollback procedure.
 
-## Sprint 2 — Performance
+## Sprint 2 â€” Performance
 
 - Optimize message conversation queries.
 - Cache public counts/taxonomy with invalidation.
@@ -789,14 +789,14 @@ Build a clean artifact in CI with locked dependencies, tests, Vite output, healt
 - Add evidence-backed indexes.
 - Reduce generated asset scope.
 
-## Sprint 3 — Architecture
+## Sprint 3 â€” Architecture
 
 - Consolidate policy usage and role definitions.
 - Deprecate legacy panels/routes/controllers.
 - Reconcile missing schema/model references.
 - Standardize FormRequests, responses, typing, and code style.
 
-## Sprint 4 — UI/UX
+## Sprint 4 â€” UI/UX
 
 - Establish canonical journeys and shared components.
 - Extract inline JS/CSS incrementally.
@@ -818,16 +818,16 @@ Build a clean artifact in CI with locked dependencies, tests, Vite output, healt
 | Order | Work package | Why now | Complexity | Dependency |
 |---:|---|---|---|---|
 | 1 | Test harness and authorization matrix | Makes every later change safer | Medium | None |
-| 2 | Matched-project IDOR fix | Confirmed high-impact reachable issue | Low–Medium | Tests |
-| 3 | Collaboration request visibility | Shares the same project access rule | Low–Medium | Tests, project rule |
+| 2 | Matched-project IDOR fix | Confirmed high-impact reachable issue | Lowâ€“Medium | Tests |
+| 3 | Collaboration request visibility | Shares the same project access rule | Lowâ€“Medium | Tests, project rule |
 | 4 | Messaging authorization | Prevents abuse and false project associations | Medium | Tests, business decision |
 | 5 | API route and authentication correction | Repairs broken public endpoint safely | Medium | Tests, auth-mode decision |
 | 6 | Upload allowlist and authorized download | Protects project data and hosted content | High | Policy, storage transition plan |
 | 7 | Policy/middleware hardening | Centralizes proven authorization rules | Medium | Tests and initial fixes |
-| 8 | Dependency security updates | Removes known advisories without mixing feature changes | Medium–High | Regression suite |
+| 8 | Dependency security updates | Removes known advisories without mixing feature changes | Mediumâ€“High | Regression suite |
 | 9 | Reproducible CI/deployment artifact | Reduces release and rollback risk | High | Tests, dependency state |
 | 10 | Message/landing/cache optimization | Low-risk performance gains after correctness | Medium | Baselines |
-| 11 | Matching optimization and indexes | Higher-risk query/data work | Medium–High | Result fixtures, staging data |
+| 11 | Matching optimization and indexes | Higher-risk query/data work | Mediumâ€“High | Result fixtures, staging data |
 | 12 | Legacy/dead-code retirement | Reduces maintenance surface safely | Medium | Tests, runtime confirmation |
 | 13 | UI component extraction and asset reduction | Improves UX and build size | High | Canonical views, browser checks |
 | 14 | New marketplace features | Builds on a stable platform | High | Security, architecture, operations |

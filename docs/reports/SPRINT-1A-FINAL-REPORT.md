@@ -1,11 +1,11 @@
-# Sprint 1A — Final Regression and Handoff Report
+﻿# Sprint 1A â€” Final Regression and Handoff Report
 
-> **Review date:** 2026-07-15  
-> **Sprint status:** Implementation complete; pending human approval  
-> **Work package:** WP-5 — final regression and handoff review only  
-> **New feature implementation in WP-5:** None  
-> **Database schema changes:** None  
-> **Dependency changes:** None  
+> **Review date:** 2026-07-15
+> **Sprint status:** Implementation complete; pending human approval
+> **Work package:** WP-5 â€” final regression and handoff review only
+> **New feature implementation in WP-5:** None
+> **Database schema changes:** None
+> **Dependency changes:** None
 > **Commit, push, or deployment:** Not performed
 
 ## Sprint Objective
@@ -26,11 +26,11 @@ Sprint 1A specifically addressed:
 
 | Work package | Outcome |
 |---|---|
-| WP-1 — Test foundation and characterization | Added isolated PHPUnit/SQLite test infrastructure, current-schema user factory support, reusable synthetic fixtures, and baseline authorization characterizations. |
-| WP-2 — Canonical project visibility | Added `ProjectPolicy::viewMatchedProject`, reused `Project::forWorkerMatches`, returned `404` for ineligible detail access, and prevented denied analytics mutation. |
-| WP-3 — Collaboration request authorization | Added `ProjectPolicy::requestCollaboration`, blocked ineligible targets before duplicate lookup/creation, and preserved valid/duplicate JSON contracts. |
-| WP-4 — Messaging authorization | Added `MessagePolicy`, protected conversation reads and sends, validated exact project relationships, preserved approved legacy threads, and retained validation/redirect behavior. |
-| WP-5 — Regression and handoff | Reviewed policy/matrix consistency, ran the complete regression and quality checks, audited cumulative scope, and created this final report without changing production code. |
+| WP-1 â€” Test foundation and characterization | Added isolated PHPUnit/SQLite test infrastructure, current-schema user factory support, reusable synthetic fixtures, and baseline authorization characterizations. |
+| WP-2 â€” Canonical project visibility | Added `ProjectPolicy::viewMatchedProject`, reused `Project::forWorkerMatches`, returned `404` for ineligible detail access, and prevented denied analytics mutation. |
+| WP-3 â€” Collaboration request authorization | Added `ProjectPolicy::requestCollaboration`, blocked ineligible targets before duplicate lookup/creation, and preserved valid/duplicate JSON contracts. |
+| WP-4 â€” Messaging authorization | Added `MessagePolicy`, protected conversation reads and sends, validated exact project relationships, preserved approved legacy threads, and retained validation/redirect behavior. |
+| WP-5 â€” Regression and handoff | Reviewed policy/matrix consistency, ran the complete regression and quality checks, audited cumulative scope, and created this final report without changing production code. |
 
 Detailed work-package evidence is available in:
 

@@ -17,6 +17,7 @@ class ProjectFile extends Model
     protected $fillable = [
         'project_id',
         'path',
+        'storage_disk',
         'original_name',
         'mime_type',
         'size',
@@ -29,5 +30,10 @@ class ProjectFile extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function storageDisk(): string
+    {
+        return $this->storage_disk ?: 'public';
     }
 }

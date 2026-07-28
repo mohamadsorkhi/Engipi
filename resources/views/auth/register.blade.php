@@ -161,7 +161,6 @@ html, body {
 /* ─── Responsive ── */
 @media (max-width: 900px) {
     .bp-auth-form { width: 100%; padding: 2rem 1.8rem; }
-    .bp-auth-showcase { display: none; }
 }
 @media (max-width: 480px) {
     .bp-auth-form { padding: 1.6rem 1.1rem; }
@@ -169,6 +168,7 @@ html, body {
     .bp-auth-field-row { flex-direction: column; gap: 0; }
 }
 </style>
+@include('auth.partials.mobile-visual-panel')
 @endsection
 
 @section('content')

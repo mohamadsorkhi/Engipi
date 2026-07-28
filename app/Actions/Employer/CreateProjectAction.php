@@ -88,11 +88,12 @@ class CreateProjectAction
 
     protected function storeProjectFile(Project $project, UploadedFile $file): ProjectFile
     {
-        $path = $file->store('project-files/' . $project->id, 'public');
+        $path = $file->store('project-files/' . $project->id, 'local');
 
         return ProjectFile::create([
             'project_id' => $project->id,
             'path' => $path,
+            'storage_disk' => 'local',
             'original_name' => $file->getClientOriginalName(),
             'mime_type' => $file->getMimeType(),
             'size' => $file->getSize(),

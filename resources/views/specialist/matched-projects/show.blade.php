@@ -52,7 +52,7 @@
                             <ul class="list-unstyled mb-0">
                                 @foreach($project->files as $file)
                                     <li class="mb-1">
-                                        <a href="{{ Storage::url($file->path) }}" target="_blank" class="link-primary">
+                                        <a href="{{ route('user.project-files.download', $file) }}" class="link-primary">
                                             <i class="ri-attachment-line me-1"></i>
                                             {{ $file->original_name }}
                                         </a>

@@ -8,84 +8,90 @@
 
 @section('css')
 <style>
-html, body { min-height: 100%; margin: 0; background: #fff !important; color: var(--bp-text) !important; }
+html, body { height: 100%; margin: 0; padding: 0; background: #fff !important; color: var(--bp-text) !important; }
 .bp-project-page { overflow-x: hidden; }
-.bp-auth-wrap { display: flex; min-height: 100vh; direction: rtl; }
+.bp-auth-wrap { display: flex; flex-direction: row; min-height: 100vh; }
 .bp-auth-form {
-    width: 48%; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center;
-    padding: 2rem clamp(1.5rem, 4vw, 4rem); background: #fff; border-left: 1px solid var(--bp-hair);
-    box-shadow: -12px 0 40px rgba(14,27,44,.05); position: relative; z-index: 2;
+    width: 42%; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center;
+    padding: 2rem 3rem; background: #fff; position: relative; z-index: 2; overflow-y: auto;
 }
-.bp-auth-form-inner { width: 100%; max-width: 620px; margin-inline: auto; padding-block: 1rem; }
-.bp-auth-logo { margin-bottom: 1.35rem; }
-.bp-auth-logo a { display: inline-block; text-decoration: none; }
-.bp-auth-logo-word { color: var(--bp-ink); font-size: 1.65rem; font-weight: 900; letter-spacing: -.5px; line-height: 1; }
+[dir="rtl"] .bp-auth-form { border-left: 1px solid var(--bp-hair); box-shadow: -12px 0 40px rgba(14,27,44,.05); }
+.bp-auth-form-inner { width: 100%; }
+.bp-auth-logo { margin-bottom: 1.6rem; }
+.bp-auth-logo a { text-decoration: none; }
+.bp-auth-logo-word { color: var(--bp-ink); font-size: 1.55rem; font-weight: 900; letter-spacing: -.5px; }
 .bp-auth-logo-word .a { color: var(--bp-blue); }
 .bp-auth-step {
     display: inline-flex; align-items: center; gap: .4rem; margin-bottom: .8rem; padding: .35rem .7rem;
     border-radius: 999px; color: var(--bp-blue); background: var(--bp-tint-blue); font-size: .72rem; font-weight: 700;
 }
-.bp-auth-heading { margin: 0 0 .35rem; color: var(--bp-ink); font-size: 1.45rem; font-weight: 800; }
-.bp-auth-subhead { margin: 0 0 1.35rem; color: var(--bp-muted); font-size: .84rem; line-height: 1.8; }
+.bp-auth-heading { margin: 0 0 .25rem; color: var(--bp-ink); font-size: 1.4rem; font-weight: 800; }
+.bp-auth-subhead { margin: 0 0 1.2rem; color: var(--bp-muted); font-size: .85rem; }
 .bp-auth-alert-err {
     margin-bottom: 1rem; padding: 10px 14px; border: 1px solid #E14B4B55; border-radius: var(--bp-r);
-    color: #a32f2f; background: var(--bp-tint-red); font-size: .8rem;
+    color: #a32f2f; background: var(--bp-tint-red); font-size: .83rem;
 }
-.bp-auth-field { margin-bottom: .9rem; }
-.bp-auth-field-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.bp-auth-field { margin-bottom: .85rem; }
+.bp-auth-field-row { display: flex; gap: .75rem; }
+.bp-auth-field-row .bp-auth-field { flex: 1; min-width: 0; }
 .bp-auth-label { display: block; margin-bottom: .35rem; color: var(--bp-text); font-size: .8rem; font-weight: 600; }
 .bp-auth-required { color: #E14B4B; }
 .bp-auth-optional { color: var(--bp-muted); font-size: .68rem; font-weight: 400; }
 .bp-auth-input-box { position: relative; display: flex; align-items: center; }
-.bp-auth-ico { position: absolute; right: 13px; z-index: 2; color: var(--bp-muted); font-size: 1rem; pointer-events: none; }
+.bp-auth-ico {
+    position: absolute; z-index: 2; top: 50%; transform: translateY(-50%);
+    color: var(--bp-muted); font-size: 1rem; pointer-events: none;
+}
+[dir="rtl"] .bp-auth-ico { right: 13px; }
 .bp-auth-inp {
-    width: 100%; min-height: 45px; padding: 10px 42px 10px 12px; border: 1.5px solid var(--bp-border);
-    border-radius: var(--bp-r); outline: none; color: var(--bp-ink); background: var(--bp-surface);
-    font: inherit; font-size: .875rem; text-align: right; direction: rtl;
+    width: 100%; padding: 10px 42px; border: 1.5px solid var(--bp-border); border-radius: var(--bp-r);
+    outline: none; color: var(--bp-ink); background: var(--bp-surface); font-size: .855rem; direction: ltr;
     transition: border-color .2s, box-shadow .2s, background .2s;
 }
-textarea.bp-auth-inp { min-height: 105px; resize: vertical; line-height: 1.75; }
-select.bp-auth-inp { cursor: pointer; appearance: auto; }
+[dir="rtl"] .bp-auth-inp { text-align: right; }
+textarea.bp-auth-inp { min-height: 104px; resize: vertical; line-height: 1.75; direction: rtl; }
+select.bp-auth-inp { cursor: pointer; appearance: auto; direction: rtl; }
 input[type="number"].bp-auth-inp { direction: ltr; text-align: right; }
-.bp-auth-inp::placeholder { color: #aebbc8; }
+.bp-auth-inp::placeholder { color: #b8c4d0; direction: ltr; text-align: left; }
 .bp-auth-inp:focus { border-color: var(--bp-blue); background: #fff; box-shadow: 0 0 0 3.5px var(--bp-tint-blue); }
-.bp-auth-inp.is-invalid { border-color: #E14B4B; }
-.bp-auth-inp.is-invalid:focus { box-shadow: 0 0 0 3px rgba(225,75,75,.12); }
-.bp-auth-error { display: block; margin-top: 4px; padding-right: 2px; color: #E14B4B; font-size: .74rem; }
-.bp-auth-submit { width: 100%; justify-content: center; margin-top: .25rem; }
-.bp-auth-back { margin: 1rem 0 0; text-align: center; color: var(--bp-muted); font-size: .8rem; }
+.bp-auth-inp.is-invalid { border-color: #E14B4B !important; }
+.bp-auth-inp.is-invalid:focus { box-shadow: 0 0 0 3px rgba(225,75,75,.12) !important; }
+.bp-auth-error { display: block; margin-top: 4px; padding-right: 2px; color: #E14B4B; font-size: .77rem; }
+.bp-auth-submit { width: 100%; justify-content: center; margin-bottom: .9rem; margin-top: .4rem; }
+.bp-auth-back { margin: 0; text-align: center; color: var(--bp-muted); font-size: .82rem; }
 .bp-auth-back a { color: var(--bp-blue); font-weight: 700; text-decoration: none; }
 .bp-auth-back a:hover { color: var(--bp-blue-d); text-decoration: underline; }
 .bp-auth-showcase {
-    flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem; position: relative; overflow: hidden;
-    background-image: linear-gradient(rgba(10,20,40,.62), rgba(10,20,40,.72)), url('{{ asset('images/login-bg.jpg') }}');
+    flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem;
+    position: relative; overflow: hidden; background: var(--bp-navy);
+    background-image: linear-gradient(rgba(10,20,40,.5), rgba(10,20,40,.5)), url('{{ asset('images/post-project-bg.jpg') }}');
     background-position: center; background-size: cover;
 }
-.bp-auth-showcase-inner { width: 100%; max-width: 480px; position: relative; z-index: 2; }
-.bp-auth-sc-kicker { display: inline-flex; align-items: center; gap: .45rem; margin-bottom: 1rem; color: #8db8ff; font-size: .8rem; font-weight: 700; }
-.bp-auth-sc-title { margin: 0 0 .7rem; color: #fff; font-size: clamp(1.5rem, 2.5vw, 2.15rem); font-weight: 900; line-height: 1.55; }
-.bp-auth-sc-title span { color: #8db8ff; }
-.bp-auth-sc-sub { max-width: 410px; margin: 0 0 1.8rem; color: rgba(255,255,255,.76); font-size: .88rem; line-height: 1.9; }
-.bp-auth-benefits { display: grid; gap: .7rem; }
+.bp-auth-showcase-inner { width: 100%; max-width: 460px; position: relative; z-index: 2; }
+.bp-auth-sc-brand { margin-bottom: 1.8rem; }
+.bp-auth-sc-brand a { color: #fff; font-size: 1.9rem; font-weight: 900; letter-spacing: -.5px; text-decoration: none; }
+.bp-auth-sc-brand span { color: var(--bp-blue-l); }
+.bp-auth-sc-kicker { display: inline-flex; align-items: center; gap: .45rem; margin-bottom: 1rem; color: var(--bp-blue-l); font-size: .8rem; font-weight: 700; }
+.bp-auth-sc-title { margin: 0 0 .7rem; color: #fff; font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 900; line-height: 1.5; }
+.bp-auth-sc-title .hl { color: var(--bp-blue-l); }
+.bp-auth-sc-sub { max-width: 380px; margin: 0 0 2rem; color: rgba(255,255,255,.72); font-size: .88rem; line-height: 1.75; }
+.bp-auth-benefits { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 2rem; }
 .bp-auth-benefit {
-    display: flex; align-items: center; gap: .75rem; padding: .85rem 1rem; border: 1px solid rgba(255,255,255,.14);
-    border-radius: var(--bp-r-lg); color: rgba(255,255,255,.88); background: rgba(255,255,255,.07);
-    backdrop-filter: blur(8px); font-size: .8rem;
+    flex: 1; min-width: 90px; padding: .9rem 1.2rem; border: 1px solid rgba(255,255,255,.15);
+    border-radius: var(--bp-r-lg); color: rgba(255,255,255,.72); background: rgba(255,255,255,.08);
+    backdrop-filter: blur(10px); font-size: .72rem; line-height: 1.55; text-align: center;
 }
-.bp-auth-benefit i { display: grid; width: 32px; height: 32px; place-items: center; flex-shrink: 0; border-radius: var(--bp-r); color: #8db8ff; background: rgba(31,111,235,.2); font-size: 1rem; }
-@media (max-width: 1050px) { .bp-auth-form { width: 55%; } }
+.bp-auth-benefit i { display: block; margin-bottom: .35rem; color: var(--bp-blue-l); font-size: 1.3rem; }
 @media (max-width: 900px) {
-    .bp-auth-form { width: 100%; min-height: 100vh; padding: 1.5rem clamp(1.2rem, 5vw, 2.5rem); border-left: 0; box-shadow: none; }
-    .bp-auth-showcase { display: none; }
+    .bp-auth-form { width: 100%; padding: 2rem 1.8rem; }
 }
-@media (max-width: 560px) {
-    .bp-auth-form { justify-content: flex-start; padding-block: 1.4rem; }
-    .bp-auth-form-inner { padding-block: 0; }
-    .bp-auth-field-row { grid-template-columns: 1fr; gap: 0; }
-    .bp-auth-heading { font-size: 1.25rem; }
-    .bp-auth-logo { margin-bottom: 1.1rem; }
+@media (max-width: 480px) {
+    .bp-auth-form { padding: 1.6rem 1.1rem; }
+    .bp-auth-heading { font-size: 1.2rem; }
+    .bp-auth-field-row { flex-direction: column; gap: 0; }
 }
 </style>
+@include('auth.partials.mobile-visual-panel')
 @endsection
 
 @section('content')
@@ -179,8 +185,11 @@ input[type="number"].bp-auth-inp { direction: ltr; text-align: right; }
 
     <aside class="bp-auth-showcase" aria-label="مزایای ثبت پروژه در EngPis">
         <div class="bp-auth-showcase-inner">
+            <div class="bp-auth-sc-brand">
+                <a href="{{ route('root') }}"><span>Eng</span>Pis</a>
+            </div>
             <div class="bp-auth-sc-kicker"><i class="ri-flashlight-line"></i> شروع سریع و رایگان</div>
-            <h2 class="bp-auth-sc-title">سریع‌ترین راه برای یافتن<br><span>متخصص مهندسی</span></h2>
+            <h2 class="bp-auth-sc-title">سریع‌ترین راه برای یافتن<br><span class="hl">متخصص مهندسی</span></h2>
             <p class="bp-auth-sc-sub">نیاز پروژه را یک‌بار ثبت کنید و پس از تکمیل عضویت، مسیر همکاری با متخصصان EngPis را آغاز کنید.</p>
             <div class="bp-auth-benefits">
                 <div class="bp-auth-benefit"><i class="ri-file-list-3-line"></i><span>اطلاعات پروژه پس از ثبت‌نام حفظ می‌شود</span></div>
