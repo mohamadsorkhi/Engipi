@@ -14,7 +14,7 @@
                         </span>
                         <span class="logo-lg">
                             <span style="font-size:1.3rem;font-weight:900;font-family:'Vazirmatn',sans-serif;color:white;letter-spacing:-0.5px;">
-                                <span style="color:#1F6FEB;">Eng</span>Pis
+                                <span style="color:#1F6FEB;">Eng</span>iPi
                             </span>
                         </span>
                     </a>
@@ -25,7 +25,7 @@
                         </span>
                         <span class="logo-lg">
                             <span style="font-size:1.3rem;font-weight:900;font-family:'Vazirmatn',sans-serif;color:white;letter-spacing:-0.5px;">
-                                <span style="color:#1F6FEB;">Eng</span>Pis
+                                <span style="color:#1F6FEB;">Eng</span>iPi
                             </span>
                         </span>
                     </a>

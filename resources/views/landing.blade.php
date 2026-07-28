@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Engipi — مارکت‌پلیس تخصصی پروژه‌های مهندسی</title>
+  @include('layouts.social-meta')
   <link rel="stylesheet" href="{{ asset('vendor/engipi/fonts/remixicon.css') }}">
   <link rel="stylesheet" href="{{ asset('vendor/engipi/fonts/vazirmatn.css') }}">
   <link rel="stylesheet" href="{{ asset('vendor/engipi/css/blueprint.css') }}">
@@ -137,7 +137,7 @@
 <body>
 <nav class="nav" id="nav">
   <div class="bp-container row">
-    <a class="brand" href="{{ route('root') }}"><span class="a">Eng</span>Pis</a>
+    <a class="brand" href="{{ route('root') }}"><span class="a">Eng</span>iPi</a>
     <ul class="nav-links">
       <li><a href="#how">چگونه کار می‌کند</a></li>
       <li><a href="#domains">حوزه‌ها</a></li>
@@ -209,7 +209,7 @@
   <div class="bp-container">
     <div class="bp-sechead">
       <span class="bp-eyebrow"><i class="ri-route-line"></i>روش کار</span>
-      <h2>چگونه Engipi کار می‌کند؟</h2>
+      <h2>چگونه EngiPi کار می‌کند؟</h2>
       <p>فرآیند ساده و شفاف — برای هر دو طرف</p>
     </div>
     @php
@@ -270,7 +270,7 @@
     <div class="bp-sechead">
       <span class="bp-eyebrow"><i class="ri-stack-line"></i>حوزه‌های تخصصی</span>
       <h2>در کدام رشته مهندسی فعالیت دارید؟</h2>
-      <p>Engipi طیف گسترده‌ای از رشته‌های مهندسی را پوشش می‌دهد</p>
+      <p>EngiPi طیف گسترده‌ای از رشته‌های مهندسی را پوشش می‌دهد</p>
     </div>
     <div class="dgrid" id="dgrid">
       @foreach ($domains as $i => $domain)
@@ -290,13 +290,13 @@
 <section class="bp-section" id="features">
   <div class="bp-container">
     <div class="bp-sechead">
-      <span class="bp-eyebrow"><i class="ri-shield-star-line"></i>چرا Engipi؟</span>
-      <h2>مزایایی که Engipi را متمایز می‌کند</h2>
+      <span class="bp-eyebrow"><i class="ri-shield-star-line"></i>چرا EngiPi؟</span>
+      <h2>مزایایی که EngiPi را متمایز می‌کند</h2>
     </div>
     <div class="fgrid" id="fgrid">
       @foreach ([
           ['ri-cpu-line', '--bp-blue', '--bp-tint-blue', 'تطابق هوشمند', 'الگوریتم ما پروژه‌ها را بر اساس مهارت، سطح تجربه و حوزه تخصصی با دقت بالا تطبیق می‌دهد.'],
-          ['ri-shield-keyhole-line', '--bp-teal', '--bp-tint-teal', 'پرداخت امن', 'وجه پروژه تا تأیید نهایی نزد Engipi نگه‌داری می‌شود. بدون ریسک برای هیچ طرفی.'],
+          ['ri-shield-keyhole-line', '--bp-teal', '--bp-tint-teal', 'پرداخت امن', 'وجه پروژه تا تأیید نهایی نزد EngiPi نگه‌داری می‌شود. بدون ریسک برای هیچ طرفی.'],
           ['ri-user-follow-line', '--bp-c-amber', '--bp-tint-amber', 'متخصصان تأیید شده', 'هویت، مدارک تحصیلی و سابقه کاری متخصصان پیش از فعالیت احراز می‌شود.'],
           ['ri-line-chart-line', '--bp-c-green', '--bp-tint-green', 'رشد مستمر', 'با هر پروژه موفق، پروفایل و اعتبار شما رشد می‌کند و فرصت‌های بهتری باز می‌شود.'],
           ['ri-customer-service-2-line', '--bp-c-red', '--bp-tint-red', 'پشتیبانی تخصصی', 'تیم پشتیبانی از آغاز تا پایان پروژه همراه شماست و در حل اختلافات میانجی است.'],
@@ -315,11 +315,11 @@
   <div class="bp-container">
     <div class="bp-sechead">
       <span class="bp-eyebrow"><i class="ri-chat-quote-line"></i>نظرات کاربران</span>
-      <h2>آنچه کاربران درباره Engipi می‌گویند</h2>
+      <h2>آنچه کاربران درباره EngiPi می‌گویند</h2>
     </div>
     <div class="tgrid" id="tgrid">
       @foreach ([
-          ['--bp-blue', '«از طریق Engipi یک متخصص MATLAB عالی برای شبیه‌سازی سیستم کنترل پیدا کردم. فرآیند ساده بود و نتیجه فوق‌العاده.»', 'علی محمدی', 'کارفرما · مهندسی مکانیک', 'ع'],
+          ['--bp-blue', '«از طریق EngiPi یک متخصص MATLAB عالی برای شبیه‌سازی سیستم کنترل پیدا کردم. فرآیند ساده بود و نتیجه فوق‌العاده.»', 'علی محمدی', 'کارفرما · مهندسی مکانیک', 'ع'],
           ['--bp-teal', '«به عنوان متخصص ANSYS چندین پروژه موفق انجام داده‌ام. سیستم تطابق خیلی دقیق کار می‌کند و پروژه‌های مناسب پیشنهاد می‌دهد.»', 'سارا احمدی', 'متخصص · مهندسی عمران', 'س'],
           ['--bp-c-amber', '«پروژه پایان‌نامه‌ام را با یک متخصص Python تکمیل کردم. سریع، حرفه‌ای و قیمت منصفانه. قطعاً دوباره استفاده می‌کنم.»', 'رضا کریمی', 'کارفرما · دانشجوی دکترا', 'ر'],
       ] as $t)
@@ -353,7 +353,7 @@
   <div class="bp-container">
     <div class="fgrid2">
       <div>
-        <div class="brand2"><span class="a">Eng</span>Pis</div>
+        <div class="brand2"><span class="a">Eng</span>iPi</div>
         <p>بزرگ‌ترین مارکت‌پلیس تخصصی پروژه‌های فنی و مهندسی ایران. جایی که کارفرمایان و متخصصان مهندسی به هم وصل می‌شوند.</p>
         <div class="socials">
           <a href="#"><i class="ri-instagram-line"></i></a>
@@ -362,12 +362,12 @@
           <a href="#"><i class="ri-twitter-x-line"></i></a>
         </div>
       </div>
-      <div><h6>Engipi</h6><ul><li><a href="{{ route('about') }}">درباره ما</a></li><li><a href="{{ route('terms') }}">قوانین</a></li><li><a href="#">تماس</a></li><li><a href="#">وبلاگ</a></li></ul></div>
+      <div><h6>EngiPi</h6><ul><li><a href="{{ route('about') }}">درباره ما</a></li><li><a href="{{ route('terms') }}">قوانین</a></li><li><a href="#">تماس</a></li><li><a href="#">وبلاگ</a></li></ul></div>
       <div><h6>کارفرمایان</h6><ul><li><a href="{{ route('guest.project') }}">ثبت پروژه</a></li><li><a href="#how">نحوه کار</a></li><li><a href="#">تعرفه‌ها</a></li><li><a href="#">سوالات</a></li></ul></div>
       <div><h6>متخصصان</h6><ul><li><a href="{{ route('register') }}">ثبت‌نام</a></li><li><a href="{{ route('register') }}">یافتن پروژه</a></li><li><a href="#">راهنما</a></li><li><a href="#">سوالات</a></li></ul></div>
     </div>
     <div class="fbottom">
-      <span>© ۱۴۰۴ Engipi. تمامی حقوق محفوظ است.</span>
+      <span>© ۱۴۰۴ EngiPi. تمامی حقوق محفوظ است.</span>
       <span>ساخته‌شده برای جامعه مهندسی ایران</span>
     </div>
   </div>

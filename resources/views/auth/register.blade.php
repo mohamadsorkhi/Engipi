@@ -180,7 +180,7 @@ html, body {
         {{-- Logo --}}
         <div class="bp-auth-logo">
             <a href="{{ route('root') }}">
-                <div class="bp-auth-logo-word"><span class="a">Eng</span>Pis</div>
+                <div class="bp-auth-logo-word"><span class="a">Eng</span>iPi</div>
             </a>
         </div>
 
@@ -347,7 +347,7 @@ html, body {
             <div style="margin-bottom:1.8rem;">
                 <a href="{{ route('root') }}" style="text-decoration:none;">
                     <span style="font-size:1.9rem;font-weight:900;color:white;letter-spacing:-0.5px;">
-                        <span style="color:var(--bp-blue-l);">Eng</span>Pis
+                        <span style="color:var(--bp-blue-l);">Eng</span>iPi
                     </span>
                 </a>
             </div>

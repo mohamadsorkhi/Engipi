@@ -165,7 +165,7 @@ html, body {
 
         <div class="bp-auth-logo">
             <a href="{{ route('root') }}">
-                <div class="bp-auth-logo-word"><span class="a">Eng</span>Pis</div>
+                <div class="bp-auth-logo-word"><span class="a">Eng</span>iPi</div>
             </a>
         </div>
 
@@ -238,7 +238,7 @@ html, body {
                         <span style="background:#E0930B;"></span>
                         <span style="background:#00B8A9;"></span>
                     </div>
-                    <div class="bp-auth-url-bar">&#x1F512;&nbsp; engipi.ir/dashboard</div>
+                    <div class="bp-auth-url-bar">&#x1F512;&nbsp; engipi.com/dashboard</div>
                 </div>
 
                 <div class="bp-auth-browser-body">

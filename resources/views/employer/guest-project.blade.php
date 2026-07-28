@@ -99,8 +99,8 @@ input[type="number"].bp-auth-inp { direction: ltr; text-align: right; }
     <section class="bp-auth-form" aria-labelledby="post-project-title">
         <div class="bp-auth-form-inner">
             <div class="bp-auth-logo">
-                <a href="{{ route('root') }}" aria-label="EngPis — صفحه اصلی">
-                    <div class="bp-auth-logo-word"><span class="a">Eng</span>Pis</div>
+                <a href="{{ route('root') }}" aria-label="EngiPi — صفحه اصلی">
+                    <div class="bp-auth-logo-word"><span class="a">Eng</span>iPi</div>
                 </a>
             </div>
 
@@ -183,14 +183,14 @@ input[type="number"].bp-auth-inp { direction: ltr; text-align: right; }
         </div>
     </section>
 
-    <aside class="bp-auth-showcase" aria-label="مزایای ثبت پروژه در EngPis">
+    <aside class="bp-auth-showcase" aria-label="مزایای ثبت پروژه در EngiPi">
         <div class="bp-auth-showcase-inner">
             <div class="bp-auth-sc-brand">
-                <a href="{{ route('root') }}"><span>Eng</span>Pis</a>
+                <a href="{{ route('root') }}"><span>Eng</span>iPi</a>
             </div>
             <div class="bp-auth-sc-kicker"><i class="ri-flashlight-line"></i> شروع سریع و رایگان</div>
             <h2 class="bp-auth-sc-title">سریع‌ترین راه برای یافتن<br><span class="hl">متخصص مهندسی</span></h2>
-            <p class="bp-auth-sc-sub">نیاز پروژه را یک‌بار ثبت کنید و پس از تکمیل عضویت، مسیر همکاری با متخصصان EngPis را آغاز کنید.</p>
+            <p class="bp-auth-sc-sub">نیاز پروژه را یک‌بار ثبت کنید و پس از تکمیل عضویت، مسیر همکاری با متخصصان EngiPi را آغاز کنید.</p>
             <div class="bp-auth-benefits">
                 <div class="bp-auth-benefit"><i class="ri-file-list-3-line"></i><span>اطلاعات پروژه پس از ثبت‌نام حفظ می‌شود</span></div>
                 <div class="bp-auth-benefit"><i class="ri-user-search-line"></i><span>دسترسی به متخصصان حوزه‌های مختلف مهندسی</span></div>

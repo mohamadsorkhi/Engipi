@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>درباره Engipi</title>
+    @include('layouts.social-meta', ['metaTitle' => 'درباره EngiPi'])
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
@@ -165,7 +165,7 @@
 <nav class="ep-nav py-3 navbar navbar-expand-lg">
     <div class="container">
         <a class="navbar-brand brand-text" href="{{ route('root') }}">
-            <span class="brand-accent">Eng</span>Pis
+            <span class="brand-accent">Eng</span>iPi
         </a>
         <button class="navbar-toggler border-0 text-white" type="button"
                 data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -205,7 +205,7 @@
             <i class="ri-building-line"></i> تهران، ایران · ۱۴۰۴
         </div>
         <h1 style="font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; margin: 0.8rem 0 1rem;">
-            داستان <span style="color: var(--clr-accent);">Engipi</span>
+            داستان <span style="color: var(--clr-accent);">EngiPi</span>
         </h1>
         <p style="font-size: 1.05rem; opacity: 0.82; max-width: 540px; margin: 0 auto; line-height: 1.85;">
             پلتفرمی که مهندسان ایران را به پروژه‌های واقعی وصل می‌کند
@@ -249,10 +249,10 @@
                 <span class="eyebrow">داستان ما</span>
                 <h2 class="sec-title mb-4">از کجا شروع کردیم؟</h2>
                 <p class="text-muted mb-3" style="line-height: 1.95; font-size: 0.97rem;">
-                    Engipi در سال <strong>۱۴۰۴</strong> در <strong>تهران</strong> با یک ایده ساده متولد شد: بازار پروژه‌های مهندسی ایران، پراکنده و ناکارآمد است. کارفرمایان ساعت‌ها وقت می‌گذارند تا متخصص مناسب پیدا کنند و متخصصان فنی نمی‌دانند پروژه‌های واقعی را کجا بیابند.
+                    EngiPi در سال <strong>۱۴۰۴</strong> در <strong>تهران</strong> با یک ایده ساده متولد شد: بازار پروژه‌های مهندسی ایران، پراکنده و ناکارآمد است. کارفرمایان ساعت‌ها وقت می‌گذارند تا متخصص مناسب پیدا کنند و متخصصان فنی نمی‌دانند پروژه‌های واقعی را کجا بیابند.
                 </p>
                 <p class="text-muted mb-3" style="line-height: 1.95; font-size: 0.97rem;">
-                    ما <strong>تیمی از مهندسان و متخصصان فناوری</strong> هستیم که خودمان این مشکل را تجربه کرده‌ایم. به همین دلیل تصمیم گرفتیم Engipi را بسازیم — پلتفرمی هوشمند که با الگوریتم تطبیق تخصصی، صاحبان پروژه‌های مهندسی را با بهترین متخصص در حوزه مرتبط می‌کند.
+                    ما <strong>تیمی از مهندسان و متخصصان فناوری</strong> هستیم که خودمان این مشکل را تجربه کرده‌ایم. به همین دلیل تصمیم گرفتیم EngiPi را بسازیم — پلتفرمی هوشمند که با الگوریتم تطبیق تخصصی، صاحبان پروژه‌های مهندسی را با بهترین متخصص در حوزه مرتبط می‌کند.
                 </p>
                 <p class="text-muted" style="line-height: 1.95; font-size: 0.97rem;">
                     مأموریت ما ساده است: <strong>اتصال صاحبان پروژه‌های مهندسی به مهندسان متخصص</strong> — سریع، دقیق، و قابل اعتماد.
@@ -309,7 +309,7 @@
     <div class="container">
         <div class="text-center mb-5">
             <span class="eyebrow">مأموریت</span>
-            <h2 class="sec-title">چرا Engipi وجود دارد؟</h2>
+            <h2 class="sec-title">چرا EngiPi وجود دارد؟</h2>
             <p class="text-muted mt-3" style="max-width: 560px; margin: 1rem auto 0; line-height: 1.85;">
                 ما برای حل یک مشکل واقعی در اکوسیستم مهندسی ایران ساخته شدیم
             </p>
@@ -354,7 +354,7 @@
                 <span class="eyebrow">نحوه کار ما</span>
                 <h2 class="sec-title mb-4">الگوریتم تطبیق تخصصی</h2>
                 <p class="text-muted" style="line-height: 1.9; font-size: 0.97rem;">
-                    برخلاف پلتفرم‌های عمومی، Engipi از یک الگوریتم هوشمند استفاده می‌کند که پروژه‌ها را بر اساس <strong>حوزه تخصصی</strong>، <strong>زیرشاخه</strong>، <strong>ابزار</strong> و <strong>سطح مهارت</strong> با متخصصان مطابقت می‌دهد.
+                    برخلاف پلتفرم‌های عمومی، EngiPi از یک الگوریتم هوشمند استفاده می‌کند که پروژه‌ها را بر اساس <strong>حوزه تخصصی</strong>، <strong>زیرشاخه</strong>، <strong>ابزار</strong> و <strong>سطح مهارت</strong> با متخصصان مطابقت می‌دهد.
                 </p>
             </div>
             <div class="col-lg-7">
@@ -396,7 +396,7 @@
                 بزرگ‌ترین مارکت‌پلیس مهندسی ایران
             </h2>
             <p style="font-size: 1rem; opacity: 0.82; max-width: 580px; margin: 0 auto 2rem; line-height: 1.9;">
-                چشم‌انداز ما این است که Engipi به معتبرترین پلتفرم اتصال کارفرمایان و متخصصان مهندسی در ایران تبدیل شود — جایی که هر پروژه فنی بتواند بهترین مهندس متخصص خود را پیدا کند.
+                چشم‌انداز ما این است که EngiPi به معتبرترین پلتفرم اتصال کارفرمایان و متخصصان مهندسی در ایران تبدیل شود — جایی که هر پروژه فنی بتواند بهترین مهندس متخصص خود را پیدا کند.
             </p>
             <div class="d-flex flex-wrap gap-3 justify-content-center">
                 <a href="{{ route('register') }}" class="btn-cta-primary">
@@ -416,7 +416,7 @@
         <div class="row g-4">
             <div class="col-lg-4">
                 <h4 class="text-white fw-bold mb-3">
-                    <span style="color: var(--clr-accent);">Eng</span>Pis
+                    <span style="color: var(--clr-accent);">Eng</span>iPi
                 </h4>
                 <p style="font-size: 0.9rem; line-height: 1.8;">
                     بزرگ‌ترین مارکت‌پلیس تخصصی پروژه‌های فنی و مهندسی ایران.
@@ -430,7 +430,7 @@
                 </div>
             </div>
             <div class="col-6 col-md-4 col-lg-2 offset-lg-2">
-                <h6 class="fw-bold mb-3">Engipi</h6>
+                <h6 class="fw-bold mb-3">EngiPi</h6>
                 <ul class="list-unstyled" style="font-size: 0.88rem;">
                     <li class="mb-2"><a href="{{ route('about') }}">درباره ما</a></li>
                     <li class="mb-2"><a href="{{ route('terms') }}">قوانین و مقررات</a></li>
@@ -454,7 +454,7 @@
         </div>
         <hr class="footer-hr mt-4 mb-3">
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-2" style="font-size: 0.83rem;">
-            <span>© ۱۴۰۴ Engipi. تمامی حقوق محفوظ است.</span>
+            <span>© ۱۴۰۴ EngiPi. تمامی حقوق محفوظ است.</span>
             <div class="d-flex gap-3">
                 <a href="{{ route('terms') }}">قوانین و مقررات</a>
                 <a href="{{ route('terms') }}">حریم خصوصی</a>
