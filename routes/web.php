@@ -59,6 +59,8 @@ Route::get('/', function () {
 Route::get('/about', fn() => view('pages.about'))->name('about');
 Route::get('/terms', fn() => view('pages.terms'))->name('terms');
 
+Route::get('/share-test-2026', fn() => view('pages.share-test-2026'));
+
 
 // مدیریت پروفایل
 Route::middleware(['auth'])
