@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\SkillSelectController;
 use App\Http\Controllers\Employer\GuestProjectController;
 use App\Http\Controllers\Employer\ProjectController as EmployerProjectController;
+use App\Http\Controllers\PublicProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,7 @@ Route::get('/about', fn() => view('pages.about'))->name('about');
 Route::get('/terms', fn() => view('pages.terms'))->name('terms');
 
 Route::get('/share-test-2026', fn() => view('pages.share-test-2026'));
+Route::get('/projects/{project}', [PublicProjectController::class, 'show'])->name('projects.show');
 
 
 // مدیریت پروفایل

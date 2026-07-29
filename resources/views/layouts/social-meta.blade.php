@@ -48,6 +48,7 @@
 <meta property="og:image" content="{{ $seoResolvedImage }}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:type" content="{{ $socialImageType ?? 'image/jpeg' }}">
 <meta property="og:image:alt" content="{{ $seoResolvedImageAlt }}">
 <meta property="og:locale" content="fa_IR">
 
