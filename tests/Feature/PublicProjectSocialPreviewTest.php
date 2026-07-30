@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Project;
+use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -72,6 +73,35 @@ class PublicProjectSocialPreviewTest extends TestCase
             );
     }
 
+    public function test_public_project_page_renders_available_details_and_escapes_user_content(): void
+    {
+        $project = Project::create([
+            'employer_id' => User::factory()->create()->id,
+            'short_id' => 'PUBLIC-DESIGN',
+            'title' => '<script>alert("title")</script>',
+            'description' => "توضیحات پروژه\n<script>alert(\"description\")</script>",
+            'work_type' => 'hybrid',
+            'budget_min' => 1000000,
+            'budget_max' => 2500000,
+            'duration_days' => 30,
+            'deadline_date' => '2026-12-21',
+            'view_count' => 125,
+        ]);
+        $skill = Skill::create(['name' => '<b>Revit</b>']);
+        $project->skills()->attach($skill);
+
+        $this->get('/projects/'.$project->short_id)
+            ->assertOk()
+            ->assertSee('ترکیبی')
+            ->assertSee('1,000,000 تا 2,500,000 تومان')
+            ->assertSee('30 روز')
+            ->assertSee('125')
+            ->assertSee('&lt;script&gt;alert(&quot;title&quot;)&lt;/script&gt;', false)
+            ->assertSee('&lt;script&gt;alert(&quot;description&quot;)&lt;/script&gt;', false)
+            ->assertSee('&lt;b&gt;Revit&lt;/b&gt;', false)
+            ->assertDontSee('<script>alert("title")</script>', false)
+            ->assertDontSee('<b>Revit</b>', false);
+    }
     private function createProject(string $shortId): Project
     {
         return Project::create([
