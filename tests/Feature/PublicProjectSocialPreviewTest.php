@@ -11,6 +11,27 @@ class PublicProjectSocialPreviewTest extends TestCase
 {
     use RefreshDatabase;
 
+    private const DEFAULT_DESCRIPTION = 'پروژه مهندسی خود را ثبت کنید و با متخصصان واقعی در حوزه‌های مختلف مهندسی همکاری کنید.';
+
+    public function test_public_project_can_be_resolved_by_uuid(): void
+    {
+        $project = $this->createProject('UUID-ROUTE-2026');
+
+        $this->get('/projects/'.$project->id)->assertOk();
+    }
+
+    public function test_public_project_can_be_resolved_by_short_id(): void
+    {
+        $project = $this->createProject('QUB4WR');
+
+        $this->get('/projects/'.$project->short_id)->assertOk();
+    }
+
+    public function test_invalid_public_project_identifier_returns_not_found(): void
+    {
+        $this->get('/projects/DOES-NOT-EXIST')->assertNotFound();
+    }
+
     public function test_project_preview_is_public_and_contains_dynamic_social_metadata(): void
     {
         $project = Project::create([
@@ -31,5 +52,34 @@ class PublicProjectSocialPreviewTest extends TestCase
             ->assertSee('<meta property="og:image" content="https://www.engipi.com/images/engipi-og.jpg">', false)
             ->assertSee('<meta name="twitter:card" content="summary_large_image">', false)
             ->assertSee('<meta name="twitter:image" content="https://www.engipi.com/images/engipi-og.jpg">', false);
+    }
+
+    public function test_project_preview_uses_the_engipi_description_when_project_description_is_empty(): void
+    {
+        $project = Project::create([
+            'employer_id' => User::factory()->create()->id,
+            'short_id' => 'OG-FALLBACK-2026',
+            'title' => 'پروژه بدون توضیح',
+            'description' => '',
+            'work_type' => 'remote',
+        ]);
+
+        $this->get(route('projects.show', $project))
+            ->assertOk()
+            ->assertSee(
+                '<meta property="og:description" content="'.self::DEFAULT_DESCRIPTION.'">',
+                false
+            );
+    }
+
+    private function createProject(string $shortId): Project
+    {
+        return Project::create([
+            'employer_id' => User::factory()->create()->id,
+            'short_id' => $shortId,
+            'title' => 'Public project',
+            'description' => 'Public project description',
+            'work_type' => 'remote',
+        ]);
     }
 }
