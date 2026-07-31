@@ -17,6 +17,7 @@ class Skill extends Model
     protected $fillable = [
         'id',
         'name',
+        'skill_type',
         'subdomain_id',
     ];
 

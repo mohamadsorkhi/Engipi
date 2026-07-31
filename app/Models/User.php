@@ -122,6 +122,16 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function skillSuggestions()
+    {
+        return $this->hasMany(SkillSuggestion::class);
+    }
+
+    public function reviewedSkillSuggestions()
+    {
+        return $this->hasMany(SkillSuggestion::class, 'reviewed_by');
+    }
+
     public function profiles()
     {
         return $this->hasMany(UserProfile::class);

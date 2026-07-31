@@ -28,4 +28,9 @@ class Subdomain extends Model
     {
         return $this->hasMany(Skill::class);
     }
+
+    public function skillSuggestions()
+    {
+        return $this->hasMany(SkillSuggestion::class);
+    }
 }

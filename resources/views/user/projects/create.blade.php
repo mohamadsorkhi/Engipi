@@ -16,8 +16,42 @@
             <form id="projectForm" action="{{ route('user.projects.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
+                <div class="bp-wizard" aria-label="مراحل ثبت پروژه">
+                    <div class="bp-wizard-desktop" role="list">
+                        @foreach([
+                            1 => 'معرفی پروژه',
+                            2 => 'نوع همکاری و حوزه',
+                            3 => 'پردازش‌ها',
+                            4 => 'مهارت‌ها و شرایط',
+                            5 => 'فایل‌ها و بازبینی',
+                        ] as $stepNumber => $stepLabel)
+                            <button type="button"
+                                class="bp-wizard-step {{ $stepNumber === 1 ? 'is-active' : '' }}"
+                                data-wizard-go="{{ $stepNumber }}"
+                                aria-current="{{ $stepNumber === 1 ? 'step' : 'false' }}"
+                                {{ $stepNumber === 1 ? '' : 'disabled' }}>
+                                <span class="bp-wizard-step__marker">
+                                    <span class="bp-wizard-step__number">{{ $stepNumber }}</span>
+                                    <i class="ri-check-line bp-wizard-step__check" aria-hidden="true"></i>
+                                </span>
+                                <span class="bp-wizard-step__label">{{ $stepLabel }}</span>
+                            </button>
+                        @endforeach
+                    </div>
+                    <div class="bp-wizard-mobile">
+                        <div>
+                            <span class="bp-wizard-mobile__count" id="wizard-mobile-count">مرحله ۱ از ۵</span>
+                            <strong id="wizard-mobile-title">معرفی پروژه</strong>
+                        </div>
+                        <span class="bp-wizard-mobile__percent" id="wizard-mobile-percent">۲۰٪</span>
+                    </div>
+                    <div class="bp-wizard-progress" role="progressbar" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1">
+                        <span id="wizard-progress-bar" style="width: 20%"></span>
+                    </div>
+                </div>
+
                 <!-- Basic Info -->
-                <div class="bp-fcard mb-4">
+                <div class="bp-fcard mb-4 is-active" data-wizard-step="1">
                     <div class="bp-fh">
                         <div class="bp-fh-icon"><i class="ri-file-text-line"></i></div>
                         <h5>اطلاعات پایه</h5>
@@ -46,7 +80,7 @@
                 </div>
 
                 <!-- Work Type -->
-                <div class="bp-fcard mb-4">
+                <div class="bp-fcard mb-4" data-wizard-step="2" hidden>
                     <div class="bp-fh">
                         <div class="bp-fh-icon"><i class="ri-map-pin-line"></i></div>
                         <h5>نوع اجرای پروژه <span class="text-danger">*</span></h5>
@@ -100,11 +134,11 @@
                     </div>
                 </div>
 
-                <!-- Domain & Processes -->
-                <div class="bp-fcard mb-4">
+                <!-- Domains -->
+                <div class="bp-fcard mb-4" data-wizard-step="2" hidden>
                     <div class="bp-fh">
                         <div class="bp-fh-icon"><i class="ri-stack-line"></i></div>
-                        <h5>حوزه‌های تخصصی و پردازش‌ها</h5>
+                        <h5>حوزه‌های تخصصی</h5>
                     </div>
                     <div class="bp-fb">
                         <div class="mb-3">
@@ -132,6 +166,16 @@
                             </div>
                             <div class="invalid-feedback d-block" id="domains-error"><span></span></div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Processes -->
+                <div class="bp-fcard mb-4" data-wizard-step="3" hidden>
+                    <div class="bp-fh">
+                        <div class="bp-fh-icon"><i class="ri-flow-chart"></i></div>
+                        <h5>پردازش‌ها و سطح تخصص</h5>
+                    </div>
+                    <div class="bp-fb">
                         <div class="mb-0">
                             <div id="processes-container">
                                 <label for="processes" class="form-label d-flex align-items-center justify-content-between">
@@ -160,7 +204,7 @@
                 </div>
 
                 <!-- Skills (Optional) -->
-                <div class="bp-fcard mb-4">
+                <div class="bp-fcard mb-4" data-wizard-step="4" hidden>
                     <div class="bp-fh">
                         <div class="bp-fh-icon"><i class="ri-tools-line"></i></div>
                         <h5>مهارت‌های میدانی (اختیاری)</h5>
@@ -195,7 +239,7 @@
                 </div>
 
                 <!-- Timeline & Budget -->
-                <div class="bp-fcard mb-4">
+                <div class="bp-fcard mb-4" data-wizard-step="4" hidden>
                     <div class="bp-fh">
                         <div class="bp-fh-icon"><i class="ri-time-line"></i></div>
                         <h5>زمان‌بندی و بودجه</h5>
@@ -227,7 +271,7 @@
                 </div>
 
                 <!-- File Upload -->
-                <div class="bp-fcard mb-4">
+                <div class="bp-fcard mb-4" data-wizard-step="5" hidden>
                     <div class="bp-fh">
                         <div class="bp-fh-icon"><i class="ri-attachment-line"></i></div>
                         <h5>فایل‌های پیوست (اختیاری)</h5>
@@ -242,13 +286,37 @@
                     </div>
                 </div>
 
-                <div class="bp-form-foot ep-form-actions">
+                <div class="bp-fcard mb-4" data-wizard-step="5" hidden>
+                    <div class="bp-fh">
+                        <div class="bp-fh-icon"><i class="ri-eye-line"></i></div>
+                        <h5>بازبینی نهایی پروژه</h5>
+                    </div>
+                    <div class="bp-fb">
+                        <div class="bp-preview-placeholder">
+                            <div class="bp-preview-placeholder__icon"><i class="ri-file-list-3-line"></i></div>
+                            <div>
+                                <h6>خلاصه پروژه در این بخش نمایش داده خواهد شد</h6>
+                                <p>در Sprint بعدی، اطلاعات مراحل قبل برای بازبینی نهایی به‌صورت کارت‌های خلاصه در این قسمت نمایش داده می‌شوند.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-form-foot ep-form-actions" data-wizard-actions>
                     <span class="bp-form-note"><i class="ri-shield-check-line"></i>اطلاعات پروژه شما محفوظ و امن نگه‌داری می‌شود.</span>
-                    <div class="d-flex gap-2">
-                        <a href="{{ route('user.projects.index') }}" class="btn btn-light">انصراف</a>
-                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <div class="d-flex gap-2 bp-wizard-actions">
+                        <a href="{{ route('user.projects.index') }}" class="btn btn-light" id="wizardCancelBtn">انصراف</a>
+                        <button type="button" class="btn btn-outline-primary d-none" id="wizardBackBtn">
+                            <i class="ri-arrow-right-line me-1"></i>
+                            مرحله قبل
+                        </button>
+                        <button type="button" class="btn btn-primary" id="wizardNextBtn">
+                            مرحله بعد
+                            <i class="ri-arrow-left-line ms-1"></i>
+                        </button>
+                        <button type="submit" class="btn btn-primary d-none" id="submitBtn">
                             <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                            ثبت پروژه
+                            ثبت نهایی پروژه
                         </button>
                     </div>
                 </div>
@@ -291,10 +359,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const descriptionInput   = document.getElementById('description');
     const descriptionCounter = document.getElementById('description-counter');
     const processesCounterEl = document.getElementById('processes-counter');
+    const wizardPanels        = document.querySelectorAll('[data-wizard-step]');
+    const wizardStepButtons   = document.querySelectorAll('[data-wizard-go]');
+    const wizardBackBtn       = document.getElementById('wizardBackBtn');
+    const wizardNextBtn       = document.getElementById('wizardNextBtn');
+    const wizardCancelBtn     = document.getElementById('wizardCancelBtn');
+    const wizardProgress      = document.querySelector('.bp-wizard-progress');
+    const wizardProgressBar   = document.getElementById('wizard-progress-bar');
+    const wizardMobileCount   = document.getElementById('wizard-mobile-count');
+    const wizardMobileTitle   = document.getElementById('wizard-mobile-title');
+    const wizardMobilePercent = document.getElementById('wizard-mobile-percent');
 
     let allProcessesMap        = new Map();
     let selectedProcessesState = {};
     let selectedSkillsState    = {};
+    let currentWizardStep      = 1;
+    let highestWizardStep      = 1;
     const SKILL_LEVELS = ['مبتدی', 'متوسط', 'حرفه ای'];
 
     function toPersianDigits(n) {
@@ -306,6 +386,136 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!el) return;
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+    const wizardTitles = {
+        1: 'معرفی پروژه',
+        2: 'نوع همکاری و حوزه تخصصی',
+        3: 'پردازش‌ها و سطح تخصص',
+        4: 'مهارت‌ها، زمان و بودجه',
+        5: 'فایل‌ها و بازبینی',
+    };
+
+    function setGroupError(id, message) {
+        const errorEl = document.getElementById(id);
+        if (!errorEl) return;
+        const target = errorEl.querySelector('span') || errorEl;
+        target.textContent = message || '';
+        errorEl.style.display = message ? 'block' : 'none';
+    }
+
+    function validateNativeFields(step) {
+        const fields = form.querySelectorAll('[data-wizard-step="' + step + '"] input, [data-wizard-step="' + step + '"] textarea, [data-wizard-step="' + step + '"] select');
+        for (const field of fields) {
+            if (field.disabled || field.type === 'hidden' || field.id === 'skills' || field.id === 'processes') continue;
+            field.classList.remove('is-invalid');
+            if (!field.checkValidity()) {
+                field.classList.add('is-invalid');
+                field.reportValidity();
+                scrollToError(field);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function validateWizardStep(step) {
+        if (step === 1) return validateNativeFields(1);
+
+        if (step === 2) {
+            const selectedWorkType = form.querySelector('input[name="work_type"]:checked');
+            const selectedDomains = Array.from(domainCheckboxes).filter(function (cb) { return cb.checked; });
+            setGroupError('work-type-error', selectedWorkType ? '' : 'نوع همکاری پروژه را انتخاب کنید.');
+            setGroupError('domains-error', selectedDomains.length >= 1 && selectedDomains.length <= 3 ? '' : (selectedDomains.length > 3 ? 'حداکثر سه حوزه تخصصی می‌توانید انتخاب کنید.' : 'حداقل یک حوزه تخصصی انتخاب کنید.'));
+            if (!selectedWorkType) { scrollToError(document.querySelector('.bp-wt-grid')); return false; }
+            if (selectedDomains.length < 1 || selectedDomains.length > 3) { scrollToError(document.getElementById('domains-list')); return false; }
+            return true;
+        }
+
+        if (step === 3) {
+            const cards = Array.from(processesCards.querySelectorAll('.process-card'));
+            if (cards.length < 1 || cards.length > 3) {
+                setGroupError('processes-error', cards.length > 3 ? 'حداکثر سه پردازش می‌توانید انتخاب کنید.' : 'حداقل یک پردازش مورد نیاز پروژه را انتخاب کنید.');
+                scrollToError(processesContainer);
+                return false;
+            }
+            const cardWithoutLevel = cards.find(function (card) { return !card.querySelector('.level-checkbox:checked'); });
+            if (cardWithoutLevel) {
+                setGroupError('processes-error', 'برای هر پردازش حداقل یک سطح مورد نیاز انتخاب کنید.');
+                scrollToError(cardWithoutLevel);
+                return false;
+            }
+            setGroupError('processes-error', '');
+            return true;
+        }
+
+        if (step === 4) {
+            const invalidSkill = Array.from(skillsCards.querySelectorAll('.skill-card')).find(function (card) {
+                const level = card.querySelector('.skill-level');
+                const years = card.querySelector('.skill-years');
+                const yearsValue = Number(years.value);
+                return !level.value || years.value === '' || !Number.isInteger(yearsValue) || yearsValue < 0 || yearsValue > 50;
+            });
+            if (invalidSkill) {
+                setGroupError('skills-error', 'سطح و سابقه مورد نیاز هر مهارت را کامل کنید. سابقه باید بین ۰ تا ۵۰ سال باشد.');
+                scrollToError(invalidSkill);
+                return false;
+            }
+            setGroupError('skills-error', '');
+            return validateNativeFields(4);
+        }
+
+        return true;
+    }
+
+    function showWizardStep(step, shouldScroll) {
+        currentWizardStep = Math.max(1, Math.min(5, step));
+        wizardPanels.forEach(function (panel) {
+            const active = Number(panel.dataset.wizardStep) === currentWizardStep;
+            panel.hidden = !active;
+            panel.classList.toggle('is-active', active);
+        });
+        wizardStepButtons.forEach(function (button) {
+            const buttonStep = Number(button.dataset.wizardGo);
+            button.disabled = buttonStep > highestWizardStep;
+            button.classList.toggle('is-active', buttonStep === currentWizardStep);
+            button.classList.toggle('is-complete', buttonStep < currentWizardStep || (buttonStep < highestWizardStep && buttonStep !== currentWizardStep));
+            button.setAttribute('aria-current', buttonStep === currentWizardStep ? 'step' : 'false');
+        });
+
+        const percent = currentWizardStep * 20;
+        wizardProgressBar.style.width = percent + '%';
+        wizardProgress.setAttribute('aria-valuenow', currentWizardStep);
+        wizardMobileCount.textContent = 'مرحله ' + toPersianDigits(currentWizardStep) + ' از ' + toPersianDigits(5);
+        wizardMobileTitle.textContent = wizardTitles[currentWizardStep];
+        wizardMobilePercent.textContent = toPersianDigits(percent) + '٪';
+        wizardBackBtn.classList.toggle('d-none', currentWizardStep === 1);
+        wizardNextBtn.classList.toggle('d-none', currentWizardStep === 5);
+        submitBtn.classList.toggle('d-none', currentWizardStep !== 5);
+        wizardCancelBtn.classList.toggle('d-none', currentWizardStep !== 1);
+
+        if (shouldScroll !== false) {
+            const activePanel = form.querySelector('[data-wizard-step="' + currentWizardStep + '"]');
+            scrollToError(activePanel || form);
+        }
+    }
+
+    wizardNextBtn.addEventListener('click', function () {
+        if (!validateWizardStep(currentWizardStep)) return;
+        highestWizardStep = Math.max(highestWizardStep, currentWizardStep + 1);
+        showWizardStep(currentWizardStep + 1);
+    });
+
+    wizardBackBtn.addEventListener('click', function () {
+        showWizardStep(currentWizardStep - 1);
+    });
+
+    wizardStepButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            const targetStep = Number(button.dataset.wizardGo);
+            if (targetStep <= highestWizardStep) showWizardStep(targetStep);
+        });
+    });
+
+    showWizardStep(1, false);
 
     function updateProcessesCounter() {
         if (!processesCounterEl) return;
@@ -835,6 +1045,9 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <style>
+/* ── Five-step wizard ─────────────────────────────────────────────── */
+.bp-wizard{margin-bottom:1.5rem;padding:1.25rem 1.4rem;background:#fff;border:1px solid #e5eaf1;border-radius:14px;box-shadow:0 4px 18px rgba(31,56,88,.05)}
+.bp-wizard-desktop{display:flex;direction:rtl;align-items:flex-start;justify-content:space-between}.bp-wizard-step{position:relative;display:flex;flex:1;flex-direction:column;align-items:center;gap:.55rem;padding:0 .3rem;color:#8b98a8;border:0;background:transparent;font:inherit}.bp-wizard-step:not(:last-child)::after{content:'';position:absolute;z-index:0;top:18px;right:calc(50% + 22px);width:calc(100% - 44px);height:2px;background:#e0e6ee}.bp-wizard-step__marker{position:relative;z-index:1;display:grid;width:36px;height:36px;place-items:center;border:2px solid #dce3eb;border-radius:50%;background:#fff;font-weight:800;transition:.2s ease}.bp-wizard-step__check{display:none;font-size:1.2rem}.bp-wizard-step__label{max-width:145px;font-size:.78rem;font-weight:700;text-align:center;line-height:1.55}.bp-wizard-step.is-active{color:var(--vz-primary,#405189)}.bp-wizard-step.is-active .bp-wizard-step__marker{color:#fff;border-color:var(--vz-primary,#405189);background:var(--vz-primary,#405189);box-shadow:0 0 0 5px rgba(64,81,137,.1)}.bp-wizard-step.is-complete{color:#099885;cursor:pointer}.bp-wizard-step.is-complete .bp-wizard-step__marker{color:#fff;border-color:#0ab39c;background:#0ab39c}.bp-wizard-step.is-complete .bp-wizard-step__number{display:none}.bp-wizard-step.is-complete .bp-wizard-step__check{display:inline-block}.bp-wizard-step:disabled{cursor:default}.bp-wizard-progress{height:5px;margin-top:1.1rem;overflow:hidden;background:#edf1f6;border-radius:999px}.bp-wizard-progress span{display:block;height:100%;background:linear-gradient(90deg,#0ab39c,var(--vz-primary,#405189));border-radius:inherit;transition:width .22s ease}.bp-wizard-mobile{display:none;align-items:center;justify-content:space-between}.bp-wizard-mobile>div{display:flex;flex-direction:column;gap:.2rem}.bp-wizard-mobile__count,.bp-wizard-mobile__percent{color:#64748b;font-size:.78rem}[data-wizard-step][hidden]{display:none!important}[data-wizard-step].is-active{animation:wizardFadeIn .2s ease}.bp-preview-placeholder{min-height:160px;display:grid;place-items:center;padding:2rem;color:#64748b;text-align:center;border:1px dashed #cbd5e1;border-radius:12px;background:#f8fafc}@keyframes wizardFadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){[data-wizard-step].is-active{animation:none}.bp-wizard-progress span{transition:none}}@media(max-width:767.98px){.bp-wizard{padding:1rem}.bp-wizard-desktop{display:none}.bp-wizard-mobile{display:flex}.ep-form-actions{position:sticky;z-index:20;bottom:0;margin-inline:-.25rem;padding:.85rem;background:rgba(255,255,255,.96);border-top:1px solid #e5eaf1;backdrop-filter:blur(8px)}.ep-form-actions .bp-form-note{display:none}.bp-wizard-actions{width:100%}.bp-wizard-actions .btn{min-height:44px}#wizardNextBtn,#submitBtn{flex:1}}
 /* ── Form head ────────────────────────────────────────────────────────── */
 .bp-form-head h4 { font-weight: 800; }
 

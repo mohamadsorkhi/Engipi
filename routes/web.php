@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\ProfileSelectController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\SkillSelectController;
+use App\Http\Controllers\Specialist\SkillSuggestionController;
 use App\Http\Controllers\Employer\GuestProjectController;
 use App\Http\Controllers\Employer\ProjectController as EmployerProjectController;
 use App\Http\Controllers\PublicProjectController;
@@ -37,6 +38,9 @@ Route::middleware(['auth', 'active_role:specialist'])->group(function () {
         '/save-user-skills',
         [SkillSelectController::class, 'saveSkills']
     )->name('skill.save');
+
+    Route::post('/skill-suggestions', [SkillSuggestionController::class, 'store'])
+        ->name('skill-suggestions.store');
 
 });
 

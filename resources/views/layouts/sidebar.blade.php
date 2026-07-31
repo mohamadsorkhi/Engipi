@@ -102,6 +102,16 @@
 
                         <li class="nav-item">
                             <a
+                                class="nav-link menu-link {{ request()->routeIs('admin.skill-suggestions.*') ? 'active' : '' }}"
+                                href="{{ route('admin.skill-suggestions.index') }}"
+                            >
+                                <i class="ri-lightbulb-flash-line"></i>
+                                <span>پیشنهاد مهارت‌ها</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a
                                 class="nav-link menu-link {{ request()->routeIs('admin.domains.*') ? 'active' : '' }}"
                                 href="{{ route('admin.domains.index') }}"
                             >

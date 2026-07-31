@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ProcessController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\Admin\SkillDomainController;
+use App\Http\Controllers\Admin\SkillSuggestionController;
 use App\Http\Controllers\Admin\SubdomainController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserProfileController;
@@ -30,6 +31,11 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 
 // Skill Management
 Route::resource('skills', SkillController::class)->except(['show']);
+
+// Skill Suggestions
+Route::get('/skill-suggestions', [SkillSuggestionController::class, 'index'])->name('skill-suggestions.index');
+Route::post('/skill-suggestions/{skillSuggestion}/approve', [SkillSuggestionController::class, 'approve'])->name('skill-suggestions.approve');
+Route::post('/skill-suggestions/{skillSuggestion}/reject', [SkillSuggestionController::class, 'reject'])->name('skill-suggestions.reject');
 
 // Project Management
 Route::resource('projects', ProjectController::class)->only(['index', 'show', 'destroy']);
