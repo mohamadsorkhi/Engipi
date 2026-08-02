@@ -10,13 +10,7 @@ class SubdomainSeeder extends Seeder
 {
     public function run(): void
     {
-        // Re-truncate subdomains & skills only (skill_domains must already exist)
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        DB::table('skills')->truncate();
-        DB::table('subdomains')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
-
-        // domain name => [subdomains]
+// domain name => [subdomains]
         $data = [
             'مهندسی برق' => [
                 'قدرت',
@@ -130,40 +124,21 @@ class SubdomainSeeder extends Seeder
             ],
         ];
 
-        // Build domain name → id lookup
-        $domainMap = DB::table('skill_domains')->pluck('id', 'name')->toArray();
-
-        $now     = now();
-        $count   = 0;
-        $missing = [];
-
-        foreach ($data as $domainName => $subdomains) {
-            if (! isset($domainMap[$domainName])) {
-                $missing[] = $domainName;
-                continue;
+        [$created, $existing] = DB::transaction(function () use ($data): array {
+            $domainMap = DB::table('skill_domains')->pluck('id', 'name')->all();
+            $missing = array_values(array_diff(array_keys($data), array_keys($domainMap)));
+            if ($missing !== []) { throw new \RuntimeException('SubdomainSeeder cannot continue; parent domains not found: '.implode(', ', $missing)); }
+            $created = 0; $existing = 0;
+            foreach ($data as $domainName => $names) {
+                foreach (array_unique($names) as $name) {
+                    $query = DB::table('subdomains')->where('skill_domain_id', $domainMap[$domainName])->where('name', $name);
+                    if ($query->exists()) { $existing++; continue; }
+                    DB::table('subdomains')->insert(['id'=>(string) Str::uuid(),'name'=>$name,'skill_domain_id'=>$domainMap[$domainName],'created_at'=>now(),'updated_at'=>now()]);
+                    $created++;
+                }
             }
-
-            $domainId = $domainMap[$domainName];
-            $rows     = [];
-
-            foreach ($subdomains as $sub) {
-                $rows[] = [
-                    'id'              => (string) Str::uuid(),
-                    'name'            => $sub,
-                    'skill_domain_id' => $domainId,
-                    'created_at'      => $now,
-                    'updated_at'      => $now,
-                ];
-                $count++;
-            }
-
-            DB::table('subdomains')->insert($rows);
-        }
-
-        $this->command->info("✓ subdomains : {$count} records");
-
-        foreach ($missing as $m) {
-            $this->command->warn("  Domain not found: {$m}");
-        }
+            return [$created, $existing];
+        });
+        $this->command?->info("Subdomains seeded: {$created} created, {$existing} existing");
     }
 }

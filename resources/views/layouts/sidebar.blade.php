@@ -1,315 +1,37 @@
-<!-- ========== App Menu ========== -->
-<div class="app-menu navbar-menu">
-
-    <!-- LOGO -->
-    <div class="navbar-brand-box">
-
-        <a href="{{ route('root') }}" class="logo logo-dark text-decoration-none">
-            <span class="logo-sm">
-                <span style="font-size:1.1rem;font-weight:900;color:#1F6FEB;font-family:'Vazirmatn',sans-serif;">E</span>
-            </span>
-            <span class="logo-lg">
-                <span style="font-size:1.3rem;font-weight:900;font-family:'Vazirmatn',sans-serif;color:white;letter-spacing:-0.5px;">
-                    <span style="color:#1F6FEB;">Eng</span>iPi
-                </span>
-            </span>
-        </a>
-
-        <a href="{{ route('root') }}" class="logo logo-light text-decoration-none">
-            <span class="logo-sm">
-                <span style="font-size:1.1rem;font-weight:900;color:#1F6FEB;font-family:'Vazirmatn',sans-serif;">E</span>
-            </span>
-            <span class="logo-lg">
-                <span style="font-size:1.3rem;font-weight:900;font-family:'Vazirmatn',sans-serif;color:white;letter-spacing:-0.5px;">
-                    <span style="color:#1F6FEB;">Eng</span>iPi
-                </span>
-            </span>
-        </a>
-
-        <button
-            type="button"
-            class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
-            id="vertical-hover"
-        >
-            <i class="ri-record-circle-line"></i>
-        </button>
-
-    </div>
-
-
-
-
-
-    <div id="scrollbar">
-
-        <div class="container-fluid">
-
-            <div id="two-column-menu"></div>
-
-            <ul class="navbar-nav" id="navbar-nav">
-
-
-
-
-                @auth
-
-                    @if (Auth::user()->is_admin)
-
-                        {{-- =================== ADMIN MENU =================== --}}
-                        <li class="menu-title">
-                            <span>منوی ادمین</span>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link menu-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-                                href="{{ route('admin.dashboard') }}"
-                            >
-                                <i class="ri-dashboard-2-line"></i>
-                                <span>داشبورد</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link menu-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
-                                href="{{ route('admin.users.index') }}"
-                            >
-                                <i class="ri-group-line"></i>
-                                <span>مدیریت کاربران</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link menu-link {{ request()->routeIs('admin.projects.*') ? 'active' : '' }}"
-                                href="{{ route('admin.projects.index') }}"
-                            >
-                                <i class="ri-briefcase-4-line"></i>
-                                <span>مدیریت پروژه‌ها</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link menu-link {{ request()->routeIs('admin.skills.*') ? 'active' : '' }}"
-                                href="{{ route('admin.skills.index') }}"
-                            >
-                                <i class="ri-tools-line"></i>
-                                <span>مدیریت مهارت‌ها</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link menu-link {{ request()->routeIs('admin.skill-suggestions.*') ? 'active' : '' }}"
-                                href="{{ route('admin.skill-suggestions.index') }}"
-                            >
-                                <i class="ri-lightbulb-flash-line"></i>
-                                <span>پیشنهاد مهارت‌ها</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link menu-link {{ request()->routeIs('admin.domains.*') ? 'active' : '' }}"
-                                href="{{ route('admin.domains.index') }}"
-                            >
-                                <i class="ri-stack-line"></i>
-                                <span>حوزه‌های تخصصی</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a
-                                class="nav-link menu-link {{ request()->routeIs('admin.subdomains.*') ? 'active' : '' }}"
-                                href="{{ route('admin.subdomains.index') }}"
-                            >
-                                <i class="ri-node-tree"></i>
-                                <span>زیرحوزه‌ها</span>
-                            </a>
-                        </li>
-
-
-
-
-
-                    @else
-
-                        {{-- =================== USER MENU =================== --}}
-
-                        @php
-                            $sidebarProfiles      = Auth::user()->profiles;
-                            $activeRole           = session('active_role');
-                            $hasEmployerProfile   = $sidebarProfiles->contains('type', 'employer');
-                            $hasSpecialistProfile = $sidebarProfiles->contains('type', 'specialist');
-                            $showEmployer         = $hasEmployerProfile   && $activeRole === 'employer';
-                            $showSpecialist       = $hasSpecialistProfile && $activeRole === 'specialist';
-                            $roleLabel            = $activeRole === 'employer' ? 'کارفرما'
-                                                  : ($activeRole === 'specialist' ? 'متخصص' : null);
-                        @endphp
-
-                        {{-- ── Role badge + switch link ── --}}
-                        <li class="menu-title d-flex align-items-center justify-content-between pe-2">
-                            <span>
-                                @if($roleLabel)
-                                    <span class="badge bg-{{ $activeRole === 'employer' ? 'primary' : 'success' }}-subtle
-                                                          text-{{ $activeRole === 'employer' ? 'primary' : 'success' }}
-                                                          fs-11 fw-semibold">
-                                        {{ $roleLabel }}
-                                    </span>
-                                @else
-                                    منوی کاربر
-                                @endif
-                            </span>
-                            @if($hasEmployerProfile && $hasSpecialistProfile)
-                                <a href="{{ route('profile.select') }}"
-                                   class="text-muted fs-11"
-                                   title="تغییر نقش">
-                                    <i class="ri-refresh-line"></i>
-                                </a>
-                            @endif
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link menu-link {{ request()->routeIs('root') ? 'active' : '' }}"
-                               href="{{ route('root') }}">
-                                <i class="ri-dashboard-2-line"></i>
-                                <span>داشبورد</span>
-                            </a>
-                        </li>
-
-                        @if($hasEmployerProfile && $hasSpecialistProfile)
-                        <li class="nav-item">
-                            <a class="nav-link menu-link {{ request()->routeIs('profile.select') ? 'active' : '' }}"
-                               href="{{ route('profile.select') }}">
-                                <i class="ri-swap-line"></i>
-                                <span>تغییر نقش</span>
-                            </a>
-                        </li>
-                        @endif
-
-                        <li class="nav-item">
-                            <a class="nav-link menu-link {{ request()->routeIs('user.messages.*') ? 'active' : '' }}"
-                               href="{{ route('user.messages.index') }}">
-                                <i class="ri-message-3-line"></i>
-                                <span>پیام‌ها</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link menu-link {{ request()->routeIs('user.tickets.*') ? 'active' : '' }}"
-                               href="{{ route('user.tickets.index') }}">
-                                <i class="ri-coupon-3-line"></i>
-                                <span>تیکت‌ها</span>
-                            </a>
-                        </li>
-
-                        @if($showEmployer)
-
-                            <li class="menu-title"><span>کارفرما</span></li>
-
-                            <li class="nav-item">
-                                <a class="nav-link menu-link {{ request()->routeIs('user.projects.*') ? 'active' : '' }}"
-                                   href="{{ route('user.projects.index') }}">
-                                    <i class="ri-briefcase-line"></i>
-                                    <span>پروژه‌های من</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link menu-link {{ request()->routeIs('user.projects.create') ? 'active' : '' }}"
-                                   href="{{ route('user.projects.create') }}">
-                                    <i class="ri-add-circle-line"></i>
-                                    <span>ثبت پروژه جدید</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link menu-link {{ request()->routeIs('user.requests.received') ? 'active' : '' }}"
-                                   href="{{ route('user.requests.received') }}">
-                                    <i class="ri-inbox-archive-line"></i>
-                                    <span>درخواست‌های دریافتی</span>
-                                </a>
-                            </li>
-
-                        @endif
-
-                        @if($showSpecialist)
-
-                            <li class="menu-title"><span>متخصص</span></li>
-
-                            <li class="nav-item">
-                                <a class="nav-link menu-link {{ request()->routeIs('skill.select') ? 'active' : '' }}"
-                                   href="{{ route('skill.select') }}">
-                                    <i class="ri-equalizer-line"></i>
-                                    <span>انتخاب مهارت</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link menu-link {{ request()->routeIs('user.skills.*') ? 'active' : '' }}"
-                                   href="{{ route('user.skills.index') }}">
-                                    <i class="ri-star-line"></i>
-                                    <span>مهارت‌های من</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link menu-link {{ request()->routeIs('user.requests.sent') ? 'active' : '' }}"
-                                   href="{{ route('user.requests.sent') }}">
-                                    <i class="ri-send-plane-line"></i>
-                                    <span>درخواست‌های ارسالی</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link menu-link {{ request()->routeIs('user.matched-projects.*') ? 'active' : '' }}"
-                                   href="{{ route('user.matched-projects.index') }}">
-                                    <i class="ri-links-line"></i>
-                                    <span>پروژه‌های متناسب</span>
-                                </a>
-                            </li>
-
-                        @endif
-
-                    @endif
-
-                @endauth
-
-
-
-
-                @guest
-
-                    <li class="menu-title">
-                        <span>منوی مهمان</span>
-                    </li>
-
-                    <li class="nav-item">
-                        <a
-                            class="nav-link menu-link"
-                            href="{{ route('login') }}"
-                        >
-                            <i class="ri-login-box-line"></i>
-                            <span>ورود</span>
-                        </a>
-                    </li>
-
-                @endguest
-
-
-
-            </ul>
-
-        </div>
-
-    </div>
-
-    <div class="sidebar-background"></div>
-
-</div>
-
-<!-- Left Sidebar End -->
-
-<div class="vertical-overlay"></div>
+@auth
+@php
+$user=Auth::user();$isAdmin=(bool)$user->is_admin;$profiles=$user->profiles;$activeRole=session('active_role');$hasEmployer=$profiles->contains('type','employer');$hasSpecialist=$profiles->contains('type','specialist');$roleLabel=$isAdmin?'مدیر سامانه':($activeRole==='employer'?'کارفرما':($activeRole==='specialist'?'متخصص':'کاربر'));$sections=[];
+if($isAdmin){$sections=[
+['label'=>'نمای کلی','items'=>[['route'=>'admin.dashboard','label'=>'داشبورد مدیریت','icon'=>'ri-layout-grid-line','active'=>'admin.dashboard']]],
+['label'=>'مدیریت','items'=>[['route'=>'admin.users.index','label'=>'کاربران','icon'=>'ri-group-line','active'=>'admin.users.*'],['route'=>'admin.profiles.index','label'=>'پروفایل‌ها','icon'=>'ri-id-card-line','active'=>'admin.profiles.*'],['route'=>'admin.projects.index','label'=>'پروژه‌ها','icon'=>'ri-briefcase-4-line','active'=>'admin.projects.*']]],
+['label'=>'داده‌های تخصصی','items'=>[['route'=>'admin.skills.index','label'=>'مهارت‌ها','icon'=>'ri-tools-line','active'=>'admin.skills.*'],['route'=>'admin.skill-suggestions.index','label'=>'پیشنهاد مهارت‌ها','icon'=>'ri-lightbulb-flash-line','active'=>'admin.skill-suggestions.*'],['route'=>'admin.domains.index','label'=>'حوزه‌های تخصصی','icon'=>'ri-stack-line','active'=>'admin.domains.*'],['route'=>'admin.subdomains.index','label'=>'زیرحوزه‌ها','icon'=>'ri-node-tree','active'=>'admin.subdomains.*'],['route'=>'admin.processes.index','label'=>'فرآیندها','icon'=>'ri-flow-chart','active'=>'admin.processes.*']]],
+['label'=>'سیستم و پشتیبانی','items'=>[['route'=>'admin.tickets.index','label'=>'تیکت‌ها','icon'=>'ri-customer-service-2-line','active'=>'admin.tickets.*'],['route'=>'admin.ticket-departments.index','label'=>'واحدهای پشتیبانی','icon'=>'ri-building-2-line','active'=>'admin.ticket-departments.*']]]];
+}else{
+$sections[]=['label'=>'اصلی','items'=>[['route'=>'root','label'=>'داشبورد','icon'=>'ri-layout-grid-line','active'=>'root|user.dashboard|specialist.dashboard|employer.dashboard']]];
+if($hasEmployer&&$activeRole==='employer')$sections[]=['label'=>'پروژه‌ها','items'=>[['route'=>'user.projects.index','label'=>'پروژه‌های من','icon'=>'ri-briefcase-line','active'=>'user.projects.index|user.projects.show|user.projects.edit'],['route'=>'user.projects.create','label'=>'ثبت پروژه جدید','icon'=>'ri-add-circle-line','active'=>'user.projects.create'],['route'=>'user.requests.received','label'=>'درخواست‌های دریافتی','icon'=>'ri-inbox-archive-line','active'=>'user.requests.received']]];
+if($hasSpecialist&&$activeRole==='specialist'){$sections[]=['label'=>'پروژه‌ها','items'=>[['route'=>'user.matched-projects.index','label'=>'پروژه‌های متناسب','icon'=>'ri-links-line','active'=>'user.matched-projects.*'],['route'=>'user.requests.sent','label'=>'درخواست‌های ارسالی','icon'=>'ri-send-plane-line','active'=>'user.requests.sent']]];$sections[]=['label'=>'مهارت‌ها','items'=>[['route'=>'user.skills.index','label'=>'مهارت‌های من','icon'=>'ri-star-line','active'=>'user.skills.*'],['route'=>'skill.select','label'=>'انتخاب مهارت','icon'=>'ri-equalizer-line','active'=>'skill.select']]];}
+$sections[]=['label'=>'ارتباطات','items'=>[['route'=>'user.messages.index','label'=>'پیام‌ها','icon'=>'ri-message-3-line','active'=>'user.messages.*'],['route'=>'user.tickets.index','label'=>'تیکت‌ها','icon'=>'ri-customer-service-2-line','active'=>'user.tickets.*']]];
+if(Route::has('profile.select')){$accountLabel=$hasEmployer&&$hasSpecialist?'تغییر نقش و پروفایل':'پروفایل و نقش';$accountIcon=$hasEmployer&&$hasSpecialist?'ri-swap-2-line':'ri-user-settings-line';$sections[]=['label'=>'حساب کاربری','items'=>[['route'=>'profile.select','label'=>$accountLabel,'icon'=>$accountIcon,'active'=>'profile.select']]];}}
+$profileHref=!$isAdmin&&Route::has('profile.select')?route('profile.select'):null;
+@endphp
+<script>try{if(matchMedia('(min-width:992px)').matches&&localStorage.getItem('engipi.sidebar.collapsed')==='1')document.documentElement.classList.add('engipi-shell-collapsed')}catch(e){}</script>
+<aside class="engipi-shell-sidebar {{ $isAdmin?'is-admin':'' }}" id="engipiSidebar" aria-label="منوی اصلی" aria-hidden="false">
+<div class="engipi-sidebar-brand"><a href="{{ route('root') }}" class="engipi-brand" aria-label="EngiPi"><span class="engipi-brand-mark">E</span><span class="engipi-brand-name">EngiPi<small>{{ $isAdmin?'ADMIN CONSOLE':'ENGINEERING' }}</small></span></a><button type="button" class="engipi-icon-button engipi-collapse-button" id="engipiSidebarCollapse" aria-label="جمع کردن منو" aria-expanded="true"><i class="ri-contract-right-line"></i></button><button type="button" class="engipi-icon-button engipi-drawer-close" id="engipiDrawerClose" aria-label="بستن منو"><i class="ri-close-line"></i></button></div>
+<x-sidebar.profile :user="$user" :role-label="$roleLabel" :href="$profileHref" :admin="$isAdmin"/>
+<nav class="engipi-sidebar-nav" aria-label="ناوبری حساب">
+@foreach($sections as $section)
+@php $validItems=collect($section['items'])->filter(fn($item)=>Route::has($item['route'])); @endphp
+@if($validItems->isNotEmpty())
+<x-sidebar.section :label="$section['label']">
+@foreach($validItems as $item)
+@php $active=collect(explode('|',$item['active']))->contains(fn($pattern)=>request()->routeIs($pattern)); @endphp
+<x-sidebar.item :route="$item['route']" :label="$item['label']" :icon="$item['icon']" :active="$active"/>
+@endforeach
+</x-sidebar.section>
+@endif
+@endforeach
+</nav>
+<div class="engipi-sidebar-footer"><form action="{{ route('logout') }}" method="POST">@csrf<button type="submit" class="engipi-nav-item engipi-logout" data-tooltip="خروج امن"><span class="engipi-nav-icon" aria-hidden="true"><i class="ri-logout-box-r-line"></i></span><span class="engipi-nav-label">خروج امن</span></button></form></div>
+</aside>
+<div class="engipi-drawer-overlay" id="engipiDrawerOverlay" aria-hidden="true"></div><div class="engipi-sidebar-tooltip" id="engipiSidebarTooltip" role="tooltip" aria-hidden="true"></div>
+@endauth

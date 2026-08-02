@@ -18,6 +18,7 @@ class Skill extends Model
         'id',
         'name',
         'skill_type',
+        'process_id',
         'subdomain_id',
     ];
 

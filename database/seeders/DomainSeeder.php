@@ -6,6 +6,10 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+/**
+ * @deprecated
+ * Legacy seeder. Do not call from DatabaseSeeder.
+ */
 class DomainSeeder extends Seeder
 {
     public function run(): void

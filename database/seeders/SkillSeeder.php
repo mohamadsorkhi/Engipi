@@ -10,14 +10,6 @@ class SkillSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        DB::table('skill_subdomain')->truncate();
-        DB::table('skills')->truncate();
-        DB::table('processes')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
-
-        $now = now();
-
         // domain => subdomain => [tools]
         $data = [
 
@@ -379,92 +371,33 @@ class SkillSeeder extends Seeder
 
         ];
 
-        // Build lookups
-        $domainMap = DB::table('skill_domains')->pluck('id', 'name')->toArray();
-
-        $subdomainRows = DB::table('subdomains')->get(['id', 'name', 'skill_domain_id']);
-        $subLookup = [];
-        foreach ($subdomainRows as $row) {
-            $subLookup[$row->skill_domain_id . '|' . $row->name] = $row->id;
-        }
-
-        // 1. PROCESSES — one row per unique tool per domain
-        $processCount  = 0;
-        $processLookup = []; // "domain_id|tool" => process_id
-
-        foreach ($data as $domainName => $subdomains) {
-            if (! isset($domainMap[$domainName])) {
-                continue;
-            }
-            $domainId  = $domainMap[$domainName];
-            $toolsSeen = [];
-            $rows      = [];
-
-            foreach ($subdomains as $tools) {
-                foreach ($tools as $tool) {
-                    if (isset($toolsSeen[$tool])) {
-                        continue;
+        [$processCreated, $processExisting, $skillCreated, $skillExisting, $pivotCreated] = DB::transaction(function () use ($data): array {
+            $domains = DB::table('skill_domains')->pluck('id', 'name')->all();
+            $missingDomains = array_values(array_diff(array_keys($data), array_keys($domains)));
+            if ($missingDomains !== []) { throw new \RuntimeException('SkillSeeder cannot continue; parent domains not found: '.implode(', ', $missingDomains)); }
+            $subdomains = [];
+            foreach (DB::table('subdomains')->get(['id','name','skill_domain_id']) as $row) { $subdomains[$row->skill_domain_id.'|'.$row->name] = $row->id; }
+            $missingSubdomains = [];
+            foreach ($data as $domainName => $groups) { foreach (array_keys($groups) as $subdomainName) { if (!isset($subdomains[$domains[$domainName].'|'.$subdomainName])) { $missingSubdomains[]=$domainName.' > '.$subdomainName; } } }
+            if ($missingSubdomains !== []) { throw new \RuntimeException('SkillSeeder cannot continue; parent subdomains not found: '.implode(', ', $missingSubdomains)); }
+            $processCreated=0; $processExisting=0; $skillCreated=0; $skillExisting=0; $pivotCreated=0;
+            foreach ($data as $domainName => $groups) {
+                $domainId=$domains[$domainName];
+                foreach ($groups as $subdomainName => $names) {
+                    $subdomainId=$subdomains[$domainId.'|'.$subdomainName];
+                    foreach (array_unique($names) as $name) {
+                        $process=DB::table('processes')->where('skill_domain_id',$domainId)->where('name',$name)->first(['id']);
+                        if ($process) { $processId=$process->id; $processExisting++; } else { $processId=(string) Str::uuid(); DB::table('processes')->insert(['id'=>$processId,'skill_domain_id'=>$domainId,'name'=>$name,'created_at'=>now(),'updated_at'=>now()]); $processCreated++; }
+                        $skill=DB::table('skills')->where('skill_type','software')->where('subdomain_id',$subdomainId)->where('name',$name)->first(['id','process_id']);
+                        if ($skill) { $skillId=$skill->id; $skillExisting++; if ($skill->process_id !== $processId) { DB::table('skills')->where('id',$skillId)->update(['process_id'=>$processId,'updated_at'=>now()]); } }
+                        else { $skillId=(string) Str::uuid(); DB::table('skills')->insert(['id'=>$skillId,'name'=>$name,'skill_type'=>'software','subdomain_id'=>$subdomainId,'process_id'=>$processId,'created_at'=>now(),'updated_at'=>now()]); $skillCreated++; }
+                        $pivotCreated += DB::table('skill_subdomain')->insertOrIgnore(['skill_id'=>$skillId,'subdomain_id'=>$subdomainId,'created_at'=>now(),'updated_at'=>now()]);
                     }
-                    $toolsSeen[$tool] = true;
-                    $pid = (string) Str::uuid();
-                    $rows[] = [
-                        'id'              => $pid,
-                        'name'            => $tool,
-                        'skill_domain_id' => $domainId,
-                        'created_at'      => $now,
-                        'updated_at'      => $now,
-                    ];
-                    $processLookup["{$domainId}|{$tool}"] = $pid;
-                    $processCount++;
                 }
             }
-
-            if ($rows) {
-                DB::table('processes')->insert($rows);
-            }
-        }
-
-        // 2. SKILLS — one row per tool per subdomain, linked to process
-        $skillCount  = 0;
-        $missingSubs = [];
-
-        foreach ($data as $domainName => $subdomains) {
-            if (! isset($domainMap[$domainName])) {
-                $this->command->warn("  Domain not found: {$domainName}");
-                continue;
-            }
-            $domainId = $domainMap[$domainName];
-
-            foreach ($subdomains as $subName => $tools) {
-                $subKey = "{$domainId}|{$subName}";
-                $subId  = $subLookup[$subKey] ?? null;
-
-                if (! $subId) {
-                    $missingSubs[] = "{$domainName} > {$subName}";
-                    continue;
-                }
-
-                $rows = [];
-                foreach (array_unique($tools) as $tool) {
-                    $rows[] = [
-                        'id'           => (string) Str::uuid(),
-                        'name'         => $tool,
-                        'subdomain_id' => $subId,
-                        'process_id'   => $processLookup["{$domainId}|{$tool}"] ?? null,
-                        'created_at'   => $now,
-                        'updated_at'   => $now,
-                    ];
-                    $skillCount++;
-                }
-                DB::table('skills')->insert($rows);
-            }
-        }
-
-        $this->command->info("✓ processes : {$processCount} records");
-        $this->command->info("✓ skills    : {$skillCount} records");
-
-        foreach ($missingSubs as $s) {
-            $this->command->warn("  Subdomain not found: {$s}");
-        }
+            return [$processCreated,$processExisting,$skillCreated,$skillExisting,$pivotCreated];
+        });
+        $this->command?->info("Software processes seeded: {$processCreated} created, {$processExisting} existing");
+        $this->command?->info("Software skills seeded: {$skillCreated} created, {$skillExisting} existing, {$pivotCreated} pivots created");
     }
 }

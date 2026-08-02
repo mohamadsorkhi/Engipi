@@ -14,6 +14,8 @@ class SkillSuggestion extends Model
     public const STATUS_PENDING = 'pending';
     public const STATUS_APPROVED = 'approved';
     public const STATUS_REJECTED = 'rejected';
+    public const TYPE_PROCESSING = 'software';
+    public const TYPE_FIELD = 'field';
 
     public $incrementing = false;
 
@@ -22,6 +24,7 @@ class SkillSuggestion extends Model
     protected $fillable = [
         'user_id',
         'skill_name',
+        'skill_type',
         'normalized_name',
         'pending_name',
         'subdomain_id',
@@ -41,6 +44,11 @@ class SkillSuggestion extends Model
         $name = preg_replace('/\s+/u', ' ', trim($name)) ?? trim($name);
 
         return Str::lower($name);
+    }
+
+    public static function types(): array
+    {
+        return [self::TYPE_PROCESSING, self::TYPE_FIELD];
     }
 
     public function user()

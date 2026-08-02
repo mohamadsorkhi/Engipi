@@ -10,21 +10,6 @@ class SkillDomainSeeder extends Seeder
 {
     public function run(): void
     {
-        // Truncate reference tables AND all pivot tables that reference them.
-        // Re-seeding generates new UUIDs; stale pivot rows would cause silent mismatches.
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        DB::table('user_skills')->truncate();
-        DB::table('profile_processes')->truncate();
-        DB::table('user_profile_domains')->truncate();
-        DB::table('project_processes')->truncate();
-        DB::table('project_skills')->truncate();
-        DB::table('project_domains')->truncate();
-        DB::table('skills')->truncate();
-        DB::table('processes')->truncate();
-        DB::table('subdomains')->truncate();
-        DB::table('skill_domains')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
-
         $domains = [
             'مهندسی برق',
             'مهندسی مکانیک',
@@ -44,20 +29,16 @@ class SkillDomainSeeder extends Seeder
             'میان‌رشته‌ای',
         ];
 
-        $now  = now();
-        $rows = [];
-
-        foreach ($domains as $name) {
-            $rows[] = [
-                'id'         => (string) Str::uuid(),
-                'name'       => $name,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ];
-        }
-
-        DB::table('skill_domains')->insert($rows);
-
-        $this->command->info('✓ skill_domains : ' . count($rows) . ' records');
+        [$created, $existing] = DB::transaction(function () use ($domains): array {
+            $created = 0;
+            $existing = 0;
+            foreach ($domains as $name) {
+                if (DB::table('skill_domains')->where('name', $name)->exists()) { $existing++; continue; }
+                DB::table('skill_domains')->insert(['id'=>(string) Str::uuid(),'name'=>$name,'created_at'=>now(),'updated_at'=>now()]);
+                $created++;
+            }
+            return [$created, $existing];
+        });
+        $this->command?->info("Skill domains seeded: {$created} created, {$existing} existing");
     }
 }

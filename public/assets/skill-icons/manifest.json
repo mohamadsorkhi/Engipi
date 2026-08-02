@@ -1,0 +1,2442 @@
+[
+  {
+    "name": "3-matic",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "3D Scanning Tools",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "3D Slicer",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "3DEC",
+    "path": "/assets/skill-icons/fallback-geoscience.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "geoscience",
+    "matched": null
+  },
+  {
+    "name": "3DF Zephyr",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "3ds Max",
+    "path": "/assets/skill-icons/autodesk.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "cad",
+    "matched": "Autodesk 3ds Max"
+  },
+  {
+    "name": "ABAQUS",
+    "path": "/assets/skill-icons/abaqus.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "simulation",
+    "matched": "Abaqus/CAE"
+  },
+  {
+    "name": "Adams",
+    "path": "/assets/skill-icons/fallback-simulation.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "simulation",
+    "matched": null
+  },
+  {
+    "name": "ADS Keysight",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "AERMOD",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Agisoft Metashape",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "AIMSUN",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Airflow",
+    "path": "/assets/skill-icons/airflow.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "data",
+    "matched": "Apache Airflow"
+  },
+  {
+    "name": "Altium Designer",
+    "path": "/assets/skill-icons/altium.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "electronics",
+    "matched": "Altium Designer"
+  },
+  {
+    "name": "Ansible",
+    "path": "/assets/skill-icons/ansible.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Ansible"
+  },
+  {
+    "name": "ANSYS",
+    "path": "/assets/skill-icons/ansys.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "simulation",
+    "matched": "ANSYS Mechanical"
+  },
+  {
+    "name": "ANSYS CFD",
+    "path": "/assets/skill-icons/ansys.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "simulation",
+    "matched": "ANSYS Mechanical"
+  },
+  {
+    "name": "ANSYS CFX",
+    "path": "/assets/skill-icons/ansys.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "simulation",
+    "matched": "ANSYS Mechanical"
+  },
+  {
+    "name": "ANSYS Fluent",
+    "path": "/assets/skill-icons/ansys.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "simulation",
+    "matched": "ANSYS Mechanical"
+  },
+  {
+    "name": "ANSYS Mechanical",
+    "path": "/assets/skill-icons/ansys.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "simulation",
+    "matched": "ANSYS Mechanical"
+  },
+  {
+    "name": "AnyBody",
+    "path": "/assets/skill-icons/anybody.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "biomedical",
+    "matched": "AnyBody Modeling System"
+  },
+  {
+    "name": "AnyLogic",
+    "path": "/assets/skill-icons/fallback-simulation.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "simulation",
+    "matched": null
+  },
+  {
+    "name": "Apache Spark",
+    "path": "/assets/skill-icons/spark.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "data",
+    "matched": "Apache Spark"
+  },
+  {
+    "name": "ArcGIS",
+    "path": "/assets/skill-icons/fallback-gis.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "gis",
+    "matched": null
+  },
+  {
+    "name": "ArcGIS Pro",
+    "path": "/assets/skill-icons/fallback-gis.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "gis",
+    "matched": null
+  },
+  {
+    "name": "ArchiCAD",
+    "path": "/assets/skill-icons/archicad.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "architecture",
+    "matched": "ArchiCAD"
+  },
+  {
+    "name": "Arduino",
+    "path": "/assets/skill-icons/arduino.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "electronics",
+    "matched": "Arduino"
+  },
+  {
+    "name": "Arena",
+    "path": "/assets/skill-icons/fallback-simulation.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "simulation",
+    "matched": null
+  },
+  {
+    "name": "Aspen Plus",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Aspen Polymers",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "AutoCAD",
+    "path": "/assets/skill-icons/autocad.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "cad",
+    "matched": "AutoCAD Civil 3D"
+  },
+  {
+    "name": "AutoCAD Civil 3D",
+    "path": "/assets/skill-icons/autocad.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "cad",
+    "matched": "AutoCAD Civil 3D"
+  },
+  {
+    "name": "AutoCAD Electrical",
+    "path": "/assets/skill-icons/autocad.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "cad",
+    "matched": "AutoCAD Civil 3D"
+  },
+  {
+    "name": "AutoCAD Mechanical",
+    "path": "/assets/skill-icons/autocad.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "cad",
+    "matched": "AutoCAD Civil 3D"
+  },
+  {
+    "name": "AutoCAD P&ID",
+    "path": "/assets/skill-icons/autocad.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "cad",
+    "matched": "AutoCAD Civil 3D"
+  },
+  {
+    "name": "AutoCAD Plant 3D",
+    "path": "/assets/skill-icons/autocad.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "cad",
+    "matched": "AutoCAD Civil 3D"
+  },
+  {
+    "name": "Autodesk Inventor",
+    "path": "/assets/skill-icons/autodesk.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "cad",
+    "matched": "Autodesk 3ds Max"
+  },
+  {
+    "name": "Bernese GNSS Software",
+    "path": "/assets/skill-icons/fallback-gis.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "gis",
+    "matched": null
+  },
+  {
+    "name": "BIM 360",
+    "path": "/assets/skill-icons/autodesk.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "cad",
+    "matched": "Autodesk 3ds Max"
+  },
+  {
+    "name": "Bioconductor",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "BIOPAC",
+    "path": "/assets/skill-icons/biopac.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "biomedical",
+    "matched": "BIOPAC Student Lab"
+  },
+  {
+    "name": "BIOPAC Student Lab",
+    "path": "/assets/skill-icons/biopac.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "biomedical",
+    "matched": "BIOPAC Student Lab"
+  },
+  {
+    "name": "BLAST",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "BowTieXP",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "BrainVision Analyzer",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Burp Suite",
+    "path": "/assets/skill-icons/burpsuite.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "network",
+    "matched": "Burp Suite"
+  },
+  {
+    "name": "C++",
+    "path": "/assets/skill-icons/cplusplus.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "C++"
+  },
+  {
+    "name": "Cadence OrCAD",
+    "path": "/assets/skill-icons/fallback-electronics.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "electronics",
+    "matched": null
+  },
+  {
+    "name": "Cadence Virtuoso",
+    "path": "/assets/skill-icons/fallback-electronics.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "electronics",
+    "matched": null
+  },
+  {
+    "name": "Caesar II",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "CALPUFF",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Cantera",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "CATIA",
+    "path": "/assets/skill-icons/dassault-systemes.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "manufacturing",
+    "matched": "SOLIDWORKS Medical"
+  },
+  {
+    "name": "CATIA Manufacturing",
+    "path": "/assets/skill-icons/dassault-systemes.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "manufacturing",
+    "matched": "SOLIDWORKS Medical"
+  },
+  {
+    "name": "CEA (NASA)",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "CHEMCAD",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Cisco Packet Tracer",
+    "path": "/assets/skill-icons/cisco.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "network",
+    "matched": "Cisco Packet Tracer"
+  },
+  {
+    "name": "CityEngine",
+    "path": "/assets/skill-icons/architecture.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "architecture",
+    "matched": null
+  },
+  {
+    "name": "CloudCompare",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "CodeSys",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "CommunityViz",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "COMPASS",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "COMSOL",
+    "path": "/assets/skill-icons/comsol.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "simulation",
+    "matched": "COMSOL Multiphysics"
+  },
+  {
+    "name": "COMSOL Multiphysics",
+    "path": "/assets/skill-icons/comsol.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "simulation",
+    "matched": "COMSOL Multiphysics"
+  },
+  {
+    "name": "CPLEX",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "CST Studio",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "CUDA",
+    "path": "/assets/skill-icons/nvidia.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "programming",
+    "matched": "CUDA"
+  },
+  {
+    "name": "Cycle-Tempo",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Datamine",
+    "path": "/assets/skill-icons/fallback-geoscience.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "geoscience",
+    "matched": null
+  },
+  {
+    "name": "dbt",
+    "path": "/assets/skill-icons/fallback-data.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "data",
+    "matched": null
+  },
+  {
+    "name": "DICOM",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "DIgSILENT PowerFactory",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Django",
+    "path": "/assets/skill-icons/django.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Django"
+  },
+  {
+    "name": "DJI Terra",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Docker",
+    "path": "/assets/skill-icons/docker.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Docker"
+  },
+  {
+    "name": "DrillBench",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "dSPACE",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Eagle CAD",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Eclipse",
+    "path": "/assets/skill-icons/eclipse.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Eclipse"
+  },
+  {
+    "name": "EEGLAB",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "EES",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Enscape",
+    "path": "/assets/skill-icons/architecture.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "architecture",
+    "matched": null
+  },
+  {
+    "name": "ENVI",
+    "path": "/assets/skill-icons/fallback-gis.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "gis",
+    "matched": null
+  },
+  {
+    "name": "EPANET",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "EPLAN Electric P8",
+    "path": "/assets/skill-icons/fallback-electronics.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "electronics",
+    "matched": null
+  },
+  {
+    "name": "ERDAS Imagine",
+    "path": "/assets/skill-icons/fallback-gis.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "gis",
+    "matched": null
+  },
+  {
+    "name": "ETABS",
+    "path": "/assets/skill-icons/csi.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "SAP2000 Nonlinear"
+  },
+  {
+    "name": "ETABS Nonlinear",
+    "path": "/assets/skill-icons/csi.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "SAP2000 Nonlinear"
+  },
+  {
+    "name": "ETAP",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "FLAC",
+    "path": "/assets/skill-icons/fallback-geoscience.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "geoscience",
+    "matched": null
+  },
+  {
+    "name": "FlexSim",
+    "path": "/assets/skill-icons/fallback-simulation.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "simulation",
+    "matched": null
+  },
+  {
+    "name": "FPGA Design",
+    "path": "/assets/skill-icons/fallback-electronics.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "electronics",
+    "matched": null
+  },
+  {
+    "name": "Fusion 360",
+    "path": "/assets/skill-icons/autodesk.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "cad",
+    "matched": "Autodesk 3ds Max"
+  },
+  {
+    "name": "Galaxy",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "GAMS",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "GAP",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Gaussian",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "GeckoCIRCUITS",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "gem5",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Geosoft Oasis Montaj",
+    "path": "/assets/skill-icons/fallback-gis.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "gis",
+    "matched": null
+  },
+  {
+    "name": "GeoStudio",
+    "path": "/assets/skill-icons/fallback-geoscience.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "geoscience",
+    "matched": null
+  },
+  {
+    "name": "Git",
+    "path": "/assets/skill-icons/git.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Git"
+  },
+  {
+    "name": "Global Mapper",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "GNS3",
+    "path": "/assets/skill-icons/fallback-network.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "network",
+    "matched": null
+  },
+  {
+    "name": "GNU Gama",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "GNU Radio",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Google Earth Engine",
+    "path": "/assets/skill-icons/googleearth.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "gis",
+    "matched": "Google Earth Engine"
+  },
+  {
+    "name": "Google Earth Pro",
+    "path": "/assets/skill-icons/googleearth.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "gis",
+    "matched": "Google Earth Engine"
+  },
+  {
+    "name": "GRASS GIS",
+    "path": "/assets/skill-icons/qgis.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "gis",
+    "matched": "QGIS"
+  },
+  {
+    "name": "Grasshopper",
+    "path": "/assets/skill-icons/rhino.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "cad",
+    "matched": "Rhinoceros"
+  },
+  {
+    "name": "GT-Suite",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Gurobi",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "HAZOP Tools",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "HEC-HMS",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "HEC-RAS",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "HFSS",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "HOMER",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "HSC Chemistry",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "HTRI",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Hugging Face",
+    "path": "/assets/skill-icons/huggingface.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "data",
+    "matched": "Hugging Face"
+  },
+  {
+    "name": "HyperMesh",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "HYSYS",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Ignition SCADA",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "ImageJ",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "INDEX",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Java",
+    "path": "/assets/skill-icons/java.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Java"
+  },
+  {
+    "name": "JavaScript",
+    "path": "/assets/skill-icons/javascript.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "JavaScript"
+  },
+  {
+    "name": "JKSimMet",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "JMatPro",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "JMP",
+    "path": "/assets/skill-icons/fallback-data.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "data",
+    "matched": null
+  },
+  {
+    "name": "Kali Linux",
+    "path": "/assets/skill-icons/linux.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Kali Linux"
+  },
+  {
+    "name": "KiCad",
+    "path": "/assets/skill-icons/kicad.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "electronics",
+    "matched": "KiCad"
+  },
+  {
+    "name": "Kubernetes",
+    "path": "/assets/skill-icons/kubernetes.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Kubernetes"
+  },
+  {
+    "name": "LabVIEW",
+    "path": "/assets/skill-icons/labview.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "electronics",
+    "matched": "LabVIEW"
+  },
+  {
+    "name": "LAMMPS",
+    "path": "/assets/skill-icons/fallback-simulation.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "simulation",
+    "matched": null
+  },
+  {
+    "name": "Land F/X",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Laravel",
+    "path": "/assets/skill-icons/laravel.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Laravel"
+  },
+  {
+    "name": "Lean/VSM",
+    "path": "/assets/skill-icons/fallback-project.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "project",
+    "matched": null
+  },
+  {
+    "name": "Leapfrog",
+    "path": "/assets/skill-icons/fallback-geoscience.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "geoscience",
+    "matched": null
+  },
+  {
+    "name": "Leica Infinity",
+    "path": "/assets/skill-icons/fallback-gis.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "gis",
+    "matched": null
+  },
+  {
+    "name": "LINGO",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "LLVM",
+    "path": "/assets/skill-icons/llvm.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "LLVM"
+  },
+  {
+    "name": "Logisim",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "LS-DYNA",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "LTspice",
+    "path": "/assets/skill-icons/analog-devices.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "electronics",
+    "matched": "LTspice"
+  },
+  {
+    "name": "Lumion",
+    "path": "/assets/skill-icons/architecture.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "architecture",
+    "matched": null
+  },
+  {
+    "name": "MapInfo Pro",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Mastercam",
+    "path": "/assets/skill-icons/fallback-cad.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "manufacturing",
+    "matched": null
+  },
+  {
+    "name": "MATLAB",
+    "path": "/assets/skill-icons/matlab.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "MATLAB/Simulink"
+  },
+  {
+    "name": "MATLAB Aerospace Toolbox",
+    "path": "/assets/skill-icons/matlab.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "MATLAB/Simulink"
+  },
+  {
+    "name": "MATLAB Biomedical",
+    "path": "/assets/skill-icons/matlab.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "MATLAB/Simulink"
+  },
+  {
+    "name": "MATLAB Biomedical Toolbox",
+    "path": "/assets/skill-icons/matlab.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "MATLAB/Simulink"
+  },
+  {
+    "name": "MATLAB Communications Toolbox",
+    "path": "/assets/skill-icons/matlab.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "MATLAB/Simulink"
+  },
+  {
+    "name": "MATLAB/Simulink",
+    "path": "/assets/skill-icons/matlab.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "MATLAB/Simulink"
+  },
+  {
+    "name": "ME'scope VES",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Metasploit",
+    "path": "/assets/skill-icons/metasploit.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "network",
+    "matched": "Metasploit"
+  },
+  {
+    "name": "METSIM",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "MIKE FLOOD",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "MIMICS",
+    "path": "/assets/skill-icons/materialise.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "biomedical",
+    "matched": "MIMICS"
+  },
+  {
+    "name": "Minesight",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Minitab",
+    "path": "/assets/skill-icons/fallback-data.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "data",
+    "matched": null
+  },
+  {
+    "name": "MinVis",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "MLflow",
+    "path": "/assets/skill-icons/fallback-data.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "data",
+    "matched": null
+  },
+  {
+    "name": "Modbus",
+    "path": "/assets/skill-icons/fallback-electronics.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "electronics",
+    "matched": null
+  },
+  {
+    "name": "ModelSim",
+    "path": "/assets/skill-icons/fallback-hdl.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "hdl",
+    "matched": null
+  },
+  {
+    "name": "MODFLOW",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Moldflow",
+    "path": "/assets/skill-icons/autodesk.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "cad",
+    "matched": "Autodesk 3ds Max"
+  },
+  {
+    "name": "MS Project",
+    "path": "/assets/skill-icons/microsoft.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "project",
+    "matched": "MS Project"
+  },
+  {
+    "name": "MSC Nastran",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Multisim",
+    "path": "/assets/skill-icons/ni.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "electronics",
+    "matched": "Multisim"
+  },
+  {
+    "name": "Navisworks",
+    "path": "/assets/skill-icons/autodesk.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "cad",
+    "matched": "Autodesk 3ds Max"
+  },
+  {
+    "name": "Nmap",
+    "path": "/assets/skill-icons/fallback-network.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "network",
+    "matched": null
+  },
+  {
+    "name": "Node.js",
+    "path": "/assets/skill-icons/nodejs.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Node.js"
+  },
+  {
+    "name": "NS-3",
+    "path": "/assets/skill-icons/fallback-network.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "network",
+    "matched": null
+  },
+  {
+    "name": "OFM",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "OLGA",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "OLI Studio",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "OPC-UA",
+    "path": "/assets/skill-icons/fallback-electronics.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "electronics",
+    "matched": null
+  },
+  {
+    "name": "OpenCV",
+    "path": "/assets/skill-icons/opencv.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "OpenCV"
+  },
+  {
+    "name": "OpenFOAM",
+    "path": "/assets/skill-icons/fallback-simulation.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "simulation",
+    "matched": null
+  },
+  {
+    "name": "OpenLCA",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "OpenRoads",
+    "path": "/assets/skill-icons/bentley.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "STAAD.Pro"
+  },
+  {
+    "name": "OpenSees",
+    "path": "/assets/skill-icons/fallback-structural.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "structural",
+    "matched": null
+  },
+  {
+    "name": "OpenSim",
+    "path": "/assets/skill-icons/opensim.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "biomedical",
+    "matched": "OpenSim"
+  },
+  {
+    "name": "OpenVSP",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "OriginPro",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Patran",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "PERFORM-3D",
+    "path": "/assets/skill-icons/csi.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "SAP2000 Nonlinear"
+  },
+  {
+    "name": "Petrel",
+    "path": "/assets/skill-icons/fallback-geoscience.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "geoscience",
+    "matched": null
+  },
+  {
+    "name": "PHA-Pro",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Phase2",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "PHAST",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "PIPESIM",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Pix4D",
+    "path": "/assets/skill-icons/fallback-gis.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "gis",
+    "matched": null
+  },
+  {
+    "name": "PLAXIS",
+    "path": "/assets/skill-icons/bentley.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "STAAD.Pro"
+  },
+  {
+    "name": "PLAXIS 2D/3D",
+    "path": "/assets/skill-icons/bentley.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "STAAD.Pro"
+  },
+  {
+    "name": "PLC Programming",
+    "path": "/assets/skill-icons/siemens.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "engineering",
+    "matched": "Siemens NX CAE"
+  },
+  {
+    "name": "PLECS",
+    "path": "/assets/skill-icons/fallback-electronics.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "electronics",
+    "matched": null
+  },
+  {
+    "name": "Polyflow",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Power BI",
+    "path": "/assets/skill-icons/powerbi.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "data",
+    "matched": "Power BI"
+  },
+  {
+    "name": "PowerMill",
+    "path": "/assets/skill-icons/autodesk.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "cad",
+    "matched": "Autodesk 3ds Max"
+  },
+  {
+    "name": "Primavera P6",
+    "path": "/assets/skill-icons/fallback-project.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "project",
+    "matched": null
+  },
+  {
+    "name": "PROSPER",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Proteus",
+    "path": "/assets/skill-icons/labcenter.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "electronics",
+    "matched": "Proteus Design Suite"
+  },
+  {
+    "name": "PSCAD",
+    "path": "/assets/skill-icons/fallback-electronics.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "electronics",
+    "matched": null
+  },
+  {
+    "name": "PSIM",
+    "path": "/assets/skill-icons/fallback-electronics.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "electronics",
+    "matched": null
+  },
+  {
+    "name": "PSS/E",
+    "path": "/assets/skill-icons/siemens.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "engineering",
+    "matched": "Siemens NX CAE"
+  },
+  {
+    "name": "PTC Creo",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "PVsyst",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Python",
+    "path": "/assets/skill-icons/python.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Python (SciPy)"
+  },
+  {
+    "name": "Python (BioPython)",
+    "path": "/assets/skill-icons/python.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Python (SciPy)"
+  },
+  {
+    "name": "Python (Scapy)",
+    "path": "/assets/skill-icons/python.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Python (SciPy)"
+  },
+  {
+    "name": "Python (SciPy)",
+    "path": "/assets/skill-icons/python.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Python (SciPy)"
+  },
+  {
+    "name": "Python/Pandas",
+    "path": "/assets/skill-icons/python.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Python (SciPy)"
+  },
+  {
+    "name": "PyTorch",
+    "path": "/assets/skill-icons/pytorch.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "PyTorch"
+  },
+  {
+    "name": "QEMU",
+    "path": "/assets/skill-icons/fallback-network.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "network",
+    "matched": null
+  },
+  {
+    "name": "QGIS",
+    "path": "/assets/skill-icons/qgis.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "gis",
+    "matched": "QGIS"
+  },
+  {
+    "name": "QUAL2K",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Quantum ESPRESSO",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Quartus",
+    "path": "/assets/skill-icons/intel.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "electronics",
+    "matched": "Quartus Prime"
+  },
+  {
+    "name": "Quartus Prime",
+    "path": "/assets/skill-icons/intel.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "electronics",
+    "matched": "Quartus Prime"
+  },
+  {
+    "name": "R",
+    "path": "/assets/skill-icons/r.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "R Programming"
+  },
+  {
+    "name": "Raspberry Pi",
+    "path": "/assets/skill-icons/raspberry-pi.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "electronics",
+    "matched": "Raspberry Pi"
+  },
+  {
+    "name": "React",
+    "path": "/assets/skill-icons/react.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "React"
+  },
+  {
+    "name": "RealityCapture",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "RETScreen",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Revit",
+    "path": "/assets/skill-icons/revit.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "architecture",
+    "matched": "Revit Structure"
+  },
+  {
+    "name": "Revit Structure",
+    "path": "/assets/skill-icons/revit.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "architecture",
+    "matched": "Revit Structure"
+  },
+  {
+    "name": "Rhino 3D",
+    "path": "/assets/skill-icons/rhino.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "cad",
+    "matched": "Rhinoceros"
+  },
+  {
+    "name": "RiskSpectrum",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "ROBOT Structural",
+    "path": "/assets/skill-icons/autodesk.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "cad",
+    "matched": "Autodesk 3ds Max"
+  },
+  {
+    "name": "RocketCEA",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "ROS",
+    "path": "/assets/skill-icons/ros.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "ROS"
+  },
+  {
+    "name": "RS2/RS3",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "RS2/RS3 Rocscience",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "RSLogix 5000",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "SAFE",
+    "path": "/assets/skill-icons/csi.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "SAP2000 Nonlinear"
+  },
+  {
+    "name": "SAFETI",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "SAM (NREL)",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "SAP ERP",
+    "path": "/assets/skill-icons/sap.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "data",
+    "matched": "SAP ERP"
+  },
+  {
+    "name": "SAP SCM",
+    "path": "/assets/skill-icons/sap.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "data",
+    "matched": "SAP ERP"
+  },
+  {
+    "name": "SAP2000",
+    "path": "/assets/skill-icons/csi.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "SAP2000 Nonlinear"
+  },
+  {
+    "name": "SAP2000 Nonlinear",
+    "path": "/assets/skill-icons/csi.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "SAP2000 Nonlinear"
+  },
+  {
+    "name": "SATURN",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Scikit-learn",
+    "path": "/assets/skill-icons/scikitlearn.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Scikit-learn"
+  },
+  {
+    "name": "SeismoSoft",
+    "path": "/assets/skill-icons/fallback-structural.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "structural",
+    "matched": null
+  },
+  {
+    "name": "SeismoStruct",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Siemens NX",
+    "path": "/assets/skill-icons/siemens.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "engineering",
+    "matched": "Siemens NX CAE"
+  },
+  {
+    "name": "Siemens NX CAE",
+    "path": "/assets/skill-icons/siemens.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "engineering",
+    "matched": "Siemens NX CAE"
+  },
+  {
+    "name": "Siemens NX CAM",
+    "path": "/assets/skill-icons/siemens.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "engineering",
+    "matched": "Siemens NX CAE"
+  },
+  {
+    "name": "SimaPro",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Simcenter Testlab",
+    "path": "/assets/skill-icons/siemens.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "engineering",
+    "matched": "Siemens NX CAE"
+  },
+  {
+    "name": "SIMetrix",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "SketchUp",
+    "path": "/assets/skill-icons/sketchup.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "architecture",
+    "matched": "SketchUp"
+  },
+  {
+    "name": "SmartPlant",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "SNAP (ESA)",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "SolidWorks",
+    "path": "/assets/skill-icons/dassault-systemes.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "manufacturing",
+    "matched": "SOLIDWORKS Medical"
+  },
+  {
+    "name": "SolidWorks CAM",
+    "path": "/assets/skill-icons/dassault-systemes.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "manufacturing",
+    "matched": "SOLIDWORKS Medical"
+  },
+  {
+    "name": "SolidWorks Medical",
+    "path": "/assets/skill-icons/dassault-systemes.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "manufacturing",
+    "matched": "SOLIDWORKS Medical"
+  },
+  {
+    "name": "Space Syntax",
+    "path": "/assets/skill-icons/architecture.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "architecture",
+    "matched": null
+  },
+  {
+    "name": "SPC Tools",
+    "path": "/assets/skill-icons/fallback-project.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "project",
+    "matched": null
+  },
+  {
+    "name": "SPM",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "SPS",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "SPSS",
+    "path": "/assets/skill-icons/fallback-data.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "data",
+    "matched": null
+  },
+  {
+    "name": "SQL",
+    "path": "/assets/skill-icons/fallback-programming.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "programming",
+    "matched": null
+  },
+  {
+    "name": "STAAD.Pro",
+    "path": "/assets/skill-icons/bentley.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "STAAD.Pro"
+  },
+  {
+    "name": "STAR-CCM+",
+    "path": "/assets/skill-icons/fallback-simulation.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "simulation",
+    "matched": null
+  },
+  {
+    "name": "StarNet",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "STK",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "StressCheck",
+    "path": "/assets/skill-icons/fallback-structural.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "structural",
+    "matched": null
+  },
+  {
+    "name": "SuperPro Designer",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Surpac",
+    "path": "/assets/skill-icons/fallback-geoscience.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "geoscience",
+    "matched": null
+  },
+  {
+    "name": "SWMM",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Synchro",
+    "path": "/assets/skill-icons/bentley.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "STAAD.Pro"
+  },
+  {
+    "name": "Synchro 4D",
+    "path": "/assets/skill-icons/bentley.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "STAAD.Pro"
+  },
+  {
+    "name": "Synergi Pipeline",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "SystemVerilog",
+    "path": "/assets/skill-icons/fallback-hdl.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "hdl",
+    "matched": null
+  },
+  {
+    "name": "Tableau",
+    "path": "/assets/skill-icons/tableau.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "data",
+    "matched": "Tableau"
+  },
+  {
+    "name": "Tekla Structures",
+    "path": "/assets/skill-icons/trimble.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "cad",
+    "matched": "Tekla Structures"
+  },
+  {
+    "name": "TensorFlow",
+    "path": "/assets/skill-icons/tensorflow.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "TensorFlow"
+  },
+  {
+    "name": "Terraform",
+    "path": "/assets/skill-icons/terraform.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "programming",
+    "matched": "Terraform"
+  },
+  {
+    "name": "Thermo-Calc",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "TIA Portal",
+    "path": "/assets/skill-icons/siemens.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "engineering",
+    "matched": "Siemens NX CAE"
+  },
+  {
+    "name": "TransCAD",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "TransModeler",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Trimble",
+    "path": "/assets/skill-icons/trimble.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "cad",
+    "matched": "Tekla Structures"
+  },
+  {
+    "name": "UDEC",
+    "path": "/assets/skill-icons/fallback-geoscience.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "geoscience",
+    "matched": null
+  },
+  {
+    "name": "UrbanSim",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "USIM PAC",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "V-Ray",
+    "path": "/assets/skill-icons/architecture.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "architecture",
+    "matched": null
+  },
+  {
+    "name": "VASP",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Verilog",
+    "path": "/assets/skill-icons/fallback-hdl.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "hdl",
+    "matched": null
+  },
+  {
+    "name": "VHDL",
+    "path": "/assets/skill-icons/fallback-hdl.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "hdl",
+    "matched": null
+  },
+  {
+    "name": "VISSIM",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "VISSIM (ترافیک)",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "VISUM",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Vivado",
+    "path": "/assets/skill-icons/fallback-electronics.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "electronics",
+    "matched": null
+  },
+  {
+    "name": "Vulcan",
+    "path": "/assets/skill-icons/fallback-geoscience.svg",
+    "tier": "category",
+    "level": 3,
+    "category": "geoscience",
+    "matched": null
+  },
+  {
+    "name": "WASP",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "WaterGEMS",
+    "path": "/assets/skill-icons/bentley.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "structural",
+    "matched": "STAAD.Pro"
+  },
+  {
+    "name": "WellPlan",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "WinCC",
+    "path": "/assets/skill-icons/siemens.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "engineering",
+    "matched": "Siemens NX CAE"
+  },
+  {
+    "name": "Wireshark",
+    "path": "/assets/skill-icons/wireshark.svg",
+    "tier": "product",
+    "level": 1,
+    "category": "network",
+    "matched": "Wireshark"
+  },
+  {
+    "name": "XFLR5",
+    "path": "/assets/skill-icons/fallback-engineering.svg",
+    "tier": "generic",
+    "level": 4,
+    "category": "engineering",
+    "matched": null
+  },
+  {
+    "name": "Xilinx Vitis HLS",
+    "path": "/assets/skill-icons/nvidia.svg",
+    "tier": "company",
+    "level": 2,
+    "category": "programming",
+    "matched": "CUDA"
+  }
+]

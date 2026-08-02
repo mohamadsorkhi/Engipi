@@ -23,6 +23,7 @@ class SkillSuggestionWorkflowTest extends TestCase
             ->withSession(['active_role' => 'specialist'])
             ->postJson(route('skill-suggestions.store'), [
                 'skill_name' => '  بازرسی   جوش  ',
+                'skill_type' => SkillSuggestion::TYPE_FIELD,
                 'subdomain_id' => $subdomain->id,
                 'description' => 'مهارت میدانی مورد نیاز پروژه‌های صنعتی',
             ])
@@ -32,6 +33,7 @@ class SkillSuggestionWorkflowTest extends TestCase
         $this->assertDatabaseHas('skill_suggestions', [
             'user_id' => $specialist->id,
             'skill_name' => 'بازرسی جوش',
+            'skill_type' => SkillSuggestion::TYPE_FIELD,
             'normalized_name' => 'بازرسی جوش',
             'subdomain_id' => $subdomain->id,
             'status' => SkillSuggestion::STATUS_PENDING,
@@ -48,6 +50,7 @@ class SkillSuggestionWorkflowTest extends TestCase
             ->postJson(route('skill-suggestions.store'), [
                 'user_id' => $otherSpecialist->id,
                 'skill_name' => 'کنترل ابعادی',
+                'skill_type' => SkillSuggestion::TYPE_FIELD,
                 'subdomain_id' => $subdomain->id,
             ])
             ->assertCreated();
@@ -55,10 +58,12 @@ class SkillSuggestionWorkflowTest extends TestCase
         $this->assertDatabaseHas('skill_suggestions', [
             'user_id' => $specialist->id,
             'skill_name' => 'کنترل ابعادی',
+            'skill_type' => SkillSuggestion::TYPE_FIELD,
         ]);
         $this->assertDatabaseMissing('skill_suggestions', [
             'user_id' => $otherSpecialist->id,
             'skill_name' => 'کنترل ابعادی',
+            'skill_type' => SkillSuggestion::TYPE_FIELD,
         ]);
     }
 
@@ -68,6 +73,7 @@ class SkillSuggestionWorkflowTest extends TestCase
         SkillSuggestion::query()->create([
             'user_id' => $specialist->id,
             'skill_name' => 'نقشه کشی صنعتی',
+            'skill_type' => SkillSuggestion::TYPE_FIELD,
             'normalized_name' => SkillSuggestion::normalizeName('نقشه کشی صنعتی'),
             'pending_name' => SkillSuggestion::normalizeName('نقشه کشی صنعتی'),
             'subdomain_id' => $subdomain->id,
@@ -78,6 +84,7 @@ class SkillSuggestionWorkflowTest extends TestCase
             ->withSession(['active_role' => 'specialist'])
             ->postJson(route('skill-suggestions.store'), [
                 'skill_name' => '  نقشه   كشي صنعتی ',
+                'skill_type' => SkillSuggestion::TYPE_FIELD,
                 'subdomain_id' => $subdomain->id,
             ])
             ->assertUnprocessable()
@@ -95,6 +102,7 @@ class SkillSuggestionWorkflowTest extends TestCase
             ->withSession(['active_role' => 'specialist'])
             ->postJson(route('skill-suggestions.store'), [
                 'skill_name' => ' بازرسی   فنی ',
+                'skill_type' => SkillSuggestion::TYPE_FIELD,
                 'subdomain_id' => $subdomain->id,
             ])
             ->assertUnprocessable()
@@ -172,6 +180,38 @@ class SkillSuggestionWorkflowTest extends TestCase
         $this->assertDatabaseCount('user_skills', 1);
     }
 
+    public function test_same_name_is_independent_between_processing_and_field_types(): void
+    {
+        [$specialist, $subdomain] = $this->specialistAndSubdomain();
+        Skill::query()->create(['name' => 'کنترل کیفیت', 'skill_type' => 'field', 'subdomain_id' => $subdomain->id]);
+
+        $this->actingAs($specialist)->withSession(['active_role' => 'specialist'])
+            ->postJson(route('skill-suggestions.store'), [
+                'skill_name' => 'کنترل کیفیت',
+                'skill_type' => SkillSuggestion::TYPE_PROCESSING,
+                'subdomain_id' => $subdomain->id,
+            ])->assertCreated();
+    }
+
+    public function test_approval_creates_processing_skill_and_process(): void
+    {
+        [$specialist, $subdomain] = $this->specialistAndSubdomain();
+        $suggestion = $this->createSuggestion($specialist, $subdomain, 'تحلیل اجزای محدود');
+        $suggestion->update(['skill_type' => SkillSuggestion::TYPE_PROCESSING]);
+        $admin = User::factory()->create(['is_admin' => true, 'role' => 'admin']);
+
+        $this->actingAs($admin)->post(route('admin.skill-suggestions.approve', $suggestion))->assertRedirect();
+
+        $skill = Skill::query()->where('name', 'تحلیل اجزای محدود')->firstOrFail();
+        $this->assertSame(SkillSuggestion::TYPE_PROCESSING, $skill->skill_type);
+        $this->assertNotNull($skill->process_id);
+        $this->assertDatabaseHas('processes', [
+            'id' => $skill->process_id,
+            'skill_domain_id' => $subdomain->skill_domain_id,
+            'name' => 'تحلیل اجزای محدود',
+        ]);
+        $this->assertDatabaseHas('user_skills', ['user_id' => $specialist->id, 'skill_id' => $skill->id]);
+    }
     private function specialistAndSubdomain(): array
     {
         $specialist = $this->createSpecialist();
@@ -197,6 +237,7 @@ class SkillSuggestionWorkflowTest extends TestCase
         return SkillSuggestion::query()->create([
             'user_id' => $user->id,
             'skill_name' => $name,
+            'skill_type' => SkillSuggestion::TYPE_FIELD,
             'normalized_name' => SkillSuggestion::normalizeName($name),
             'pending_name' => SkillSuggestion::normalizeName($name),
             'subdomain_id' => $subdomain->id,

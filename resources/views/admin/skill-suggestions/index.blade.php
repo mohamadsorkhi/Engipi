@@ -24,12 +24,17 @@
     <div class="card bp-suggestions-card">
         <div class="card-header d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
             <div>
-                <h5 class="card-title mb-1">پیشنهادهای مهارت میدانی</h5>
+                <h5 class="card-title mb-1">پیشنهاد مهارت‌ها</h5>
                 <p class="text-muted small mb-0">پیشنهادهای متخصصان را بررسی و به فهرست اصلی مهارت‌ها اضافه کنید.</p>
+            </div>
+            <div class="d-flex flex-wrap gap-2 mb-2" aria-label="فیلتر نوع مهارت">
+                <a class="btn btn-sm {{ $skillType === null ? 'btn-primary' : 'btn-soft-primary' }}" href="{{ route('admin.skill-suggestions.index', ['status' => $status]) }}">همه</a>
+                <a class="btn btn-sm {{ $skillType === 'software' ? 'btn-primary' : 'btn-soft-primary' }}" href="{{ route('admin.skill-suggestions.index', ['status' => $status, 'skill_type' => 'software']) }}">پردازشی</a>
+                <a class="btn btn-sm {{ $skillType === 'field' ? 'btn-primary' : 'btn-soft-primary' }}" href="{{ route('admin.skill-suggestions.index', ['status' => $status, 'skill_type' => 'field']) }}">میدانی</a>
             </div>
             <div class="d-flex flex-wrap gap-2" aria-label="فیلتر وضعیت پیشنهادها">
                 @foreach($statusLabels as $value => $meta)
-                    <a href="{{ route('admin.skill-suggestions.index', ['status' => $value]) }}"
+                    <a href="{{ route('admin.skill-suggestions.index', ['status' => $value, 'skill_type' => $skillType]) }}"
                        class="btn btn-sm {{ $status === $value ? 'btn-'.$meta['class'] : 'btn-soft-'.$meta['class'] }}">
                         {{ $meta['label'] }}
                     </a>
@@ -53,6 +58,7 @@
                             <tr>
                                 <th>متخصص</th>
                                 <th>مهارت پیشنهادی</th>
+                                <th>نوع مهارت</th>
                                 <th>حوزه</th>
                                 <th>توضیح</th>
                                 <th>تاریخ ارسال</th>
@@ -65,6 +71,7 @@
                                 <tr>
                                     <td class="fw-semibold">{{ $suggestion->user?->full_name ?? 'کاربر حذف‌شده' }}</td>
                                     <td>{{ $suggestion->skill_name }}</td>
+                                    <td><span class="badge bg-info-subtle text-info">{{ $suggestion->skill_type === 'software' ? 'پردازشی' : 'میدانی' }}</span></td>
                                     <td>
                                         <span class="d-block">{{ $suggestion->subdomain?->domain?->name ?? '—' }}</span>
                                         <small class="text-muted">{{ $suggestion->subdomain?->name ?? '—' }}</small>

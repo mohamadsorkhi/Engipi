@@ -60,6 +60,12 @@ Route::get('/', function () {
     ]);
 })->name('root');
 
+// Landing Page V2 preview (kept separate from the production homepage)
+Route::view('/landing-v2', 'landing-v2')->name('landing.v2');
+Route::view('/landing-v2-a', 'landing-v2-a')->name('landing.v2.a');
+Route::view('/landing-v2-b', 'landing-v2-b')->name('landing.v2.b');
+Route::view('/landing-v2-c', 'landing-v2-c')->name('landing.v2.c');
+
 // صفحات عمومی
 Route::get('/about', fn() => view('pages.about'))->name('about');
 Route::get('/terms', fn() => view('pages.terms'))->name('terms');

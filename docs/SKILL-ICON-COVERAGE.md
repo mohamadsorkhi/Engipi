@@ -1,0 +1,195 @@
+# Skill Icon Coverage Audit
+
+- Distinct database-derived software skills: 305
+- Exact product/open-source logos: 69
+- Company/product-family logos: 52
+- Category fallbacks: 60
+- Generic engineering fallbacks: 124
+- Skills without product/company logos: 184
+
+## Skills without product/company logos
+
+- 3-matic -> engineering
+- 3D Scanning Tools -> engineering
+- 3D Slicer -> engineering
+- 3DEC -> geoscience
+- 3DF Zephyr -> engineering
+- Adams -> simulation
+- ADS Keysight -> engineering
+- AERMOD -> engineering
+- Agisoft Metashape -> engineering
+- AIMSUN -> engineering
+- AnyLogic -> simulation
+- ArcGIS -> gis
+- ArcGIS Pro -> gis
+- Arena -> simulation
+- Aspen Plus -> engineering
+- Aspen Polymers -> engineering
+- Bernese GNSS Software -> gis
+- Bioconductor -> engineering
+- BLAST -> engineering
+- BowTieXP -> engineering
+- BrainVision Analyzer -> engineering
+- Cadence OrCAD -> electronics
+- Cadence Virtuoso -> electronics
+- Caesar II -> engineering
+- CALPUFF -> engineering
+- Cantera -> engineering
+- CEA (NASA) -> engineering
+- CHEMCAD -> engineering
+- CityEngine -> architecture
+- CloudCompare -> engineering
+- CodeSys -> engineering
+- CommunityViz -> engineering
+- COMPASS -> engineering
+- CPLEX -> engineering
+- CST Studio -> engineering
+- Cycle-Tempo -> engineering
+- Datamine -> geoscience
+- dbt -> data
+- DICOM -> engineering
+- DIgSILENT PowerFactory -> engineering
+- DJI Terra -> engineering
+- DrillBench -> engineering
+- dSPACE -> engineering
+- Eagle CAD -> engineering
+- EEGLAB -> engineering
+- EES -> engineering
+- Enscape -> architecture
+- ENVI -> gis
+- EPANET -> engineering
+- EPLAN Electric P8 -> electronics
+- ERDAS Imagine -> gis
+- ETAP -> engineering
+- FLAC -> geoscience
+- FlexSim -> simulation
+- FPGA Design -> electronics
+- Galaxy -> engineering
+- GAMS -> engineering
+- GAP -> engineering
+- Gaussian -> engineering
+- GeckoCIRCUITS -> engineering
+- gem5 -> engineering
+- Geosoft Oasis Montaj -> gis
+- GeoStudio -> geoscience
+- Global Mapper -> engineering
+- GNS3 -> network
+- GNU Gama -> engineering
+- GNU Radio -> engineering
+- GT-Suite -> engineering
+- Gurobi -> engineering
+- HAZOP Tools -> engineering
+- HEC-HMS -> engineering
+- HEC-RAS -> engineering
+- HFSS -> engineering
+- HOMER -> engineering
+- HSC Chemistry -> engineering
+- HTRI -> engineering
+- HyperMesh -> engineering
+- HYSYS -> engineering
+- Ignition SCADA -> engineering
+- ImageJ -> engineering
+- INDEX -> engineering
+- JKSimMet -> engineering
+- JMatPro -> engineering
+- JMP -> data
+- LAMMPS -> simulation
+- Land F/X -> engineering
+- Lean/VSM -> project
+- Leapfrog -> geoscience
+- Leica Infinity -> gis
+- LINGO -> engineering
+- Logisim -> engineering
+- LS-DYNA -> engineering
+- Lumion -> architecture
+- MapInfo Pro -> engineering
+- Mastercam -> manufacturing
+- ME'scope VES -> engineering
+- METSIM -> engineering
+- MIKE FLOOD -> engineering
+- Minesight -> engineering
+- Minitab -> data
+- MinVis -> engineering
+- MLflow -> data
+- Modbus -> electronics
+- ModelSim -> hdl
+- MODFLOW -> engineering
+- MSC Nastran -> engineering
+- Nmap -> network
+- NS-3 -> network
+- OFM -> engineering
+- OLGA -> engineering
+- OLI Studio -> engineering
+- OPC-UA -> electronics
+- OpenFOAM -> simulation
+- OpenLCA -> engineering
+- OpenSees -> structural
+- OpenVSP -> engineering
+- OriginPro -> engineering
+- Patran -> engineering
+- Petrel -> geoscience
+- PHA-Pro -> engineering
+- Phase2 -> engineering
+- PHAST -> engineering
+- PIPESIM -> engineering
+- Pix4D -> gis
+- PLECS -> electronics
+- Polyflow -> engineering
+- Primavera P6 -> project
+- PROSPER -> engineering
+- PSCAD -> electronics
+- PSIM -> electronics
+- PTC Creo -> engineering
+- PVsyst -> engineering
+- QEMU -> network
+- QUAL2K -> engineering
+- Quantum ESPRESSO -> engineering
+- RealityCapture -> engineering
+- RETScreen -> engineering
+- RiskSpectrum -> engineering
+- RocketCEA -> engineering
+- RS2/RS3 -> engineering
+- RS2/RS3 Rocscience -> engineering
+- RSLogix 5000 -> engineering
+- SAFETI -> engineering
+- SAM (NREL) -> engineering
+- SATURN -> engineering
+- SeismoSoft -> structural
+- SeismoStruct -> engineering
+- SimaPro -> engineering
+- SIMetrix -> engineering
+- SmartPlant -> engineering
+- SNAP (ESA) -> engineering
+- Space Syntax -> architecture
+- SPC Tools -> project
+- SPM -> engineering
+- SPS -> engineering
+- SPSS -> data
+- SQL -> programming
+- STAR-CCM+ -> simulation
+- StarNet -> engineering
+- STK -> engineering
+- StressCheck -> structural
+- SuperPro Designer -> engineering
+- Surpac -> geoscience
+- SWMM -> engineering
+- Synergi Pipeline -> engineering
+- SystemVerilog -> hdl
+- Thermo-Calc -> engineering
+- TransCAD -> engineering
+- TransModeler -> engineering
+- UDEC -> geoscience
+- UrbanSim -> engineering
+- USIM PAC -> engineering
+- V-Ray -> architecture
+- VASP -> engineering
+- Verilog -> hdl
+- VHDL -> hdl
+- VISSIM -> engineering
+- VISSIM (ترافیک) -> engineering
+- VISUM -> engineering
+- Vivado -> electronics
+- Vulcan -> geoscience
+- WASP -> engineering
+- WellPlan -> engineering
+- XFLR5 -> engineering

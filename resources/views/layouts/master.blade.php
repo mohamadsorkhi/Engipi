@@ -431,6 +431,8 @@
         }
     </style>
 
+    <link rel="stylesheet" href="{{ asset('build/css/engipi-dashboard.css') }}?v=20260801">
+    <link rel="stylesheet" href="{{ asset('css/engipi-shell.css') }}?v=20260803">
     @stack('styles')
 </head>
 
@@ -462,6 +464,7 @@
 
     <!-- JAVASCRIPT -->
     @include('layouts.vendor-scripts')
+    <script src="{{ asset('js/engipi-shell.js') }}?v=20260803"></script>
 </body>
 
 </html>

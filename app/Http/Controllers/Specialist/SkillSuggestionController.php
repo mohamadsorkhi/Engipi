@@ -16,6 +16,7 @@ class SkillSuggestionController extends Controller
             $suggestion = SkillSuggestion::query()->create([
                 'user_id' => $request->user()->id,
                 'skill_name' => $request->validated('skill_name'),
+                'skill_type' => $request->validated('skill_type'),
                 'normalized_name' => SkillSuggestion::normalizeName($request->validated('skill_name')),
                 'pending_name' => SkillSuggestion::normalizeName($request->validated('skill_name')),
                 'subdomain_id' => $request->validated('subdomain_id'),

@@ -1126,63 +1126,30 @@ class FieldSkillsSeeder extends Seeder
         ];
 
         // ─────────────────────────────────────────────────────────────────
-        // Pre-load lookups (two queries total)
-        // ─────────────────────────────────────────────────────────────────
-        $domainMap = DB::table('skill_domains')
-            ->pluck('id', 'name')
-            ->toArray();
-
-        $subLookup = [];
-        foreach (DB::table('subdomains')->select('id', 'name', 'skill_domain_id')->get() as $row) {
-            $subLookup["{$row->skill_domain_id}|{$row->name}"] = $row->id;
-        }
-
-        // ─────────────────────────────────────────────────────────────────
-        // Insert field skills
-        // ─────────────────────────────────────────────────────────────────
-        $inserted = 0;
-        $skipped  = 0;
-
-        foreach ($taxonomy as $domainName => $subdomains) {
-            $domainId = $domainMap[$domainName] ?? null;
-
-            if (! $domainId) {
-                $this->command->warn("  [SKIP] Domain not found: \"{$domainName}\"");
-                continue;
-            }
-
-            foreach ($subdomains as $subdomainName => $skills) {
-                $subdomainId = $subLookup["{$domainId}|{$subdomainName}"] ?? null;
-
-                if (! $subdomainId) {
-                    $this->command->warn("  [SKIP] Subdomain not found: \"{$domainName} > {$subdomainName}\"");
-                    continue;
-                }
-
-                foreach (array_unique($skills) as $skillName) {
-                    $exists = DB::table('skills')
-                        ->where('name', $skillName)
-                        ->where('subdomain_id', $subdomainId)
-                        ->exists();
-
-                    if (! $exists) {
-                        DB::table('skills')->insert([
-                            'id'           => (string) Str::uuid(),
-                            'name'         => $skillName,
-                            'skill_type'   => 'field',
-                            'subdomain_id' => $subdomainId,
-                            'process_id'   => null,
-                            'created_at'   => now(),
-                            'updated_at'   => now(),
-                        ]);
-                        $inserted++;
-                    } else {
-                        $skipped++;
+        [$created, $existing, $pivotCreated] = DB::transaction(function () use ($taxonomy): array {
+            $domains=DB::table('skill_domains')->pluck('id','name')->all();
+            $missingDomains=array_values(array_diff(array_keys($taxonomy),array_keys($domains)));
+            if ($missingDomains !== []) { throw new \RuntimeException('FieldSkillsSeeder cannot continue; parent domains not found: '.implode(', ',$missingDomains)); }
+            $subdomains=[];
+            foreach (DB::table('subdomains')->get(['id','name','skill_domain_id']) as $row) { $subdomains[$row->skill_domain_id.'|'.$row->name]=$row->id; }
+            $missingSubdomains=[];
+            foreach ($taxonomy as $domainName=>$groups) { foreach (array_keys($groups) as $subdomainName) { if (!isset($subdomains[$domains[$domainName].'|'.$subdomainName])) { $missingSubdomains[]=$domainName.' > '.$subdomainName; } } }
+            if ($missingSubdomains !== []) { throw new \RuntimeException('FieldSkillsSeeder cannot continue; parent subdomains not found: '.implode(', ',$missingSubdomains)); }
+            $created=0; $existing=0; $pivotCreated=0;
+            foreach ($taxonomy as $domainName=>$groups) {
+                $domainId=$domains[$domainName];
+                foreach ($groups as $subdomainName=>$names) {
+                    $subdomainId=$subdomains[$domainId.'|'.$subdomainName];
+                    foreach (array_unique($names) as $name) {
+                        $skill=DB::table('skills')->where('skill_type','field')->where('subdomain_id',$subdomainId)->where('name',$name)->first(['id']);
+                        if ($skill) { $skillId=$skill->id; $existing++; }
+                        else { $skillId=(string) Str::uuid(); DB::table('skills')->insert(['id'=>$skillId,'name'=>$name,'skill_type'=>'field','subdomain_id'=>$subdomainId,'process_id'=>null,'created_at'=>now(),'updated_at'=>now()]); $created++; }
+                        $pivotCreated += DB::table('skill_subdomain')->insertOrIgnore(['skill_id'=>$skillId,'subdomain_id'=>$subdomainId,'created_at'=>now(),'updated_at'=>now()]);
                     }
                 }
             }
-        }
-
-        $this->command->info("  FieldSkillsSeeder: {$inserted} inserted, {$skipped} already existed.");
+            return [$created,$existing,$pivotCreated];
+        });
+        $this->command?->info("Field skills seeded: {$created} created, {$existing} existing, {$pivotCreated} pivots created");
     }
 }
