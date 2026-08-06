@@ -211,6 +211,22 @@ class SkillSuggestionWorkflowTest extends TestCase
             ])->assertCreated();
     }
 
+    public function test_pending_same_name_is_independent_between_subdomains(): void
+    {
+        [$specialist, $subdomain] = $this->specialistAndSubdomain();
+        $otherSubdomain = Subdomain::factory()->create();
+        $this->createSuggestion($specialist, $otherSubdomain, 'کنترل کیفیت');
+
+        $this->actingAs($specialist)->withSession(['active_role' => 'specialist'])
+            ->postJson(route('skill-suggestions.store'), [
+                'skill_name' => 'کنترل کیفیت',
+                'skill_type' => SkillSuggestion::TYPE_FIELD,
+                'subdomain_id' => $subdomain->id,
+            ])->assertCreated();
+
+        $this->assertDatabaseCount('skill_suggestions', 2);
+    }
+
     public function test_approval_does_not_attach_a_same_named_skill_from_another_subdomain(): void
     {
         [$specialist, $subdomain] = $this->specialistAndSubdomain();
