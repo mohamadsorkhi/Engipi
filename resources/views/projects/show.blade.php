@@ -5,7 +5,8 @@
 @section('content')
     @php
         $user = Auth::user();
-        $isAdmin = $user && $user->role === 'admin';
+        $isAdmin = $user && $user->is_admin;
+        $activeType = $user ? app(\App\Support\Auth\ProfileContext::class)->activeType($user) : null;
         $isOwner = !$isAdmin && $user && $user->id === $project->employer_id;
 
         $sentRequest = $sentRequest ?? null; // Default to null if not passed
@@ -98,7 +99,7 @@
                             @if(!$isOwner && !$isAdmin)
                                 <hr class="my-4">
                                 <div class="d-flex justify-content-end align-items-center">
-                                     @if(Auth::check() && Auth::user()->role === 'worker')
+                                     @if(Auth::check() && $activeType === 'specialist')
                                         @if($sentRequest)
                                             <div class="d-flex align-items-center gap-2">
                                                 <span class="text-muted">وضعیت درخواست شما:</span>

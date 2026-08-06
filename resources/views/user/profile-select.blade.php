@@ -33,7 +33,7 @@
                     <form action="{{ route('profile.activate') }}" method="POST"
                           id="form-employer" class="w-100">
                         @csrf
-                        <input type="hidden" name="type" value="employer">
+                        <input type="hidden" name="profile_id" value="{{ $employerProfile->id }}">
                         <button type="submit"
                                 class="w-100 h-100 border-0 bg-transparent p-0 text-start role-submit-btn">
                             <div class="card role-card role-card--employer h-100 mb-0">
@@ -125,7 +125,7 @@
                     <form action="{{ route('profile.activate') }}" method="POST"
                           id="form-specialist" class="w-100">
                         @csrf
-                        <input type="hidden" name="type" value="specialist">
+                        <input type="hidden" name="profile_id" value="{{ $specialistProfile->id }}">
                         <button type="submit"
                                 class="w-100 h-100 border-0 bg-transparent p-0 text-start role-submit-btn">
                             <div class="card role-card role-card--specialist h-100 mb-0">

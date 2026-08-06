@@ -6,9 +6,13 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Support\Auth\ProfileContext;
 
 class RoleMiddleware
 {
+    public function __construct(private ProfileContext $context)
+    {
+    }
     /**
      * Handle an incoming request.
      *
@@ -24,9 +28,11 @@ class RoleMiddleware
 
         $user = Auth::user();
 
-        // The user mentioned the role is in the 'role' column of the 'users' table.
-        // We will check if the user's role is in the list of roles provided to the middleware.
-        if (!$user || !in_array($user->role, $roles)) {
+        // Legacy alias only. users.role is deprecated and never grants authority.
+        $allowed = (in_array('admin', $roles, true) && $user->is_admin)
+            || in_array($this->context->activeType($user), $roles, true);
+
+        if (! $allowed) {
             abort(403, 'You do not have the required role to access this page.');
         }
 

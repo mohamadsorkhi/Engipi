@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Auth\ProfileContext;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,13 +10,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnsureActiveRole
 {
+    public function __construct(private ProfileContext $context)
+    {
+    }
     /**
-     * Enforce that an active_role is stored in session before granting access.
+     * Enforce an ownership-validated active profile context.
      *
      * Usage:
-     *   'active_role'            — any valid role required
-     *   'active_role:employer'   — employer role required
-     *   'active_role:specialist' — specialist role required
+     * The legacy middleware alias is retained to avoid route churn; its values
+     * are matched only against the type derived from active_profile_id.
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
@@ -25,31 +28,27 @@ class EnsureActiveRole
             return $next($request);
         }
 
-        $profiles = $user->profiles;
+        $profiles = $this->context->availableProfiles($user);
 
         // No profiles at all → go create one
         if ($profiles->isEmpty()) {
             return redirect()->route('profile.select');
         }
 
-        $activeRole = session('active_role');
+        $activeProfile = $this->context->activeProfile($user);
 
-        if (!$activeRole) {
-            $hasEmployer   = $profiles->contains('type', 'employer');
-            $hasSpecialist = $profiles->contains('type', 'specialist');
-
-            if ($hasEmployer && $hasSpecialist) {
+        if (! $activeProfile) {
+            if ($profiles->count() > 1) {
                 // Dual-profile user must choose explicitly
                 return redirect()->route('profile.select');
             }
 
             // Single-profile user: auto-set transparently so they skip the picker
-            $activeRole = $hasEmployer ? 'employer' : 'specialist';
-            session(['active_role' => $activeRole]);
+            $activeProfile = $this->context->activate($user, $profiles->first());
         }
 
-        // If a specific role is required, enforce it
-        if (!empty($roles) && !in_array($activeRole, $roles)) {
+        $activeType = $activeProfile?->type;
+        if (!empty($roles) && !in_array($activeType, $roles, true)) {
             return redirect()->route('profile.select')
                 ->with('error', 'برای دسترسی به این بخش، نقش مناسب را انتخاب کنید.');
         }

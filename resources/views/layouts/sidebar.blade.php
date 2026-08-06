@@ -1,6 +1,6 @@
 @auth
 @php
-$user=Auth::user();$isAdmin=(bool)$user->is_admin;$profiles=$user->profiles;$activeRole=session('active_role');$hasEmployer=$profiles->contains('type','employer');$hasSpecialist=$profiles->contains('type','specialist');$roleLabel=$isAdmin?'مدیر سامانه':($activeRole==='employer'?'کارفرما':($activeRole==='specialist'?'متخصص':'کاربر'));$sections=[];
+$user=Auth::user();$isAdmin=(bool)$user->is_admin;$context=app(\App\Support\Auth\ProfileContext::class);$profiles=$context->availableProfiles($user);$activeRole=$context->activeType($user);$hasEmployer=$profiles->contains('type','employer');$hasSpecialist=$profiles->contains('type','specialist');$roleLabel=$isAdmin?'مدیر سامانه':($activeRole==='employer'?'کارفرما':($activeRole==='specialist'?'متخصص':'کاربر'));$sections=[];
 if($isAdmin){$sections=[
 ['label'=>'نمای کلی','items'=>[['route'=>'admin.dashboard','label'=>'داشبورد مدیریت','icon'=>'ri-layout-grid-line','active'=>'admin.dashboard']]],
 ['label'=>'مدیریت','items'=>[['route'=>'admin.users.index','label'=>'کاربران','icon'=>'ri-group-line','active'=>'admin.users.*'],['route'=>'admin.profiles.index','label'=>'پروفایل‌ها','icon'=>'ri-id-card-line','active'=>'admin.profiles.*'],['route'=>'admin.projects.index','label'=>'پروژه‌ها','icon'=>'ri-briefcase-4-line','active'=>'admin.projects.*']]],
