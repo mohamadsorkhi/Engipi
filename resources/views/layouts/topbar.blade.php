@@ -1,6 +1,6 @@
 ﻿@auth
 @php
-$topUser=Auth::user(); $topRole=session('active_role');
+$topUser=Auth::user(); $topRole=app(\App\Support\Auth\ProfileContext::class)->activeType($topUser);
 $pageTitle=trim($__env->yieldContent('title')) ?: 'داشبورد';
 $quickRoute=null; $quickLabel=null; $quickIcon='ri-add-line';
 if(!$topUser->is_admin && $topRole==='employer' && Route::has('user.projects.create')){$quickRoute='user.projects.create';$quickLabel='ثبت پروژه';}

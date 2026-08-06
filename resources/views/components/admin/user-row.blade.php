@@ -12,7 +12,7 @@
     <td>{{ $user->id }}</td>
     <td>{{ $user->name }}</td>
     <td>{{ $user->email }}</td>
-    <td>{{ $roleNames[$user->role] ?? $user->role }}</td>
+    <td>{{ $user->display_role }}</td>
     <td>
         @if($user->active)
             <span class="badge bg-success-subtle text-success">فعال</span>

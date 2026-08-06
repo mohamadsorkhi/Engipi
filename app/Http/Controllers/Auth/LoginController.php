@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Support\Auth\ProfileContext;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -97,7 +97,7 @@ class LoginController extends Controller
     }
 
     /**
-     * After login, redirect specialist users who have no skills to the skill selection page.
+     * Preserve login for every account and route profile-free users to setup.
      */
     protected function authenticated(Request $request, $user)
     {
@@ -105,7 +105,8 @@ class LoginController extends Controller
             return null;
         }
 
-        $profiles = $user->profiles;
+        $context = app(ProfileContext::class);
+        $profiles = $context->availableProfiles($user);
 
         if ($profiles->isEmpty()) {
             if ($request->wantsJson()) {
@@ -118,18 +119,9 @@ class LoginController extends Controller
             return redirect()->route('profile.select');
         }
 
-        $specialistProfile = $profiles->firstWhere('type', 'specialist');
-
-        if ($specialistProfile && $user->skills()->doesntExist()) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'redirect' => route('skill.select'),
-                    'message'  => 'شما با موفقیت وارد شدید.',
-                ]);
-            }
-
-            return redirect()->route('skill.select');
-        }
+        // Profile completion and specialist skill onboarding are intentionally
+        // non-blocking. Context middleware will transparently select one profile
+        // or ask a dual-profile user to choose.
 
         return null;
     }

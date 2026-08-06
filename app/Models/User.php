@@ -164,7 +164,13 @@ class User extends Authenticatable
 
     public function getDisplayRoleAttribute()
     {
-        return $this->role == 'employer' ? 'کارفرما' : 'متخصص';
+        if ($this->is_admin) {
+            return 'مدیر سامانه';
+        }
+
+        $types = $this->profiles()->whereIn('type', ['employer', 'specialist'])->pluck('type');
+
+        return $types->count() > 1 ? 'کارفرما / متخصص' : ($types->first() === 'employer' ? 'کارفرما' : 'متخصص');
     }
 
     /**

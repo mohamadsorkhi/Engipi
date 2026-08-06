@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Support\Auth\ProfileContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,42 +15,34 @@ class ProfileSelectController extends Controller
     }
 
     /**
-     * Show profile selection page, or role-select for first-time users.
-     * Clears any existing active_role so the user consciously picks again.
+     * Show profile selection page, preserving a valid current selection.
      */
-    public function index()
+    public function index(ProfileContext $context)
     {
         $user = Auth::user();
-        $profiles = $user->profiles;
+        $profiles = $context->availableProfiles($user);
 
         if ($profiles->isEmpty()) {
             return view('user.role-select');
         }
 
-        session()->forget('active_role');
+        $activeProfile = $context->activeProfile($user);
 
-        return view('user.profile-select', compact('profiles'));
+        return view('user.profile-select', compact('profiles', 'activeProfile'));
     }
 
     /**
-     * Store the chosen role in session and redirect to the dashboard.
+     * Activate an owned profile identity and redirect to the dashboard.
      */
-    public function activate(Request $request)
+    public function activate(Request $request, ProfileContext $context)
     {
-        $type = $request->input('type');
-
-        if (!in_array($type, ['employer', 'specialist'])) {
-            return redirect()->route('profile.select');
-        }
-
         $user = Auth::user();
-        $hasProfile = $user->profiles->contains('type', $type);
+        $request->validate(['profile_id' => ['required', 'string', 'max:36']]);
+        $profile = $context->activate($user, $request->string('profile_id')->toString());
 
-        if (!$hasProfile) {
-            return redirect()->route('profile.select');
+        if (! $profile) {
+            return redirect()->route('profile.select')->with('error', 'پروفایل انتخاب‌شده معتبر نیست.');
         }
-
-        session(['active_role' => $type]);
 
         return redirect()->route('root');
     }

@@ -38,15 +38,11 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role == 'employer') {
-            return view('employer.dashboard');
-        } elseif ($user->role == 'worker') {
-            return view('worker.dashboard');
+        if ($user->is_admin) {
+            return redirect()->route('admin.dashboard');
         }
 
-        // In case the user has no role, which shouldn't happen with the current setup.
-        Auth::logout();
-        return redirect('/login')->with('error', 'نقش کاربری شما نامعتبر است.');
+        return redirect()->route('user.dashboard');
     }
 
     /*Language Translation*/

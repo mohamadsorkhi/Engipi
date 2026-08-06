@@ -6,9 +6,13 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Support\Auth\ProfileContext;
 
 class ProfileMiddleware
 {
+    public function __construct(private ProfileContext $context)
+    {
+    }
     /**
      * Handle an incoming request.
      * Check if user has the required profile type.
@@ -25,7 +29,9 @@ class ProfileMiddleware
         $user = Auth::user();
         
         // Check if user has ANY profile of the required types
-        $hasRequiredProfile = $user->profiles()->whereIn('type', $profileTypes)->exists();
+        $hasRequiredProfile = $this->context->availableProfiles($user)
+            ->whereIn('type', $profileTypes)
+            ->isNotEmpty();
 
         if (!$hasRequiredProfile) {
             if ($request->expectsJson()) {

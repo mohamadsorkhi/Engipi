@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Models\UserProfile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Support\Auth\ProfileContext;
 
 class ProfileController extends Controller
 {
@@ -33,10 +34,11 @@ class ProfileController extends Controller
     /**
      * Add a new profile to the current user.
      */
-    public function store(AddProfileRequest $request, AddProfileAction $action)
+    public function store(AddProfileRequest $request, AddProfileAction $action, ProfileContext $context)
     {
         $user = Auth::user();
         $profile = $action->execute($user, $request->validated());
+        $context->activate($user, $profile);
 
         $redirect = $profile->type === 'specialist'
             ? route('skill.select')
