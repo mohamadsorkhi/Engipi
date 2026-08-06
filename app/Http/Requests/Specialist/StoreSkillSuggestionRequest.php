@@ -54,15 +54,19 @@ class StoreSkillSuggestionRequest extends FormRequest
                 return;
             }
 
-            if ($validator->errors()->has('skill_type')) {
+            if ($validator->errors()->has('skill_type') || $validator->errors()->has('subdomain_id')) {
                 return;
             }
 
             $normalized = SkillSuggestion::normalizeName((string) $this->skill_name);
 
-            $skillExists = Skill::query()->where('skill_type', $this->skill_type)->get(['name'])->contains(
-                fn (Skill $skill): bool => SkillSuggestion::normalizeName($skill->name) === $normalized
-            );
+            $skillExists = Skill::query()
+                ->where('skill_type', $this->skill_type)
+                ->where('subdomain_id', $this->subdomain_id)
+                ->get(['name'])
+                ->contains(
+                    fn (Skill $skill): bool => SkillSuggestion::normalizeName($skill->name) === $normalized
+                );
 
             if ($skillExists) {
                 $validator->errors()->add('skill_name', 'این مهارت قبلاً در لیست مهارت‌ها وجود دارد.');

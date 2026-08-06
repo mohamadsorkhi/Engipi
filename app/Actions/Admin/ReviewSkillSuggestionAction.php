@@ -17,9 +17,13 @@ class ReviewSkillSuggestionAction
             $suggestion = SkillSuggestion::query()->lockForUpdate()->findOrFail($suggestion->id);
             $this->ensurePending($suggestion);
 
-            $skill = Skill::query()->where('skill_type', $suggestion->skill_type)->get()->first(
-                fn (Skill $skill): bool => SkillSuggestion::normalizeName($skill->name) === $suggestion->normalized_name
-            );
+            $skill = Skill::query()
+                ->where('skill_type', $suggestion->skill_type)
+                ->where('subdomain_id', $suggestion->subdomain_id)
+                ->get()
+                ->first(
+                    fn (Skill $skill): bool => SkillSuggestion::normalizeName($skill->name) === $suggestion->normalized_name
+                );
 
             if (! $skill) {
                 $process = null;

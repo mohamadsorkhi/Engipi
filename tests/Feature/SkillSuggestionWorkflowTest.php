@@ -193,6 +193,46 @@ class SkillSuggestionWorkflowTest extends TestCase
             ])->assertCreated();
     }
 
+    public function test_same_name_is_independent_between_subdomains(): void
+    {
+        [$specialist, $subdomain] = $this->specialistAndSubdomain();
+        $otherSubdomain = Subdomain::factory()->create();
+        Skill::query()->create([
+            'name' => 'کنترل کیفیت',
+            'skill_type' => SkillSuggestion::TYPE_FIELD,
+            'subdomain_id' => $otherSubdomain->id,
+        ]);
+
+        $this->actingAs($specialist)->withSession(['active_role' => 'specialist'])
+            ->postJson(route('skill-suggestions.store'), [
+                'skill_name' => 'کنترل کیفیت',
+                'skill_type' => SkillSuggestion::TYPE_FIELD,
+                'subdomain_id' => $subdomain->id,
+            ])->assertCreated();
+    }
+
+    public function test_approval_does_not_attach_a_same_named_skill_from_another_subdomain(): void
+    {
+        [$specialist, $subdomain] = $this->specialistAndSubdomain();
+        $otherSkill = Skill::factory()->create([
+            'name' => 'کنترل کیفیت',
+            'skill_type' => SkillSuggestion::TYPE_FIELD,
+        ]);
+        $suggestion = $this->createSuggestion($specialist, $subdomain, 'کنترل کیفیت');
+        $admin = User::factory()->create(['is_admin' => true, 'role' => 'admin']);
+
+        $this->actingAs($admin)->post(route('admin.skill-suggestions.approve', $suggestion))->assertRedirect();
+
+        $skill = Skill::query()
+            ->where('subdomain_id', $subdomain->id)
+            ->where('name', 'کنترل کیفیت')
+            ->firstOrFail();
+
+        $this->assertNotSame($otherSkill->id, $skill->id);
+        $this->assertDatabaseHas('user_skills', ['user_id' => $specialist->id, 'skill_id' => $skill->id]);
+        $this->assertDatabaseMissing('user_skills', ['user_id' => $specialist->id, 'skill_id' => $otherSkill->id]);
+    }
+
     public function test_approval_creates_processing_skill_and_process(): void
     {
         [$specialist, $subdomain] = $this->specialistAndSubdomain();
