@@ -21,10 +21,10 @@ class UserSkillApiContractTest extends TestCase
     public function test_route_uses_intended_controller_and_sanctum_authentication(): void
     {
         $route = collect(Route::getRoutes()->getRoutes())
-            ->first(fn ($route) => $route->uri() === 'api/user-skill'
-                && in_array('POST', $route->methods(), true));
+            ->first(fn ($route) => $route->uri() === 'api/user-skill');
 
         $this->assertNotNull($route);
+        $this->assertSame(['POST'], $route->methods());
         $this->assertSame(UserSkillController::class.'@store', $route->getActionName());
         $this->assertContains('api', $route->gatherMiddleware());
         $this->assertContains('auth:sanctum', $route->gatherMiddleware());

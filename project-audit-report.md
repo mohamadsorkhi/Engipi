@@ -11,7 +11,7 @@ This is a Persian-language engineering/freelancing marketplace built with Larave
 | Local PHP | 8.2.12 |
 | Routes | 94 active application routes |
 | Application PHP files | 158 |
-| Tests | No test suite found |
+| Tests | PHPUnit feature and unit test suite present |
 | Authentication | Laravel UI/session authentication |
 | API authentication | Sanctum installed but not applied |
 | Admin panel | Custom `/admin` panel |
@@ -23,7 +23,7 @@ This is a Persian-language engineering/freelancing marketplace built with Larave
 | Dependency security | Composer audit found 24 advisories affecting 14 packages |
 | Overall risk | Medium-to-high until API, authorization, dependencies, and deployment are corrected |
 
-No files were modified.
+The route contract coverage now verifies each reviewed route's complete HTTP method set. Public project and landing-preview routes are also checked explicitly to prevent accidental addition of `auth`, `admin`, `active_role`, `role`, or `profile` middleware while preserving the production route definitions.
 
 ---
 
