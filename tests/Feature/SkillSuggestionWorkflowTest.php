@@ -196,7 +196,10 @@ class SkillSuggestionWorkflowTest extends TestCase
     public function test_same_name_is_independent_between_subdomains(): void
     {
         [$specialist, $subdomain] = $this->specialistAndSubdomain();
-        $otherSubdomain = Subdomain::factory()->create();
+        $otherSubdomain = Subdomain::query()->create([
+            'name' => 'طراحی کاربردی',
+            'skill_domain_id' => $subdomain->skill_domain_id,
+        ]);
         Skill::query()->create([
             'name' => 'کنترل کیفیت',
             'skill_type' => SkillSuggestion::TYPE_FIELD,
@@ -230,9 +233,14 @@ class SkillSuggestionWorkflowTest extends TestCase
     public function test_approval_does_not_attach_a_same_named_skill_from_another_subdomain(): void
     {
         [$specialist, $subdomain] = $this->specialistAndSubdomain();
-        $otherSkill = Skill::factory()->create([
+        $otherSubdomain = Subdomain::query()->create([
+            'name' => 'طراحی کاربردی',
+            'skill_domain_id' => $subdomain->skill_domain_id,
+        ]);
+        $otherSkill = Skill::query()->create([
             'name' => 'کنترل کیفیت',
             'skill_type' => SkillSuggestion::TYPE_FIELD,
+            'subdomain_id' => $otherSubdomain->id,
         ]);
         $suggestion = $this->createSuggestion($specialist, $subdomain, 'کنترل کیفیت');
         $admin = User::factory()->create(['is_admin' => true, 'role' => 'admin']);
