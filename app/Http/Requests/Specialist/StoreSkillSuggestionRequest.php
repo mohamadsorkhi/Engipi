@@ -76,6 +76,7 @@ class StoreSkillSuggestionRequest extends FormRequest
             $pendingExists = SkillSuggestion::query()
                 ->where('user_id', $this->user()->id)
                 ->where('skill_type', $this->skill_type)
+                ->where('subdomain_id', $this->subdomain_id)
                 ->where('normalized_name', $normalized)
                 ->where('status', SkillSuggestion::STATUS_PENDING)
                 ->exists();
