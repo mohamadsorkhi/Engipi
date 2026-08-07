@@ -43,30 +43,40 @@ class PendingFileCleanup
         $failed = 0;
 
         foreach ($query->get() as $pending) {
-            try {
-                $disk = Storage::disk($pending->disk);
+            $failureCategory = null;
 
-                if ($disk->exists($pending->path) && ! $disk->delete($pending->path)) {
-                    throw new RuntimeException('The storage adapter did not delete the file.');
+            try {
+                try {
+                    $disk = Storage::disk($pending->disk);
+
+                    if ($disk->exists($pending->path) && ! $disk->delete($pending->path)) {
+                        $failureCategory = 'delete_returned_false';
+                        throw new RuntimeException($failureCategory);
+                    }
+                } catch (Throwable $exception) {
+                    $failureCategory ??= 'storage_access_failure';
+
+                    throw $exception;
                 }
 
                 // Another invocation may already have completed this record.
                 PendingFileDeletion::query()->whereKey($pending->id)->delete();
                 $processed++;
-            } catch (Throwable $exception) {
+            } catch (Throwable) {
+                $failureCategory ??= 'unexpected_cleanup_failure';
+                $attemptNumber = $pending->attempts + 1;
                 PendingFileDeletion::query()->whereKey($pending->id)->update([
-                    'attempts' => $pending->attempts + 1,
+                    'attempts' => $attemptNumber,
                     'last_attempt_at' => now(),
-                    'last_error' => $exception->getMessage(),
+                    'last_error' => $failureCategory,
                     'updated_at' => now(),
                 ]);
                 $failed++;
 
                 Log::error('Pending project file cleanup failed.', [
                     'pending_file_deletion_id' => $pending->id,
-                    'disk' => $pending->disk,
-                    'path' => $pending->path,
-                    'exception' => $exception,
+                    'failure_category' => $failureCategory,
+                    'attempt_number' => $attemptNumber,
                 ]);
             }
         }

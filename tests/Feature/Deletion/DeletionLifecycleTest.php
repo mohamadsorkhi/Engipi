@@ -54,8 +54,42 @@ class DeletionLifecycleTest extends TestCase
             'disk' => 'local',
             'path' => $file->path,
             'attempts' => 1,
-            'last_error' => 'The storage adapter did not delete the file.',
+            'last_error' => 'delete_returned_false',
         ]);
+    }
+
+    public function test_sensitive_storage_failure_details_are_never_persisted_or_logged(): void
+    {
+        Storage::fake('local');
+        $sensitivePath = 'private/customer-12345/credential-token.pdf';
+        $sensitiveMessage = 'S3 endpoint https://secret.example.test access_key=TOP-SECRET root=/srv/private';
+        $pending = PendingFileDeletion::query()->create([
+            'disk' => 'sensitive-private-disk',
+            'path' => $sensitivePath,
+        ]);
+        Storage::shouldReceive('disk')
+            ->once()
+            ->with('sensitive-private-disk')
+            ->andThrow(new RuntimeException($sensitiveMessage));
+        Log::shouldReceive('error')->once()->with(
+            'Pending project file cleanup failed.',
+            [
+                'pending_file_deletion_id' => $pending->id,
+                'failure_category' => 'storage_access_failure',
+                'attempt_number' => 1,
+            ]
+        );
+
+        $result = app(PendingFileCleanup::class)->processIds([$pending->id]);
+
+        $this->assertSame(['processed' => 0, 'failed' => 1], $result);
+        $pending->refresh();
+        $this->assertSame('storage_access_failure', $pending->last_error);
+        $this->assertSame(1, $pending->attempts);
+        $this->assertNotNull($pending->last_attempt_at);
+        $this->assertStringNotContainsString($sensitivePath, $pending->last_error);
+        $this->assertStringNotContainsString($sensitiveMessage, $pending->last_error);
+        $this->assertStringNotContainsString('TOP-SECRET', $pending->last_error);
     }
 
     public function test_pending_cleanup_can_be_retried_successfully_and_duplicate_execution_is_safe(): void
@@ -66,7 +100,7 @@ class DeletionLifecycleTest extends TestCase
             'disk' => 'local',
             'path' => 'projects/retry.pdf',
             'attempts' => 1,
-            'last_error' => 'Earlier failure',
+            'last_error' => 'storage_access_failure',
         ]);
 
         $first = app(PendingFileCleanup::class)->processIds([$pending->id]);
