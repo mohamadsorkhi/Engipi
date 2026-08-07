@@ -24,7 +24,15 @@ class PendingFileCleanup
     public function processPending(int $limit = 100): array
     {
         return $this->processQuery(
-            PendingFileDeletion::query()->orderBy('created_at')->limit($limit)
+            PendingFileDeletion::query()
+                // Always drain new work first. Failed work then rotates by its
+                // oldest attempt so a permanently failing row cannot monopolize
+                // every limited batch.
+                ->orderByRaw('CASE WHEN last_attempt_at IS NULL THEN 0 ELSE 1 END')
+                ->orderBy('last_attempt_at')
+                ->orderBy('created_at')
+                ->orderBy('id')
+                ->limit($limit)
         );
     }
 

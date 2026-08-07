@@ -93,6 +93,53 @@ class DeletionLifecycleTest extends TestCase
         $this->assertDatabaseCount('pending_file_deletions', 0);
     }
 
+    public function test_limited_cleanup_does_not_let_old_failures_starve_new_records(): void
+    {
+        Storage::fake('local');
+        $oldest = PendingFileDeletion::query()->forceCreate([
+            'disk' => 'local',
+            'path' => 'projects/oldest-failure.pdf',
+            'created_at' => now()->subMinutes(3),
+            'updated_at' => now()->subMinutes(3),
+        ]);
+        $older = PendingFileDeletion::query()->forceCreate([
+            'disk' => 'local',
+            'path' => 'projects/older-failure.pdf',
+            'created_at' => now()->subMinutes(2),
+            'updated_at' => now()->subMinutes(2),
+        ]);
+        $newer = PendingFileDeletion::query()->forceCreate([
+            'disk' => 'local',
+            'path' => 'projects/newer-success.pdf',
+            'created_at' => now()->subMinute(),
+            'updated_at' => now()->subMinute(),
+        ]);
+        $disk = \Mockery::mock(FilesystemAdapter::class);
+        $disk->shouldReceive('exists')->times(4)->andReturnTrue();
+        $disk->shouldReceive('delete')->times(4)->andReturnUsing(
+            fn (string $path) => $path === $newer->path
+        );
+        Storage::shouldReceive('disk')->times(4)->with('local')->andReturn($disk);
+        Log::shouldReceive('error')->times(3);
+
+        $first = app(PendingFileCleanup::class)->processPending(2);
+
+        $this->assertSame(['processed' => 0, 'failed' => 2], $first);
+        $this->assertDatabaseHas('pending_file_deletions', ['id' => $newer->id, 'attempts' => 0]);
+
+        $second = app(PendingFileCleanup::class)->processPending(2);
+
+        $this->assertSame(['processed' => 1, 'failed' => 1], $second);
+        $this->assertDatabaseMissing('pending_file_deletions', ['id' => $newer->id]);
+        $this->assertDatabaseHas('pending_file_deletions', ['id' => $oldest->id]);
+        $this->assertDatabaseHas('pending_file_deletions', ['id' => $older->id]);
+        $failed = PendingFileDeletion::query()->whereKey([$oldest->id, $older->id])->get();
+        $this->assertSame(3, $failed->sum('attempts'));
+        $this->assertTrue($failed->every(fn (PendingFileDeletion $pending) =>
+            $pending->attempts >= 1 && $pending->last_attempt_at !== null
+        ));
+    }
+
     public function test_sql_failure_rolls_back_rows_and_pending_cleanup_records(): void
     {
         Storage::fake('local');
