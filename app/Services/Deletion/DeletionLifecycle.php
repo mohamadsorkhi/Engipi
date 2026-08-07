@@ -6,6 +6,7 @@ use App\Models\PendingFileDeletion;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class DeletionLifecycle
 {
@@ -32,7 +33,11 @@ class DeletionLifecycle
                 $profile->delete();
             }
 
-            return $user->delete();
+            if (! $user->delete()) {
+                throw new RuntimeException('User deletion was cancelled.');
+            }
+
+            return true;
         });
     }
 
@@ -52,13 +57,17 @@ class DeletionLifecycle
         $project->requests()->delete();
         $deleted = $project->delete();
 
-        if ($deleted && $cleanupIds !== []) {
+        if (! $deleted) {
+            throw new RuntimeException('Project deletion was cancelled.');
+        }
+
+        if ($cleanupIds !== []) {
             // This intentionally does not dispatch to the queue: the current
             // runtime uses the sync driver. Failures remain durable for the
             // project-files:cleanup command and never escape after commit.
             DB::afterCommit(fn () => app(PendingFileCleanup::class)->processIds($cleanupIds));
         }
 
-        return $deleted;
+        return true;
     }
 }

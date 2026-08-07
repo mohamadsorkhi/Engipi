@@ -5,6 +5,7 @@ namespace Tests\Feature\Deletion;
 use App\Models\PendingFileDeletion;
 use App\Models\Project;
 use App\Models\ProjectFile;
+use App\Models\SkillDomain;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Services\Deletion\DeletionLifecycle;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use RuntimeException;
 use Tests\TestCase;
 
 class DeletionLifecycleTest extends TestCase
@@ -128,6 +130,80 @@ class DeletionLifecycleTest extends TestCase
         $this->assertDatabaseMissing('projects', ['id' => $project->id]);
         $this->assertDatabaseMissing('user_profiles', ['id' => $profile->id]);
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
+    }
+
+    public function test_project_delete_returning_false_rolls_back_state_and_cleanup_intent(): void
+    {
+        Storage::fake('local');
+        [$project, $file] = $this->createProjectWithFile();
+        $domain = SkillDomain::query()->create(['name' => 'Rollback project domain']);
+        $project->domains()->attach($domain->id);
+        Storage::disk('local')->put($file->path, 'content');
+        Project::deleting(fn () => false);
+
+        try {
+            app(DeletionLifecycle::class)->deleteProject($project);
+            $this->fail('A cancelled project deletion must throw.');
+        } catch (RuntimeException $exception) {
+            $this->assertSame('Project deletion was cancelled.', $exception->getMessage());
+        }
+
+        $this->assertDatabaseHas('projects', ['id' => $project->id]);
+        $this->assertDatabaseHas('project_files', [
+            'id' => $file->id,
+            'project_id' => $project->id,
+        ]);
+        $this->assertDatabaseHas('project_domains', [
+            'project_id' => $project->id,
+            'skill_domain_id' => $domain->id,
+        ]);
+        $this->assertDatabaseCount('pending_file_deletions', 0);
+        Storage::disk('local')->assertExists($file->path);
+    }
+
+    public function test_user_delete_returning_false_rolls_back_projects_profiles_and_cleanup_intents(): void
+    {
+        Storage::fake('local');
+        [$project, $file] = $this->createProjectWithFile();
+        $user = $project->employer;
+        $profile = $project->employerProfile;
+        $domain = SkillDomain::query()->create(['name' => 'Rollback user domain']);
+        $project->domains()->attach($domain->id);
+        $profile->domains()->attach($domain->id);
+        Storage::disk('local')->put($file->path, 'content');
+        User::deleting(fn () => false);
+
+        try {
+            app(DeletionLifecycle::class)->deleteUser($user);
+            $this->fail('A cancelled user deletion must throw.');
+        } catch (RuntimeException $exception) {
+            $this->assertSame('User deletion was cancelled.', $exception->getMessage());
+        }
+
+        $this->assertDatabaseHas('users', ['id' => $user->id]);
+        $this->assertDatabaseHas('user_profiles', [
+            'id' => $profile->id,
+            'user_id' => $user->id,
+        ]);
+        $this->assertDatabaseHas('projects', [
+            'id' => $project->id,
+            'employer_id' => $user->id,
+            'employer_profile_id' => $profile->id,
+        ]);
+        $this->assertDatabaseHas('project_files', [
+            'id' => $file->id,
+            'project_id' => $project->id,
+        ]);
+        $this->assertDatabaseHas('project_domains', [
+            'project_id' => $project->id,
+            'skill_domain_id' => $domain->id,
+        ]);
+        $this->assertDatabaseHas('user_profile_domains', [
+            'profile_id' => $profile->id,
+            'skill_domain_id' => $domain->id,
+        ]);
+        $this->assertDatabaseCount('pending_file_deletions', 0);
+        Storage::disk('local')->assertExists($file->path);
     }
 
     /** @return array{Project, ProjectFile} */

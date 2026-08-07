@@ -156,7 +156,7 @@ class ProjectFileDownloadAuthorizationTest extends AuthorizationTestCase
         [$project, $legacyFile, $privateFile] = $this->createMixedStorageProject();
 
         app(EmployerDeleteProjectAction::class)->execute($project);
-        $this->runFileCleanup($legacyFile, $privateFile);
+        $this->runFileCleanup();
 
         $this->assertMixedStorageFilesDeleted($legacyFile, $privateFile);
         $this->assertDatabaseMissing('projects', ['id' => $project->id]);
@@ -167,7 +167,7 @@ class ProjectFileDownloadAuthorizationTest extends AuthorizationTestCase
         [$project, $legacyFile, $privateFile] = $this->createMixedStorageProject();
 
         app(AdminDeleteProjectAction::class)->execute($project);
-        $this->runFileCleanup($legacyFile, $privateFile);
+        $this->runFileCleanup();
 
         $this->assertMixedStorageFilesDeleted($legacyFile, $privateFile);
         $this->assertDatabaseMissing('projects', ['id' => $project->id]);
@@ -179,7 +179,7 @@ class ProjectFileDownloadAuthorizationTest extends AuthorizationTestCase
         $employer = $project->employer;
 
         app(DeleteUserAction::class)->execute($employer);
-        $this->runFileCleanup($legacyFile, $privateFile);
+        $this->runFileCleanup();
 
         $this->assertMixedStorageFilesDeleted($legacyFile, $privateFile);
         $this->assertDatabaseMissing('users', ['id' => $employer->id]);
@@ -220,7 +220,7 @@ class ProjectFileDownloadAuthorizationTest extends AuthorizationTestCase
         Storage::disk('local')->assertMissing($privateFile->path);
     }
 
-    private function runFileCleanup(ProjectFile $legacyFile, ProjectFile $privateFile): void
+    private function runFileCleanup(): void
     {
         app(PendingFileCleanup::class)->processPending();
     }
