@@ -68,14 +68,15 @@ class AdministratorSecurityCommandsTest extends TestCase
             'mobile' => '09120000000',
             'password' => Hash::make('historical-candidate'),
         ]);
-        $original = $user->getRawOriginal();
+        $original = User::query()->findOrFail($user->id)->getRawOriginal();
 
         $this->artisan('admin:check-bootstrap', ['--password' => 'historical-candidate'])
             ->expectsOutputToContain('account detected')
             ->expectsOutputToContain('MATCH')
             ->assertFailed();
 
-        $this->assertSame($original, $user->fresh()->getRawOriginal());
+        $persisted = User::query()->findOrFail($user->id)->getRawOriginal();
+        $this->assertSame($original, $persisted);
     }
 
     public function test_bootstrap_check_succeeds_when_the_account_is_absent(): void
