@@ -15,12 +15,13 @@ final class CheckBootstrapAdministrator extends Command
 
     public function handle(): int
     {
-        $user = User::query()
+        $users = User::query()
             ->where('email', 'admin@test.com')
             ->orWhere('mobile', '09120000000')
-            ->first();
+            ->orderBy('id')
+            ->get(['id', 'password']);
 
-        if ($user === null) {
+        if ($users->isEmpty()) {
             $this->info('No historical bootstrap administrator account was detected.');
 
             return self::SUCCESS;
@@ -29,8 +30,13 @@ final class CheckBootstrapAdministrator extends Command
         $this->warn('Historical bootstrap administrator account detected. Follow the security runbook.');
 
         if (is_string($this->option('password')) && $this->option('password') !== '') {
-            $matches = Hash::check($this->option('password'), $user->password);
-            $this->line('Supplied historical password candidate: '.($matches ? 'MATCH' : 'no match'));
+            $matches = false;
+
+            foreach ($users as $user) {
+                $matches = Hash::check($this->option('password'), $user->password) || $matches;
+            }
+
+            $this->line('Supplied historical password candidate: '.($matches ? 'MATCH' : 'NOT ACCEPTED'));
         } else {
             $this->line('Password was not checked; supply --password to verify the historical credential.');
         }

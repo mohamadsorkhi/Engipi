@@ -84,4 +84,43 @@ class AdministratorSecurityCommandsTest extends TestCase
             ->expectsOutputToContain('No historical bootstrap')
             ->assertSuccessful();
     }
+
+    public function test_bootstrap_check_tests_every_matching_account_regardless_of_insertion_order(): void
+    {
+        foreach ([['email', 'mobile'], ['mobile', 'email']] as $insertionOrder) {
+            User::query()->delete();
+
+            foreach ($insertionOrder as $identifier) {
+                User::factory()->create($identifier === 'email' ? [
+                    'email' => 'admin@test.com',
+                    'mobile' => '09121111111',
+                    'password' => Hash::make('different-password'),
+                ] : [
+                    'email' => 'mobile-match@example.test',
+                    'mobile' => '09120000000',
+                    'password' => Hash::make('historical-candidate'),
+                ]);
+            }
+
+            $this->artisan('admin:check-bootstrap', ['--password' => 'historical-candidate'])
+                ->expectsOutputToContain('account detected')
+                ->expectsOutputToContain('MATCH')
+                ->assertFailed();
+        }
+    }
+
+    public function test_bootstrap_check_detects_either_historical_identifier_by_itself(): void
+    {
+        foreach ([
+            ['email' => 'admin@test.com', 'mobile' => '09121111111'],
+            ['email' => 'mobile-match@example.test', 'mobile' => '09120000000'],
+        ] as $attributes) {
+            User::query()->delete();
+            User::factory()->create($attributes);
+
+            $this->artisan('admin:check-bootstrap')
+                ->expectsOutputToContain('account detected')
+                ->assertFailed();
+        }
+    }
 }
