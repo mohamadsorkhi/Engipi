@@ -9,6 +9,7 @@ This change remediates Composer/PHP dependency vulnerabilities and stabilizes th
 
 Tracked changes are intentionally limited to:
 
+- `.github/workflows/deploy.yml`
 - `composer.json`
 - `composer.lock`
 - `docs/audits/SEC-PHP-001.md`
@@ -21,3 +22,12 @@ The initial command:
 
 ```console
 composer audit --locked
+```
+## Deployment integrity
+
+The deployment workflow now sets up PHP 8.2 with Composer v2 and installs production dependencies from the committed lock file before the FTP upload:
+
+```console
+composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader
+```
+This prevents production from retaining stale or vulnerable packages when `vendor` is not tracked by Git and ensures the deployed dependency graph matches the audited `composer.lock`.
