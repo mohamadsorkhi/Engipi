@@ -13,6 +13,7 @@ class EnsureActiveRole
     public function __construct(private ProfileContext $context)
     {
     }
+
     /**
      * Enforce an ownership-validated active profile context.
      *
@@ -30,8 +31,10 @@ class EnsureActiveRole
 
         $profiles = $this->context->availableProfiles($user);
 
-        // No profiles at all → go create one
+        // No profiles at all â†’ go create one
         if ($profiles->isEmpty()) {
+            $this->context->clear();
+
             return redirect()->route('profile.select');
         }
 
@@ -48,9 +51,10 @@ class EnsureActiveRole
         }
 
         $activeType = $activeProfile?->type;
-        if (!empty($roles) && !in_array($activeType, $roles, true)) {
+
+        if (! empty($roles) && ! in_array($activeType, $roles, true)) {
             return redirect()->route('profile.select')
-                ->with('error', 'برای دسترسی به این بخش، نقش مناسب را انتخاب کنید.');
+                ->with('error', 'Ø¨Ø±Ø§ÛŒ Ø¯Ø³ØªØ±Ø³ÛŒ Ø¨Ù‡ Ø§ÛŒÙ† Ø¨Ø®Ø´ØŒ Ù†Ù‚Ø´ Ù…Ù†Ø§Ø³Ø¨ Ø±Ø§ Ø§Ù†ØªØ®Ø§Ø¨ Ú©Ù†ÛŒØ¯.');
         }
 
         return $next($request);
