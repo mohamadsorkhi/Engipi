@@ -57,6 +57,7 @@ jobs:
             --optimize-autoloader
 
           npm ci
+          git clean -fdX public/build
           npm run build
 
           test -f public/build/manifest.json
