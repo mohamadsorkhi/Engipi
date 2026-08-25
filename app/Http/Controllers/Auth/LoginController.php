@@ -3,26 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Support\Auth\ProfileContext;
 use App\Providers\RouteServiceProvider;
+use App\Support\Auth\ProfileContext;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
     /**
@@ -34,8 +23,6 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -43,8 +30,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Get the login username to be used by the controller.
-     * Supports both email and mobile.
+     * Get the login field used by authentication.
      */
     public function username()
     {
@@ -52,7 +38,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Validate the user login request.
+     * Validate the login request.
      */
     protected function validateLogin(Request $request)
     {
@@ -66,38 +52,47 @@ class LoginController extends Controller
     }
 
     /**
-     * Attempt to log the user into the application.
+     * Attempt to authenticate only active users.
      */
     protected function attemptLogin(Request $request)
     {
         $login = $request->input('login');
         $password = $request->input('password');
 
-        // Determine if login is email or mobile
-        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL)
+            ? 'email'
+            : 'mobile';
 
         return Auth::attempt(
-            [$field => $login, 'password' => $password],
-            $request->boolean('remember')
+            [
+                $field => $login,
+                'password' => $password,
+                'active' => true,
+            ],
+            $request->boolean('remember'),
         );
     }
 
     /**
-     * Get the needed authorization credentials from the request.
+     * Get the authentication credentials.
      */
     protected function credentials(Request $request)
     {
         $login = $request->input('login');
-        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
+
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL)
+            ? 'email'
+            : 'mobile';
 
         return [
             $field => $login,
             'password' => $request->input('password'),
+            'active' => true,
         ];
     }
 
     /**
-     * Preserve login for every account and route profile-free users to setup.
+     * Handle a successfully authenticated user.
      */
     protected function authenticated(Request $request, $user)
     {
@@ -112,25 +107,18 @@ class LoginController extends Controller
             if ($request->wantsJson()) {
                 return response()->json([
                     'redirect' => route('profile.select'),
-                    'message'  => 'شما با موفقیت وارد شدید.',
+                    'message' => 'شما با موفقیت وارد شدید.',
                 ]);
             }
 
             return redirect()->route('profile.select');
         }
 
-        // Profile completion and specialist skill onboarding are intentionally
-        // non-blocking. Context middleware will transparently select one profile
-        // or ask a dual-profile user to choose.
-
         return null;
     }
 
     /**
-     * Send the response after the user was authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * Send the response after authentication.
      */
     protected function sendLoginResponse(Request $request)
     {
@@ -138,14 +126,19 @@ class LoginController extends Controller
 
         $this->clearLoginAttempts($request);
 
-        if ($response = $this->authenticated($request, $this->guard()->user())) {
+        if (
+            $response = $this->authenticated(
+                $request,
+                $this->guard()->user(),
+            )
+        ) {
             return $response;
         }
 
         if ($request->wantsJson()) {
             return new JsonResponse([
                 'redirect' => $this->redirectPath(),
-                'message' => 'شما با موفقیت وارد شدید.'
+                'message' => 'شما با موفقیت وارد شدید.',
             ], 200);
         }
 
