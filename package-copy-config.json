@@ -1,6 +1,5 @@
 {
     "packagesToCopy": [
-        "@ckeditor/ckeditor5-build-classic",
         "@simonwep/pickr",
         "@tarekraafat/autocomplete.js",
         "aos",
@@ -13,7 +12,6 @@
         "dom-autoscroller",
         "dragula",
         "dropzone",
-        "echarts",
         "feather-icons",
         "fg-emoji-picker",
         "filepond",
@@ -39,13 +37,11 @@
         "nouislider",
         "particles.js",
         "prismjs",
-        "quill",
         "rater-js",
         "shepherd.js",
         "simplebar",
         "sortablejs",
         "sweetalert2",
-        "swiper",
         "toastify-js",
         "wnumb"
     ]
