@@ -3,13 +3,18 @@
 namespace App\Actions\Admin;
 
 use App\Models\Skill;
+use App\Services\Taxonomy\SkillSubdomainAuthority;
 
-class CreateSkillAction
+final class CreateSkillAction
 {
+    public function __construct(
+        private readonly SkillSubdomainAuthority $authority,
+    ) {}
+
     public function execute(array $data): Skill
     {
-        return Skill::create([
-            'name'         => $data['name'],
+        return $this->authority->create([
+            'name' => $data['name'],
             'subdomain_id' => $data['subdomain_id'],
         ]);
     }
