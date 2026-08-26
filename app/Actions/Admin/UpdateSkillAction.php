@@ -3,16 +3,19 @@
 namespace App\Actions\Admin;
 
 use App\Models\Skill;
+use App\Services\Taxonomy\SkillSubdomainAuthority;
 
-class UpdateSkillAction
+final class UpdateSkillAction
 {
+    public function __construct(
+        private readonly SkillSubdomainAuthority $authority,
+    ) {}
+
     public function execute(Skill $skill, array $data): Skill
     {
-        $skill->update([
-            'name'         => $data['name'],
+        return $this->authority->updatePrimary($skill, [
+            'name' => $data['name'],
             'subdomain_id' => $data['subdomain_id'],
         ]);
-
-        return $skill->fresh();
     }
 }
