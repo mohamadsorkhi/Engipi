@@ -11,6 +11,7 @@ use App\Models\UserProfile;
 use App\Services\Taxonomy\SkillSubdomainAuthority;
 use App\Support\Auth\ProfileContext;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ViewErrorBag;
 use Tests\TestCase;
 
@@ -180,6 +181,60 @@ final class SkillSubdomainCanonicalReadTest extends TestCase
             'skill_id' => $skill->id,
             'level' => 'متوسط',
             'years_of_experience' => 3,
+        ]);
+    }
+
+    public function test_deployment_migration_backfills_missing_canonical_relations_idempotently(): void
+    {
+        $subdomain = $this->createSubdomain(
+            'Migration backfill subdomain',
+        );
+
+        $skill = app(SkillSubdomainAuthority::class)->create([
+            'name' => 'Migration backfill skill',
+            'skill_type' => 'field',
+            'subdomain_id' => $subdomain->id,
+        ]);
+
+        DB::table('skill_subdomain')
+            ->where('skill_id', $skill->id)
+            ->delete();
+
+        $this->assertDatabaseMissing('skill_subdomain', [
+            'skill_id' => $skill->id,
+            'subdomain_id' => $subdomain->id,
+        ]);
+
+        $migration = require database_path(
+            'migrations/2026_08_27_170840_backfill_canonical_skill_subdomains.php',
+        );
+
+        $migration->up();
+        $migration->up();
+
+        $this->assertDatabaseHas('skill_subdomain', [
+            'skill_id' => $skill->id,
+            'subdomain_id' => $subdomain->id,
+        ]);
+
+        $this->assertSame(
+            1,
+            DB::table('skill_subdomain')
+                ->where('skill_id', $skill->id)
+                ->where('subdomain_id', $subdomain->id)
+                ->count(),
+        );
+
+        $this->assertSame(
+            $subdomain->id,
+            $skill->fresh()->subdomain_id,
+        );
+
+        $migration->down();
+
+        $this->assertDatabaseHas('skill_subdomain', [
+            'skill_id' => $skill->id,
+            'subdomain_id' => $subdomain->id,
         ]);
     }
 
