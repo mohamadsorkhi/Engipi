@@ -9,21 +9,28 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Employer\SimpleStoreProjectRequest;
 use App\Http\Requests\Employer\StoreProjectRequest;
 use App\Http\Requests\Employer\UpdateProjectRequest;
+use App\Models\Process;
 use App\Models\Project;
 use App\Models\Skill;
 use App\Models\SkillDomain;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {
-        $projects = Auth::user()->projects()->with(['skills', 'domains'])->latest()->paginate(10);
+        $projects = Auth::user()
+            ->projects()
+            ->with(['skills', 'domains'])
+            ->latest()
+            ->paginate(10);
+
         return view('user.projects.index', compact('projects'));
     }
 
@@ -32,29 +39,54 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $domains = SkillDomain::with('processes.skills')->orderBy('name')->get();
-        $skills = Skill::select('id', 'name', 'skill_type', 'subdomain_id')
-            ->with('subdomain.domain')
+        $domains = SkillDomain::with('processes.skills')
+            ->orderBy('name')
+            ->get();
+
+        $skills = Skill::query()
+            ->select('id', 'name', 'skill_type')
+            ->with([
+                'subdomains' => fn ($query) => $query
+                    ->with('domain')
+                    ->orderBy('name'),
+            ])
             ->get()
             ->sortBy([
-                fn ($a, $b) => ($a->subdomain?->domain?->name ?? '') <=> ($b->subdomain?->domain?->name ?? ''),
-                fn ($a, $b) => ($a->subdomain?->name ?? '') <=> ($b->subdomain?->name ?? ''),
+                fn ($a, $b) => (
+                    $a->subdomains->first()?->domain?->name ?? ''
+                ) <=> (
+                    $b->subdomains->first()?->domain?->name ?? ''
+                ),
+                fn ($a, $b) => (
+                    $a->subdomains->first()?->name ?? ''
+                ) <=> (
+                    $b->subdomains->first()?->name ?? ''
+                ),
                 fn ($a, $b) => $a->name <=> $b->name,
             ])
             ->values();
 
-        return view('user.projects.create', compact('domains', 'skills'));
+        return view(
+            'user.projects.create',
+            compact('domains', 'skills'),
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProjectRequest $request, CreateProjectAction $action)
-    {
+    public function store(
+        StoreProjectRequest $request,
+        CreateProjectAction $action,
+    ) {
         $validated = $request->validated();
         $files = $request->file('files', []);
 
-        $project = $action->execute(Auth::user(), $validated, $files);
+        $action->execute(
+            Auth::user(),
+            $validated,
+            $files,
+        );
 
         return response()->json([
             'status' => 'success',
@@ -66,46 +98,76 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function show(Project $project)
     {
-        // Authorize that the current user owns the project
         if (Auth::id() !== $project->employer_id) {
             abort(403);
         }
 
-        $project->load(['skills', 'domains', 'processes', 'files', 'requests.user', 'employerProfile']);
-        return view('user.projects.show', compact('project'));
+        $project->load([
+            'skills',
+            'domains',
+            'processes',
+            'files',
+            'requests.user',
+            'employerProfile',
+        ]);
+
+        return view(
+            'user.projects.show',
+            compact('project'),
+        );
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function edit(Project $project)
     {
-        // Authorize that the current user owns the project
         if (Auth::id() !== $project->employer_id) {
             abort(403);
         }
 
-        $domains = SkillDomain::with('processes')->orderBy('name')->get();
-        $processes = \App\Models\Process::orderBy('name')->get();
+        $domains = SkillDomain::with('processes')
+            ->orderBy('name')
+            ->get();
+
+        $processes = Process::orderBy('name')->get();
         $skills = Skill::orderBy('name')->get();
-        $project->load('skills', 'processes', 'domains');
-        return view('user.projects.edit', compact('project', 'skills', 'domains', 'processes'));
+
+        $project->load([
+            'skills',
+            'processes',
+            'domains',
+        ]);
+
+        return view(
+            'user.projects.edit',
+            compact(
+                'project',
+                'skills',
+                'domains',
+                'processes',
+            ),
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProjectRequest $request, Project $project, UpdateProjectAction $action)
-    {
-        $action->execute($project, $request->validated());
+    public function update(
+        UpdateProjectRequest $request,
+        Project $project,
+        UpdateProjectAction $action,
+    ) {
+        $action->execute(
+            $project,
+            $request->validated(),
+        );
 
         return response()->json([
             'status' => 'success',
@@ -114,18 +176,34 @@ class ProjectController extends Controller
         ]);
     }
 
+    /**
+     * Show the simplified project creation form.
+     */
     public function createSimple()
     {
-        $domains = SkillDomain::with('subdomains.skills')->orderBy('name')->get();
-        return view('employer.projects.create', compact('domains'));
+        $domains = SkillDomain::with('subdomains.skills')
+            ->orderBy('name')
+            ->get();
+
+        return view(
+            'employer.projects.create',
+            compact('domains'),
+        );
     }
 
-    public function storeSimple(SimpleStoreProjectRequest $request, CreateProjectAction $action)
-    {
+    /**
+     * Store a project submitted through the simplified form.
+     */
+    public function storeSimple(
+        SimpleStoreProjectRequest $request,
+        CreateProjectAction $action,
+    ) {
         $data = $request->validated();
 
-        // The simple form only collects skill IDs (no level/years); adapt to the
-        // {id, level, years_of_experience} shape CreateProjectAction expects.
+        /*
+         * The simple form only collects skill IDs. Adapt them to the
+         * structure expected by CreateProjectAction.
+         */
         $data['skills'] = collect($data['skills'] ?? [])
             ->map(fn ($skillId) => [
                 'id' => $skillId,
@@ -138,16 +216,23 @@ class ProjectController extends Controller
 
         return redirect()
             ->route('user.projects.index')
-            ->with('success', 'پروژه با موفقیت ثبت شد.');
+            ->with(
+                'success',
+                'پروژه با موفقیت ثبت شد.',
+            );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project, DeleteProjectAction $action)
-    {
+    public function destroy(
+        Project $project,
+        DeleteProjectAction $action,
+    ) {
         if (Auth::id() !== $project->employer_id) {
-            return response()->json(['message' => 'شما اجازه حذف این پروژه را ندارید.'], 403);
+            return response()->json([
+                'message' => 'شما اجازه حذف این پروژه را ندارید.',
+            ], 403);
         }
 
         $action->execute($project);
