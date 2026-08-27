@@ -231,7 +231,15 @@
                                 <input type="text" id="skills-search-input" class="bp-search-input" placeholder="جستجو در مهارت‌ها...">
                             </div>
                             <select class="form-select bp-source-select" id="skills" multiple aria-hidden="true" tabindex="-1">
-                                @php $skillsByGroup = $skills->groupBy(fn($s) => ($s->subdomain?->domain?->name ?? 'سایر') . '|' . ($s->subdomain?->name ?? '')); @endphp
+                                @php
+                                    $skillsByGroup = $skills->groupBy(function ($skill) {
+                                        $primarySubdomain = $skill->subdomains->first();
+
+                                        return ($primarySubdomain?->domain?->name ?? 'سایر')
+                                            .'|'
+                                            .($primarySubdomain?->name ?? '');
+                                    });
+                                @endphp
                                 @foreach($skillsByGroup as $groupKey => $groupSkills)
                                     @php
                                         $groupParts = explode('|', $groupKey, 2);
@@ -347,13 +355,27 @@
 @endsection
 
 @php
-    $allSkillsArray = $skills->map(function ($s) {
+    $allSkillsArray = $skills->map(function ($skill) {
+        $subdomainNames = $skill->subdomains
+            ->pluck('name')
+            ->filter()
+            ->unique()
+            ->values()
+            ->implode('، ');
+
+        $domainNames = $skill->subdomains
+            ->pluck('domain.name')
+            ->filter()
+            ->unique()
+            ->values()
+            ->implode('، ');
+
         return [
-            'id' => $s->id,
-            'name' => $s->name,
-            'skill_type' => $s->skill_type,
-            'domain' => $s->subdomain?->domain?->name ?? 'سایر',
-            'subdomain' => $s->subdomain?->name ?? '',
+            'id' => $skill->id,
+            'name' => $skill->name,
+            'skill_type' => $skill->skill_type,
+            'domain' => $domainNames !== '' ? $domainNames : 'سایر',
+            'subdomain' => $subdomainNames,
         ];
     });
 @endphp

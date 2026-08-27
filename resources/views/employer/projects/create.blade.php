@@ -170,7 +170,7 @@
     const domainSkillsMap = @json(
         $domains->mapWithKeys(fn ($domain) => [
             $domain->id => $domain->subdomains
-                ->flatMap(fn ($sub) => $sub->skills)
+                ->flatMap(fn ($subdomain) => $subdomain->canonicalSkills)
                 ->map(fn ($skill) => ['id' => $skill->id, 'name' => $skill->name])
                 ->values(),
         ])
