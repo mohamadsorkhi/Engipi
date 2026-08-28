@@ -58,13 +58,20 @@ class Project extends Model
 
     public function employerProfile()
     {
-        return $this->belongsTo(UserProfile::class, 'employer_profile_id');
+        return $this->belongsTo(
+            UserProfile::class,
+            'employer_profile_id',
+        );
     }
 
     public function domains()
     {
-        return $this->belongsToMany(SkillDomain::class, 'project_domains', 'project_id', 'skill_domain_id')
-            ->withTimestamps();
+        return $this->belongsToMany(
+            SkillDomain::class,
+            'project_domains',
+            'project_id',
+            'skill_domain_id',
+        )->withTimestamps();
     }
 
     /**
@@ -72,15 +79,28 @@ class Project extends Model
      */
     public function skills()
     {
-        return $this->belongsToMany(Skill::class, 'project_skills')
-            ->withPivot(['level', 'years_of_experience'])
+        return $this->belongsToMany(
+            Skill::class,
+            'project_skills',
+        )
+            ->withPivot([
+                'level',
+                'years_of_experience',
+            ])
             ->withTimestamps();
     }
 
     public function processes()
     {
-        return $this->belongsToMany(Process::class, 'project_processes', 'project_id', 'process_id')
-            ->withPivot(['desired_levels'])
+        return $this->belongsToMany(
+            Process::class,
+            'project_processes',
+            'project_id',
+            'process_id',
+        )
+            ->withPivot([
+                'desired_levels',
+            ])
             ->withTimestamps();
     }
 
@@ -101,7 +121,7 @@ class Project extends Model
      * Get created_at in Jalali format.
      *
      * @param  string  $value
-     * @return \Morilog\Jalali\Jalalian
+     * @return Jalalian
      */
     public function getCreatedAtAttribute($value)
     {
@@ -112,7 +132,7 @@ class Project extends Model
      * Get updated_at in Jalali format.
      *
      * @param  string  $value
-     * @return \Morilog\Jalali\Jalalian
+     * @return Jalalian
      */
     public function getUpdatedAtAttribute($value)
     {
@@ -120,93 +140,234 @@ class Project extends Model
     }
 
     /**
-     * Scope matched projects for a specialist worker.
-     * Three matching paths are tried in union:
-     *   1. Direct skill UUID match  — user_skills.skill_id ∈ project_skills.skill_id
-     *   2. Skill-name → process     — skill name matches process name in project_processes
-     *   3. Legacy profile_processes — for data saved via older admin/API flows
+     * Scope projects matched to a specialist through canonical identifiers.
+     *
+     * Matching paths:
+     * 1. user_skills.skill_id = project_skills.skill_id
+     * 2. skills.process_id = project_processes.process_id
+     * 3. profile_processes.process_id = project_processes.process_id
      */
-    public function scopeForWorkerMatches(Builder $query, User $worker)
-    {
-        $profile = $worker->profiles()->where('type', 'specialist')->first();
+    public function scopeForWorkerMatches(
+        Builder $query,
+        User $worker,
+    ): Builder {
+        $profile = $worker->profiles()
+            ->where('type', 'specialist')
+            ->first();
 
-        if (!$profile) {
+        if (! $profile) {
             return $query->whereRaw('1 = 0');
         }
 
-        $rejectedProjectIds = $worker->requests()
-            ->where('status', 'rejected')
-            ->pluck('project_id');
+        $directSkillCount = DB::table(
+            'project_skills as count_project_skills',
+        )
+            ->selectRaw(
+                'COUNT(DISTINCT count_project_skills.skill_id)',
+            )
+            ->whereColumn(
+                'count_project_skills.project_id',
+                'projects.id',
+            )
+            ->whereExists(function ($workerSkills) use ($worker): void {
+                $workerSkills
+                    ->selectRaw('1')
+                    ->from('user_skills as count_user_skills')
+                    ->whereColumn(
+                        'count_user_skills.skill_id',
+                        'count_project_skills.skill_id',
+                    )
+                    ->where(
+                        'count_user_skills.user_id',
+                        $worker->id,
+                    );
+            });
 
-        // ── Path 1: direct skill UUID match ─────────────────────────────
-        $workerSkillIds = DB::table('user_skills')
-            ->where('user_id', $worker->id)
-            ->pluck('skill_id');
+        $processCount = DB::table(
+            'project_processes as count_project_processes',
+        )
+            ->selectRaw(
+                'COUNT(DISTINCT count_project_processes.process_id)',
+            )
+            ->whereColumn(
+                'count_project_processes.project_id',
+                'projects.id',
+            )
+            ->where(function ($processMatches) use (
+                $worker,
+                $profile,
+            ): void {
+                $processMatches
+                    ->whereExists(
+                        function ($workerSkillProcesses) use ($worker): void {
+                            $workerSkillProcesses
+                                ->selectRaw('1')
+                                ->from(
+                                    'user_skills as process_user_skills',
+                                )
+                                ->join(
+                                    'skills as process_skills',
+                                    'process_skills.id',
+                                    '=',
+                                    'process_user_skills.skill_id',
+                                )
+                                ->whereColumn(
+                                    'process_skills.process_id',
+                                    'count_project_processes.process_id',
+                                )
+                                ->whereNotNull(
+                                    'process_skills.process_id',
+                                )
+                                ->where(
+                                    'process_user_skills.user_id',
+                                    $worker->id,
+                                );
+                        },
+                    )
+                    ->orWhereExists(
+                        function ($profileProcesses) use ($profile): void {
+                            $profileProcesses
+                                ->selectRaw('1')
+                                ->from(
+                                    'profile_processes as count_profile_processes',
+                                )
+                                ->whereColumn(
+                                    'count_profile_processes.process_id',
+                                    'count_project_processes.process_id',
+                                )
+                                ->where(
+                                    'count_profile_processes.profile_id',
+                                    $profile->id,
+                                );
+                        },
+                    );
+            });
 
-        $matchedBySkill = $workerSkillIds->isNotEmpty()
-            ? DB::table('project_skills')
-                ->whereIn('skill_id', $workerSkillIds)
-                ->pluck('project_id')
-            : collect();
-
-        // ── Path 2: skill name → process name in project_processes ───────
-        $matchedByProcessName = collect();
-        if ($workerSkillIds->isNotEmpty()) {
-            $workerSkillNames = DB::table('skills')
-                ->whereIn('id', $workerSkillIds)
-                ->pluck('name');
-
-            if ($workerSkillNames->isNotEmpty()) {
-                $matchedByProcessName = DB::table('project_processes as pp')
-                    ->join('processes as p', 'pp.process_id', '=', 'p.id')
-                    ->whereIn('p.name', $workerSkillNames)
-                    ->pluck('pp.project_id');
-            }
-        }
-
-        // ── Path 3: legacy profile_processes ────────────────────────────
-        $workerProcessIds = DB::table('profile_processes')
-            ->where('profile_id', $profile->id)
-            ->pluck('process_id');
-
-        $matchedByProcess = $workerProcessIds->isNotEmpty()
-            ? DB::table('project_processes')
-                ->whereIn('process_id', $workerProcessIds)
-                ->pluck('project_id')
-            : collect();
-
-        // ── Path 4: skill-name bridge across project_skills ─────────────
-        // Handles the case where employer and specialist pick the same tool
-        // (e.g. Revit) from different subdomains, yielding different UUIDs.
-        $matchedBySkillName = collect();
-        if ($workerSkillIds->isNotEmpty()) {
-            $workerSkillNames = $workerSkillNames ?? DB::table('skills')
-                ->whereIn('id', $workerSkillIds)
-                ->pluck('name');
-
-            if ($workerSkillNames->isNotEmpty()) {
-                $matchedBySkillName = DB::table('project_skills as ps')
-                    ->join('skills as s', 'ps.skill_id', '=', 's.id')
-                    ->whereIn('s.name', $workerSkillNames)
-                    ->pluck('ps.project_id');
-            }
-        }
-
-        $allMatchingIds = $matchedBySkill
-            ->merge($matchedByProcessName)
-            ->merge($matchedByProcess)
-            ->merge($matchedBySkillName)
-            ->unique()
-            ->values();
-
-        if ($allMatchingIds->isEmpty()) {
-            return $query->whereRaw('1 = 0');
-        }
+        $matchingCountSql = sprintf(
+            '(%s) + (%s) as matching_skills_count',
+            $directSkillCount->toSql(),
+            $processCount->toSql(),
+        );
 
         return $query
-            ->whereIn('projects.id', $allMatchingIds)
-            ->whereNotIn('projects.id', $rejectedProjectIds)
-            ->where('projects.employer_id', '!=', $worker->id)
-            ->with(['employer', 'skills', 'processes', 'domains']);
+            ->select('projects.*')
+            ->selectRaw(
+                $matchingCountSql,
+                array_merge(
+                    $directSkillCount->getBindings(),
+                    $processCount->getBindings(),
+                ),
+            )
+            ->where(function ($matches) use ($worker, $profile): void {
+                $matches
+                    ->whereExists(
+                        function ($directSkills) use ($worker): void {
+                            $directSkills
+                                ->selectRaw('1')
+                                ->from(
+                                    'project_skills as matching_project_skills',
+                                )
+                                ->join(
+                                    'user_skills as matching_user_skills',
+                                    'matching_user_skills.skill_id',
+                                    '=',
+                                    'matching_project_skills.skill_id',
+                                )
+                                ->whereColumn(
+                                    'matching_project_skills.project_id',
+                                    'projects.id',
+                                )
+                                ->where(
+                                    'matching_user_skills.user_id',
+                                    $worker->id,
+                                );
+                        },
+                    )
+                    ->orWhereExists(
+                        function ($skillProcesses) use ($worker): void {
+                            $skillProcesses
+                                ->selectRaw('1')
+                                ->from(
+                                    'project_processes as matching_project_processes',
+                                )
+                                ->join(
+                                    'skills as matching_process_skills',
+                                    'matching_process_skills.process_id',
+                                    '=',
+                                    'matching_project_processes.process_id',
+                                )
+                                ->join(
+                                    'user_skills as matching_process_user_skills',
+                                    'matching_process_user_skills.skill_id',
+                                    '=',
+                                    'matching_process_skills.id',
+                                )
+                                ->whereColumn(
+                                    'matching_project_processes.project_id',
+                                    'projects.id',
+                                )
+                                ->whereNotNull(
+                                    'matching_process_skills.process_id',
+                                )
+                                ->where(
+                                    'matching_process_user_skills.user_id',
+                                    $worker->id,
+                                );
+                        },
+                    )
+                    ->orWhereExists(
+                        function ($profileProcesses) use ($profile): void {
+                            $profileProcesses
+                                ->selectRaw('1')
+                                ->from(
+                                    'project_processes as matching_project_processes',
+                                )
+                                ->join(
+                                    'profile_processes as matching_profile_processes',
+                                    'matching_profile_processes.process_id',
+                                    '=',
+                                    'matching_project_processes.process_id',
+                                )
+                                ->whereColumn(
+                                    'matching_project_processes.project_id',
+                                    'projects.id',
+                                )
+                                ->where(
+                                    'matching_profile_processes.profile_id',
+                                    $profile->id,
+                                );
+                        },
+                    );
+            })
+            ->whereNotExists(
+                function ($rejectedRequests) use ($worker): void {
+                    $rejectedRequests
+                        ->selectRaw('1')
+                        ->from('requests as rejected_requests')
+                        ->whereColumn(
+                            'rejected_requests.project_id',
+                            'projects.id',
+                        )
+                        ->where(
+                            'rejected_requests.user_id',
+                            $worker->id,
+                        )
+                        ->where(
+                            'rejected_requests.status',
+                            'rejected',
+                        );
+                },
+            )
+            ->where(
+                'projects.employer_id',
+                '!=',
+                $worker->id,
+            )
+            ->with([
+                'employer',
+                'skills',
+                'processes',
+                'domains',
+            ]);
     }
 }
