@@ -143,9 +143,10 @@ class Project extends Model
      * Scope projects matched to a specialist through canonical identifiers.
      *
      * Matching paths:
-     * 1. user_skills.skill_id = project_skills.skill_id
-     * 2. skills.process_id = project_processes.process_id
-     * 3. profile_processes.process_id = project_processes.process_id
+     * 1. Exact user skill ID equals the project skill ID.
+     * 2. Different skill IDs share the same non-null canonical process ID.
+     * 3. A user skill process ID equals a project process ID.
+     * 4. A legacy profile process ID equals a project process ID.
      */
     public function scopeForWorkerMatches(
         Builder $query,
@@ -162,6 +163,12 @@ class Project extends Model
         $directSkillCount = DB::table(
             'project_skills as count_project_skills',
         )
+            ->join(
+                'skills as count_project_skill_records',
+                'count_project_skill_records.id',
+                '=',
+                'count_project_skills.skill_id',
+            )
             ->selectRaw(
                 'COUNT(DISTINCT count_project_skills.skill_id)',
             )
@@ -169,17 +176,58 @@ class Project extends Model
                 'count_project_skills.project_id',
                 'projects.id',
             )
-            ->whereExists(function ($workerSkills) use ($worker): void {
-                $workerSkills
-                    ->selectRaw('1')
-                    ->from('user_skills as count_user_skills')
-                    ->whereColumn(
-                        'count_user_skills.skill_id',
-                        'count_project_skills.skill_id',
+            ->where(function ($skillMatches) use ($worker): void {
+                $skillMatches
+                    ->whereExists(
+                        function ($exactWorkerSkills) use ($worker): void {
+                            $exactWorkerSkills
+                                ->selectRaw('1')
+                                ->from(
+                                    'user_skills as count_exact_user_skills',
+                                )
+                                ->whereColumn(
+                                    'count_exact_user_skills.skill_id',
+                                    'count_project_skills.skill_id',
+                                )
+                                ->where(
+                                    'count_exact_user_skills.user_id',
+                                    $worker->id,
+                                );
+                        },
                     )
-                    ->where(
-                        'count_user_skills.user_id',
-                        $worker->id,
+                    ->orWhere(
+                        function ($processMatches) use ($worker): void {
+                            $processMatches
+                                ->whereNotNull(
+                                    'count_project_skill_records.process_id',
+                                )
+                                ->whereExists(
+                                    function ($equivalentWorkerSkills) use ($worker): void {
+                                        $equivalentWorkerSkills
+                                            ->selectRaw('1')
+                                            ->from(
+                                                'user_skills as count_equivalent_user_skills',
+                                            )
+                                            ->join(
+                                                'skills as count_equivalent_skill_records',
+                                                'count_equivalent_skill_records.id',
+                                                '=',
+                                                'count_equivalent_user_skills.skill_id',
+                                            )
+                                            ->whereColumn(
+                                                'count_equivalent_skill_records.process_id',
+                                                'count_project_skill_records.process_id',
+                                            )
+                                            ->whereNotNull(
+                                                'count_equivalent_skill_records.process_id',
+                                            )
+                                            ->where(
+                                                'count_equivalent_user_skills.user_id',
+                                                $worker->id,
+                                            );
+                                    },
+                                );
+                        },
                     );
             });
 
@@ -268,8 +316,8 @@ class Project extends Model
                                     'project_skills as matching_project_skills',
                                 )
                                 ->join(
-                                    'user_skills as matching_user_skills',
-                                    'matching_user_skills.skill_id',
+                                    'skills as matching_project_skill_records',
+                                    'matching_project_skill_records.id',
                                     '=',
                                     'matching_project_skills.skill_id',
                                 )
@@ -278,8 +326,60 @@ class Project extends Model
                                     'projects.id',
                                 )
                                 ->where(
-                                    'matching_user_skills.user_id',
-                                    $worker->id,
+                                    function ($skillMatches) use ($worker): void {
+                                        $skillMatches
+                                            ->whereExists(
+                                                function ($exactWorkerSkills) use ($worker): void {
+                                                    $exactWorkerSkills
+                                                        ->selectRaw('1')
+                                                        ->from(
+                                                            'user_skills as matching_exact_user_skills',
+                                                        )
+                                                        ->whereColumn(
+                                                            'matching_exact_user_skills.skill_id',
+                                                            'matching_project_skills.skill_id',
+                                                        )
+                                                        ->where(
+                                                            'matching_exact_user_skills.user_id',
+                                                            $worker->id,
+                                                        );
+                                                },
+                                            )
+                                            ->orWhere(
+                                                function ($processMatches) use ($worker): void {
+                                                    $processMatches
+                                                        ->whereNotNull(
+                                                            'matching_project_skill_records.process_id',
+                                                        )
+                                                        ->whereExists(
+                                                            function ($equivalentWorkerSkills) use ($worker): void {
+                                                                $equivalentWorkerSkills
+                                                                    ->selectRaw('1')
+                                                                    ->from(
+                                                                        'user_skills as matching_equivalent_user_skills',
+                                                                    )
+                                                                    ->join(
+                                                                        'skills as matching_equivalent_skill_records',
+                                                                        'matching_equivalent_skill_records.id',
+                                                                        '=',
+                                                                        'matching_equivalent_user_skills.skill_id',
+                                                                    )
+                                                                    ->whereColumn(
+                                                                        'matching_equivalent_skill_records.process_id',
+                                                                        'matching_project_skill_records.process_id',
+                                                                    )
+                                                                    ->whereNotNull(
+                                                                        'matching_equivalent_skill_records.process_id',
+                                                                    )
+                                                                    ->where(
+                                                                        'matching_equivalent_user_skills.user_id',
+                                                                        $worker->id,
+                                                                    );
+                                                            },
+                                                        );
+                                                },
+                                            );
+                                    },
                                 );
                         },
                     )

@@ -90,6 +90,84 @@ final class CanonicalProjectMatchingTest extends AuthorizationTestCase
         );
     }
 
+    public function test_different_skill_ids_with_same_canonical_process_id_match(): void
+    {
+        $specialist = $this->createUser();
+        $this->createProfile($specialist, 'specialist');
+
+        $employer = $this->createUser([
+            'role' => 'employer',
+        ]);
+
+        $project = $this->createProject($employer);
+
+        $domain = SkillDomain::query()->create([
+            'name' => 'Shared process domain '.Str::random(8),
+        ]);
+
+        $firstSubdomain = Subdomain::query()->create([
+            'name' => 'First shared process subdomain '.Str::random(8),
+            'skill_domain_id' => $domain->id,
+        ]);
+
+        $secondSubdomain = Subdomain::query()->create([
+            'name' => 'Second shared process subdomain '.Str::random(8),
+            'skill_domain_id' => $domain->id,
+        ]);
+
+        $process = Process::query()->create([
+            'skill_domain_id' => $domain->id,
+            'name' => 'Shared canonical process '.Str::random(8),
+        ]);
+
+        $authority = app(SkillSubdomainAuthority::class);
+
+        $specialistSkill = $authority->create([
+            'name' => 'Shared software tool',
+            'skill_type' => 'software',
+            'process_id' => $process->id,
+            'subdomain_id' => $firstSubdomain->id,
+        ]);
+
+        $projectSkill = $authority->create([
+            'name' => 'Shared software tool',
+            'skill_type' => 'software',
+            'process_id' => $process->id,
+            'subdomain_id' => $secondSubdomain->id,
+        ]);
+
+        $this->assertNotSame(
+            $specialistSkill->id,
+            $projectSkill->id,
+        );
+
+        $this->assertSame(
+            $specialistSkill->process_id,
+            $projectSkill->process_id,
+        );
+
+        $specialist->skills()->attach($specialistSkill->id, [
+            'level' => 'intermediate',
+            'years_of_experience' => 2,
+        ]);
+
+        $project->skills()->attach($projectSkill->id, [
+            'level' => 'intermediate',
+            'years_of_experience' => 1,
+        ]);
+
+        $matchedProject = Project::forWorkerMatches($specialist)
+            ->whereKey($project->id)
+            ->first();
+
+        $this->assertNotNull($matchedProject);
+
+        $this->assertSame(
+            1,
+            (int) $matchedProject->matching_skills_count,
+        );
+    }
+
     public function test_skill_process_id_matches_project_process_id_without_name_equality(): void
     {
         $specialist = $this->createUser();
