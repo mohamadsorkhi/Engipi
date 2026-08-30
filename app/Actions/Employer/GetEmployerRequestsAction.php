@@ -8,14 +8,24 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class GetEmployerRequestsAction
 {
-    public function execute(User $employer, int $perPage = 20): LengthAwarePaginator
-    {
-        return CollaborationRequest::whereHas('project', function ($q) use ($employer) {
-            $q->where('employer_id', $employer->id);
-        })
-        ->with('project', 'user')
-        ->orderByRaw("FIELD(status, 'pending', 'accepted', 'rejected')")
-        ->latest('created_at')
-        ->paginate($perPage);
+    public function execute(
+        User $employer,
+        int $perPage = 20,
+    ): LengthAwarePaginator {
+        return CollaborationRequest::query()
+            ->whereHas('project', function ($query) use ($employer): void {
+                $query->where('employer_id', $employer->id);
+            })
+            ->with(['project', 'user'])
+            ->orderByRaw(
+                "CASE status
+                    WHEN 'pending' THEN 1
+                    WHEN 'accepted' THEN 2
+                    WHEN 'rejected' THEN 3
+                    ELSE 4
+                END",
+            )
+            ->latest('created_at')
+            ->paginate($perPage);
     }
 }
