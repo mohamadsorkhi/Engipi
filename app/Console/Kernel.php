@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
         $schedule
             ->command('project-files:cleanup')
             ->everyFiveMinutes()
-            ->withoutOverlapping(10);
+            ->withoutOverlapping();
     }
 
     /**
