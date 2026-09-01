@@ -6,6 +6,8 @@ use App\Models\Project;
 use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route as RouteFacade;
 use Tests\TestCase;
 
 class PublicProjectSocialPreviewTest extends TestCase
@@ -13,6 +15,36 @@ class PublicProjectSocialPreviewTest extends TestCase
     use RefreshDatabase;
 
     private const DEFAULT_DESCRIPTION = 'پروژه مهندسی خود را ثبت کنید و با متخصصان واقعی در حوزه‌های مختلف مهندسی همکاری کنید.';
+
+    public function test_public_page_routes_keep_their_complete_public_contract(): void
+    {
+        $publicRoutes = [
+            'projects.show' => 'projects/{project}',
+            'landing.v2' => 'landing-v2',
+            'landing.v2.a' => 'landing-v2-a',
+            'landing.v2.b' => 'landing-v2-b',
+            'landing.v2.c' => 'landing-v2-c',
+        ];
+
+        foreach ($publicRoutes as $name => $uri) {
+            $route = RouteFacade::getRoutes()->getByName($name);
+
+            $this->assertInstanceOf(Route::class, $route, "The [{$name}] route is not registered.");
+            $this->assertSame($uri, $route->uri(), "The [{$name}] route URI changed.");
+            $this->assertSame(['GET', 'HEAD'], $route->methods(), "The [{$name}] HTTP methods changed.");
+
+            $middlewareAliases = collect($route->gatherMiddleware())
+                ->map(fn (string $middleware) => explode(':', $middleware, 2)[0]);
+
+            foreach (['auth', 'admin', 'active_role', 'role', 'profile'] as $restrictiveMiddleware) {
+                $this->assertNotContains(
+                    $restrictiveMiddleware,
+                    $middlewareAliases,
+                    "The public [{$name}] route must not use [{$restrictiveMiddleware}] middleware."
+                );
+            }
+        }
+    }
 
     public function test_public_project_can_be_resolved_by_uuid(): void
     {
